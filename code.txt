@@ -1,0 +1,15 @@
+<div class="col-auto col-md-4 justify-content-center my-auto align-items-center">
+            <div class="profile-body px-4 d-flex flex-column">
+                <div>
+                     <i class="fa-solid fa-user profile-img"></i>
+                     <%--<img class="profile-img" src="\Images\profilePic.jpg" />--%>
+                     <h1 class="mt-3 h1-landing-sm text-break">SecularTalk34</h1>
+                    <h2>Logan Gauchat</h2>
+                </div>
+              <hr/>
+                <asp:LinkButton runat="server"  CssClass="Btn Btn-secondary"><span class="user-control-pannel-body-btn-icon fa-solid fa-pen"></span>&nbsp;Change Account Info</asp:LinkButton>
+                <asp:LinkButton runat="server"  CssClass="Btn Btn-secondary"><span class="user-control-pannel-body-btn-icon fa-solid fa-lock"></span>&nbsp;Change Password</asp:LinkButton>
+                <asp:LinkButton runat="server"  CssClass="Btn Btn-secondary"><span class="user-control-pannel-body-btn-icon fa-solid fa-palette"></span>&nbsp;Change Theme</asp:LinkButton>
+                <asp:LinkButton runat="server"  CssClass="Btn Btn-secondary"><span class="user-control-pannel-body-btn-icon fa-solid fa-trash"></span>&nbsp;Delete Account</asp:LinkButton>
+            </div>     
+        </div>
