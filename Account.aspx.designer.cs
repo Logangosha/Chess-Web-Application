@@ -33,6 +33,15 @@ namespace Chess_App
         protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl backgroundColor;
 
         /// <summary>
+        /// statusColor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl statusColor;
+
+        /// <summary>
         /// ChangeThemeSaveBtn control.
         /// </summary>
         /// <remarks>
@@ -42,40 +51,67 @@ namespace Chess_App
         protected global::System.Web.UI.WebControls.Button ChangeThemeSaveBtn;
 
         /// <summary>
-        /// Color5 control.
+        /// usernameTbx control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl Color5;
+        protected global::System.Web.UI.WebControls.TextBox usernameTbx;
 
         /// <summary>
-        /// Color6 control.
+        /// emailTbx control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl Color6;
+        protected global::System.Web.UI.WebControls.TextBox emailTbx;
 
         /// <summary>
-        /// Color3 control.
+        /// Button3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl Color3;
+        protected global::System.Web.UI.WebControls.Button Button3;
 
         /// <summary>
-        /// Color4 control.
+        /// oldPasswordTbx control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl Color4;
+        protected global::System.Web.UI.WebControls.TextBox oldPasswordTbx;
+
+        /// <summary>
+        /// newPasswordTbx control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox newPasswordTbx;
+
+        /// <summary>
+        /// confrirmPasswordTbx control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox confrirmPasswordTbx;
+
+        /// <summary>
+        /// changePasswordSaveBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button changePasswordSaveBtn;
 
         /// <summary>
         /// DeleteAccountModalBtn control.

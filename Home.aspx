@@ -137,10 +137,10 @@
                 Cancle
             </button>
             <asp:Button runat="server" OnClick="SaveBtn_Click" ID="SaveBtn" type="button" class="Btn Btn-primary ms-auto" text="Save"></asp:Button>
-            <script defer>
+            <%--<script defer>
                 const primaryColorPicker = document.getElementById("<%=primaryColor.ClientID%>");
                 const backgroundColorPicker = document.getElementById("<%=backgroundColor.ClientID%>");
-            </script>
+            </script>--%>
           </div>
       </div>
     </div>

@@ -9,6 +9,7 @@ namespace Chess_App
 {
     public partial class Account : System.Web.UI.Page
     {
+        public string takenUsername = "test";
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
