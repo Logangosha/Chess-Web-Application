@@ -87,6 +87,7 @@
                     <script defer>
                         const primaryColorPicker = document.getElementById("<%=primaryColor.ClientID%>");
                         const backgroundColorPicker = document.getElementById("<%=backgroundColor.ClientID%>");
+                        const statusColorPicker = document.getElementById("<%=statusColor.ClientID%>");
                     </script>
                 </div>
             </div>

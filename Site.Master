@@ -30,7 +30,7 @@
     <script>
         function initialize() {
 
-            console.log('<%= Session["mainColor"] %>' + ' ' + '<%= Session["backgroundColor"] %>')
+            <%--console.log('<%= Session["mainColor"] %>' + ' ' + '<%= Session["backgroundColor"] %>')
 
             // Get the backgroundColor value from the ASP.NET session
             const mainColor = '<%= Session["mainColor"] %>';
@@ -72,8 +72,8 @@
                 console.log("main is not lighter than background")
                 // status needs to be lighter that main
                 root.style.setProperty('--status-color', `hsl(${RGBToHSL('<%=Session["mainColor"]%>')[0]}, 100%, 80%)`);
-            }
-
+            }--%>
+            root.style.setProperty('--status-color', '<%=Session["statusColor"]%>');
             root.style.setProperty('--main-color', '<%=Session["mainColor"]%>');
             root.style.setProperty('--background-color', '<%=Session["backgroundColor"]%>');
         }

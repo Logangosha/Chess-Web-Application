@@ -59,8 +59,8 @@ p {
     /*  overflow-x:hidden;
     overflow-wrap:break-word;*/
     /*Login Form*/
-    --login-background-color: black;
-    --login-border-color: black;
+    --login-background-color: var(--background-color);
+    --login-border-color: var(--background-color);
 }
 
 :root {

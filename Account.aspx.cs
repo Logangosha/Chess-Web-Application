@@ -16,6 +16,7 @@ namespace Chess_App
             {
                 primaryColor.Value = Session["mainColor"].ToString();
                 backgroundColor.Value = Session["backgroundColor"].ToString();
+                statusColor.Value = Session["statusColor"].ToString();
             }
         }
 
@@ -23,6 +24,7 @@ namespace Chess_App
         {
             Session["mainColor"] = primaryColor.Value;
             Session["backgroundColor"] = backgroundColor.Value;
+            Session["statusColor"] = statusColor.Value;
         }
 
         protected void DeleteAccountModalBtn_Click(object sender, EventArgs e)

@@ -46,39 +46,74 @@ const root = document.querySelector(':root');
 
 if (primaryColorPicker) {
     primaryColorPicker.addEventListener('input', () => {
-        setContrastRatio('--main-color', primaryColorPicker.value);
+        checkContrastRatio('--main-color', primaryColorPicker.value);
     });
-}
-else {
-    //console.log('primaryColorPicker Not Found')
 }
 
 if (backgroundColorPicker) {
     backgroundColorPicker.addEventListener('input', () => {
-        setContrastRatio('--background-color', backgroundColorPicker.value);
+        checkContrastRatio('--background-color', backgroundColorPicker.value);
     });
 }
-else {
-    //console.log('backgroundColorPicker Not Found')
-}
+
+if (statusColorPicker) {
+    statusColorPicker.addEventListener('input', () => {
+        checkContrastRatio('--status-color', statusColorPicker.value);
+    });
+    }
 
 
-function setContrastRatio(colorVariable, colorValue) {
 
-
+function checkContrastRatio(colorVariable, colorValue) {
 
     const luminanceOffset = 0.05;
-    const correctedLuminance1 = getRelativeLuminance(backgroundColorPicker.value) + luminanceOffset;
-    const correctedLuminance2 = getRelativeLuminance(primaryColorPicker.value) + luminanceOffset;
+    const colors = [];
+    let goodContrast = true;
 
-    const contrastRatio = Math.max(correctedLuminance1, correctedLuminance2) / Math.min(correctedLuminance1, correctedLuminance2);
 
-    console.log(`Contrast ratio: ${contrastRatio}`);
+    colors.push(getRelativeLuminance(backgroundColorPicker.value) + luminanceOffset);
+    colors.push(getRelativeLuminance(primaryColorPicker.value) + luminanceOffset);
+    colors.push(getRelativeLuminance(statusColorPicker.value) + luminanceOffset);
 
-    if (contrastRatio >= 2.1480) {
+
+    for (let i = 0; i < 2 && goodContrast == true; i++) {
+        if (i == 0) {
+            if (!(Math.max(colors[i], colors[i + 1]) / Math.min(colors[i], colors[i + 1]) >= 2.1480)) {
+                goodContrast = false;
+            }
+        }
+        else {
+            if (!(Math.max(colors[i], colors[i + 1]) / Math.min(colors[i], colors[i + 1]) >= 1.5480)) {
+                goodContrast = false;
+            }
+        }
+    }
+
+    if (goodContrast) {
         console.log("Contrast ratio is good");
         root.style.setProperty(colorVariable, colorValue);
     }
+    else {
+        console.log("Contrast ratio is not good");
+    }
+
+    //const luminanceOffset = 0.05;
+    //const correctedLuminance1 = getRelativeLuminance(backgroundColorPicker.value) + luminanceOffset;
+    //const correctedLuminance2 = getRelativeLuminance(primaryColorPicker.value) + luminanceOffset;
+
+    //const contrastRatio = Math.max(correctedLuminance1, correctedLuminance2) / Math.min(correctedLuminance1, correctedLuminance2);
+
+    //console.log(`Contrast ratio: ${contrastRatio}`);
+
+    //if (contrastRatio >= 2.1480 && colorVariable != '--status-color') {
+    //    console.log("Contrast ratio is good");
+    //    root.style.setProperty(colorVariable, colorValue);
+    //}
+    //else if (contrastRatio >= 1.2 && colorVariable == '--status-color')
+    //    {
+    //    console.log("Contrast ratio is good");
+    //    root.style.setProperty(colorVariable, colorValue);
+    //}
 }
 
 function getRelativeLuminance(color) {

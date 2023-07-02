@@ -24,6 +24,7 @@ namespace Chess_App
             Session["GameType"] = null;
             Session["mainColor"] = "#FF0000";
             Session["backgroundColor"] = "#000000";
+            Session["statusColor"] = "#660000";
         }
     }
 }
