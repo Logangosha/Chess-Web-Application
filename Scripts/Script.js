@@ -1,28 +1,11 @@
 ﻿// JAVASCRIPT FOR THE SITE MASTER FILE
+
 // Function to convert a hexadecimal color to RGB format
-function hexToRgb(hex) {
-    // Ensure hex is a string
-    if (typeof hex !== 'string') {
-        throw new TypeError('hexToRgb expects a string parameter');
-    }
-
-    // Remove the '#' symbol from the beginning
-    hex = hex.replace('#', '');
-
-    // Extract the red, green, and blue components
-    const red = parseInt(hex.substring(0, 2), 16);
-    const green = parseInt(hex.substring(2, 4), 16);
-    const blue = parseInt(hex.substring(4, 6), 16);
-
-    // Return the RGB color in "rgb(r, g, b)" format
-    return `rgb(${red}, ${green}, ${blue})`;
-}
 
 // Function to calculate lightness from an RGB color value
 function calculateLightness(color) {
-
     if (!color) {
-        return; // or handle the case when color is null/undefined
+        return;
     }
 
     const rgbComponents = color.match(/\d+/g);
@@ -37,119 +20,180 @@ function calculateLightness(color) {
 
     return lightness;
 }
-// END OF JAVASCRIPT FOR THE SITE MASTER FILE
 
 // CODE FOR THE ACCOUNT PAGE
-const root = document.querySelector(':root');
-//const primaryColorPicker = document.querySelector('#primary-color-picker');
-//const backgroundColorPicker = document.querySelector('#background-color-picker');
+const root = document.querySelector(":root");
 
+function getColorPickers() {
+    if (primaryColorPicker && backgroundColorPicker && statusColorPicker) {
+        var colorPickers = [
+            primaryColorPicker.value,
+            backgroundColorPicker.value,
+            statusColorPicker.value,
+        ];
+        return colorPickers;
+    }
+}
+
+// Event listeners for color pickers
 if (primaryColorPicker) {
-    primaryColorPicker.addEventListener('input', () => {
-        checkContrastRatio('--main-color', primaryColorPicker.value);
+    primaryColorPicker.addEventListener("input", () => {
+        if (checkContrastRatio(getColorPickers())) {
+            root.style.setProperty("--main-color", primaryColorPicker.value);
+        } else {
+            primaryColorPicker.value = getComputedStyle(root).getPropertyValue(
+                "--main-color"
+            );
+        }
     });
 }
 
 if (backgroundColorPicker) {
-    backgroundColorPicker.addEventListener('input', () => {
-        checkContrastRatio('--background-color', backgroundColorPicker.value);
+    backgroundColorPicker.addEventListener("input", () => {
+        if (checkContrastRatio(getColorPickers())) {
+            root.style.setProperty("--background-color", backgroundColorPicker.value);
+        } else {
+            backgroundColorPicker.value = getComputedStyle(root).getPropertyValue(
+                "--background-color"
+            );
+        }
     });
 }
 
 if (statusColorPicker) {
-    statusColorPicker.addEventListener('input', () => {
-        checkContrastRatio('--status-color', statusColorPicker.value);
+    statusColorPicker.addEventListener("input", () => {
+        if (checkContrastRatio(getColorPickers())) {
+            root.style.setProperty("--status-color", statusColorPicker.value);
+        } else {
+            statusColorPicker.value = getComputedStyle(root).getPropertyValue(
+                "--status-color"
+            );
+        }
     });
-    }
-
-
-
-function checkContrastRatio(colorVariable, colorValue) {
-
-    const luminanceOffset = 0.05;
-    const colors = [];
-    let goodContrast = true;
-
-
-    colors.push(getRelativeLuminance(backgroundColorPicker.value) + luminanceOffset);
-    colors.push(getRelativeLuminance(primaryColorPicker.value) + luminanceOffset);
-    colors.push(getRelativeLuminance(statusColorPicker.value) + luminanceOffset);
-
-
-    for (let i = 0; i < 2 && goodContrast == true; i++) {
-        if (i == 0) {
-            if (!(Math.max(colors[i], colors[i + 1]) / Math.min(colors[i], colors[i + 1]) >= 2.1480)) {
-                goodContrast = false;
-            }
-        }
-        else {
-            if (!(Math.max(colors[i], colors[i + 1]) / Math.min(colors[i], colors[i + 1]) >= 1.5480)) {
-                goodContrast = false;
-            }
-        }
-    }
-
-    if (goodContrast) {
-        console.log("Contrast ratio is good");
-        root.style.setProperty(colorVariable, colorValue);
-    }
-    else {
-        console.log("Contrast ratio is not good");
-    }
-
-    //const luminanceOffset = 0.05;
-    //const correctedLuminance1 = getRelativeLuminance(backgroundColorPicker.value) + luminanceOffset;
-    //const correctedLuminance2 = getRelativeLuminance(primaryColorPicker.value) + luminanceOffset;
-
-    //const contrastRatio = Math.max(correctedLuminance1, correctedLuminance2) / Math.min(correctedLuminance1, correctedLuminance2);
-
-    //console.log(`Contrast ratio: ${contrastRatio}`);
-
-    //if (contrastRatio >= 2.1480 && colorVariable != '--status-color') {
-    //    console.log("Contrast ratio is good");
-    //    root.style.setProperty(colorVariable, colorValue);
-    //}
-    //else if (contrastRatio >= 1.2 && colorVariable == '--status-color')
-    //    {
-    //    console.log("Contrast ratio is good");
-    //    root.style.setProperty(colorVariable, colorValue);
-    //}
 }
 
+// Function to check contrast ratio and update style
+// only works with three colors in colors array
+function checkContrastRatio(colors) {
+    const luminanceOffset = 0.05;
+    let goodContrast = true;
+
+    // Check contrast ratio conditions
+    const relativeLuminance1 = getRelativeLuminance(hexToRgb(colors[0]));
+    const relativeLuminance2 = getRelativeLuminance(hexToRgb(colors[1]));
+    const relativeLuminance3 = getRelativeLuminance(hexToRgb(colors[2]));
+
+    // Check contrast ratio between colors 1 and 2
+    const contrastRatio12 =
+        (Math.max(relativeLuminance1, relativeLuminance2) + luminanceOffset) /
+        (Math.min(relativeLuminance1, relativeLuminance2) + luminanceOffset);
+
+    if (contrastRatio12 < 4.148) {
+        goodContrast = false;
+    }
+
+    // Check contrast ratio between colors 1 and 3
+    const contrastRatio13 =
+        (Math.max(relativeLuminance1, relativeLuminance3) + luminanceOffset) /
+        (Math.min(relativeLuminance1, relativeLuminance3) + luminanceOffset);
+
+    if (contrastRatio13 < 2.148) {
+        goodContrast = false;
+    }
+
+    // Check contrast ratio between colors 2 and 3
+    const contrastRatio23 =
+        (Math.max(relativeLuminance2, relativeLuminance3) + luminanceOffset) /
+        (Math.min(relativeLuminance2, relativeLuminance3) + luminanceOffset);
+
+    if (contrastRatio23 < 2.148) {
+        goodContrast = false;
+    }
+
+    // Update style if contrast ratio is good
+    if (goodContrast) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function hexToRgb(hex) {
+    // Ensure hex is a string
+    if (typeof hex !== "string") {
+        throw new TypeError("hexToRgb expects a string parameter");
+    }
+
+    // Remove the '#' symbol from the beginning
+    hex = hex.replace("#", "");
+
+    // Extract the red, green, and blue components
+    const red = parseInt(hex.substring(0, 2), 16);
+    const green = parseInt(hex.substring(2, 4), 16);
+    const blue = parseInt(hex.substring(4, 6), 16);
+
+    // Return the RGB color in "rgb(r, g, b)" format
+    return `rgb(${red}, ${green}, ${blue})`;
+}
+
+// Function to calculate relative luminance from a color
 function getRelativeLuminance(color) {
     const red = getComponentValue(color, 0) / 255;
     const green = getComponentValue(color, 1) / 255;
     const blue = getComponentValue(color, 2) / 255;
 
-    const relativeLuminance = (0.2126 * red) + (0.7152 * green) + (0.0722 * blue);
+    const relativeLuminance = 0.2126 * red + 0.7152 * green + 0.0722 * blue;
 
     return relativeLuminance;
 }
 
+// Function to get a component value from a color
 function getComponentValue(color, index) {
-    const hexValue = color.substring(index * 2 + 1, index * 2 + 3);
-    return parseInt(hexValue, 16);
+    if (color.startsWith("rgb")) {
+        const rgbValues = color.match(/\d+/g);
+        return parseInt(rgbValues[index], 10);
+    } else if (color.startsWith("#")) {
+        const hexValue = color.substring(index * 2 + 1, index * 2 + 3);
+        return parseInt(hexValue, 16);
+    }
 }
 
-function RGBToHSL(hex) {
-    const r = parseInt(hex.slice(1, 3), 16) / 255;
-    const g = parseInt(hex.slice(3, 5), 16) / 255;
-    const b = parseInt(hex.slice(5, 7), 16) / 255;
-    const l = Math.max(r, g, b);
-    const s = l - Math.min(r, g, b);
-    const h = s
-        ? l === r
-            ? (g - b) / s
-            : l === g
-                ? 2 + (b - r) / s
-                : 4 + (r - g) / s
-        : 0;
+// Function to generate a random color
+function generateRandomColor() {
+    // Generate a random number between 0 and 16777215 (0xFFFFFF in decimal)
+    var randomColor = Math.floor(Math.random() * 16777215).toString(16);
 
-    return [
-        60 * (h < 0 ? h + 360 : h),
-        100 * (s ? (l <= 0.5 ? s / (2 * l - s) : s / (2 - (2 * l - s))) : 0),
-        (100 * (2 * l - s)) / 2,
-    ];
+    // Pad the color with zeros if necessary to ensure a 6-digit value
+    while (randomColor.length < 6) {
+        randomColor = "0" + randomColor;
+    }
+
+    // Prepend a '#' to the color code
+    randomColor = "#" + randomColor;
+
+    return randomColor;
 }
 
-// END OF CODE FOR THE ACCOUNT PAGE
+// Function to generate a random color palette theme from three colors
+function generateRandomTheme() {
+    // Generate 3 random colors and check contrast ratio
+    var colors = [];
+    let i = 1;
+    let goodContrast = false;
+    while (!goodContrast) {
+        colors.push(generateRandomColor());
+        colors.push(generateRandomColor());
+        colors.push(generateRandomColor());
+        if (checkContrastRatio(colors)) {
+            goodContrast = true;
+        } else {
+            colors = [];
+        }
+    }
+    primaryColorPicker.value = colors[0];
+    root.style.setProperty("--main-color", primaryColorPicker.value);
+    backgroundColorPicker.value = colors[1];
+    root.style.setProperty("--background-color", backgroundColorPicker.value);
+    statusColorPicker.value = colors[2];
+    root.style.setProperty("--status-color", statusColorPicker.value);
+}

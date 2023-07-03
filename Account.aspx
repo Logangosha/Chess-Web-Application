@@ -66,7 +66,7 @@
                             <input runat="server" id="backgroundColor" type="color" class="color-picker" />
                         </div>
                     </div>
-                     <div>
+                    <div>
                         <p class="p-bg my-2 d-block">Status Color</p>
                         <div class="d-flex justify-content-center align-items-center">
                             <i class="background-color-picker-icon  color-picker-icon fa-solid fa-paintbrush"></i>
@@ -75,7 +75,9 @@
                     </div>
                     <div class="d-flex justify-content-center">
                         <button class="Btn Btn-secondary"><i class="fa-solid fa-book"></i></></button>
-                        <button class="Btn Btn-secondary ps-0">Randomize <i class="fa-solid fa-shuffle"></i></button>
+                        <button type="button" class="Btn Btn-secondary ps-0" onclick="generateRandomTheme()">
+                            Randomize <i class="fa-solid fa-shuffle"></i>
+                        </button>
                     </div>
                 </div>
                 <hr />
@@ -223,7 +225,7 @@
                     <button type="button" class="Btn Btn-secondary ps-0" data-bs-dismiss="modal">
                         Cancle
                     </button>
-                                <asp:Button runat="server" ID="changePasswordSaveBtn" type="button" class="Btn Btn-primary ms-auto" text="Save"></asp:Button>
+                    <asp:Button runat="server" ID="changePasswordSaveBtn" type="button" class="Btn Btn-primary ms-auto" Text="Save"></asp:Button>
                     <script defer>
                         const _oldPasswordTbx = document.getElementById("<%=oldPasswordTbx.ClientID%>");
                         const _oldPasswordIcon = document.getElementById("oldPasswordIcon");
@@ -247,7 +249,7 @@
                                     break;
                                 case "new":
                                     (value == "") ? (_newPasswordIcon.classList.add("fa-regular"), _newPasswordIcon.classList.remove("fa-solid")) : (_newPasswordIcon.classList.add("fa-solid"), _newPasswordIcon.classList.remove("fa-regular"));
-                             _confirmPasswordTbxswordTbx.value != _newPasswordTbx.value ?(_confirmPasswordIcon.classList.add("fa-regular"), _confirmPasswordIcon.classList.remove("fa-solid")) : (_confirmPasswordIcon.classList.add("fa-solid"), _confirmPasswordIcon.classList.remove("fa-regular"));
+                                    _confirmPasswordTbxswordTbx.value != _newPasswordTbx.value ? (_confirmPasswordIcon.classList.add("fa-regular"), _confirmPasswordIcon.classList.remove("fa-solid")) : (_confirmPasswordIcon.classList.add("fa-solid"), _confirmPasswordIcon.classList.remove("fa-regular"));
 
                                     break;
                                 case "confirm":
@@ -287,9 +289,9 @@
                         Cancle
                     </button>
                     <asp:Button runat="server" OnClick="DeleteAccountModalBtn_Click" ID="DeleteAccountModalBtn" type="button" class="Btn Btn-primary ms-auto" Text="Delete"></asp:Button>
-            <script defer>
-                        
-                    </script>        
+                    <script defer>
+
+</script>
                 </div>
             </div>
         </div>
