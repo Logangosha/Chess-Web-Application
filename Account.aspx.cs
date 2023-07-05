@@ -31,5 +31,10 @@ namespace Chess_App
         {
             Response.Redirect("default.aspx");
         }
+
+        protected void goHomeBtn_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("home.aspx");
+        }
     }
 }

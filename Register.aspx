@@ -7,6 +7,7 @@
             </div>
             <div class="d-grid text-center flex-column gap-3">
                 <h2>Complete to continue</h2>
+                <asp:TextBox runat="server" ID="UnameTbx" placeholder="Username"></asp:TextBox>
                 <asp:TextBox runat="server" ID="FnameTbx" CssClass="" placeholder="First Name"></asp:TextBox>
                 <asp:TextBox runat="server" ID="LnameTbx" CssClass="" placeholder="Last Name"></asp:TextBox>
                 <asp:TextBox runat="server" ID="EmailTbx" CssClass="" TextMode="Email" placeholder="Email"></asp:TextBox> 
@@ -18,12 +19,12 @@
         </div>
     </div>
     <script type="text/javascript">
+        const UnameTbx = document.getElementById('<%=UnameTbx.ClientID%>')
         const FnameTbx = document.getElementById('<%=FnameTbx.ClientID%>');
         const LnameTbx = document.getElementById('<%=LnameTbx.ClientID%>');
         const EmailTbx = document.getElementById('<%=EmailTbx.ClientID%>');
         const PasswordTbx = document.getElementById('<%=PasswordTbx.ClientID%>');
         const ConfirmPasswordTbx = document.getElementById('<%=ConfirmPasswordTbx.ClientID%>');
-
         const LoginBtn = document.getElementById('<%=LoginBtn.ClientID%>');
         FnameTbx.addEventListener("keyup", myScript);
         LnameTbx.addEventListener("keyup", myScript);
@@ -31,7 +32,7 @@
         PasswordTbx.addEventListener("keyup", myScript);
         ConfirmPasswordTbx.addEventListener("keyup", myScript);
         function myScript() {
-            if (FnameTbx.value != "" && LnameTbx.value != "" && EmailTbx.value != "" && PasswordTbx.value != "" && ConfirmPasswordTbx.value != "") {
+            if (UnameTbx.value !="" && FnameTbx.value != "" && LnameTbx.value != "" && EmailTbx.value != "" && PasswordTbx.value != "" && ConfirmPasswordTbx.value != "") {
                 LoginBtn.classList.remove('Btn-disabled')
                 LoginBtn.disabled = false;
             }

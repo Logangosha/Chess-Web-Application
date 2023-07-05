@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Optimization;
@@ -25,6 +26,7 @@ namespace Chess_App
             Session["mainColor"] = "#FF0000";
             Session["backgroundColor"] = "#000000";
             Session["statusColor"] = "#660000";
+            string connectionString = ConfigurationManager.ConnectionStrings["ChessAppDBConnectionString"].ConnectionString;
         }
     }
 }

@@ -32,7 +32,7 @@
                     Delete Account
                         <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
                 </button>
-                <asp:LinkButton runat="server" CssClass="Btn Btn-primary Btn-large mt-2"><span class="user-control-pannel-body-btn-icon fa fa-sign-in"></span>&nbsp;Sign Out</asp:LinkButton>
+                <asp:LinkButton runat="server" ID="goHomeBtn" OnClick="goHomeBtn_Click" CssClass="Btn Btn-primary Btn-large mt-2"><span class="user-control-pannel-body-btn-icon fa fa-sign-in"></span>&nbsp;Go Home</asp:LinkButton>
             </div>
         </div>
     </div>
@@ -113,16 +113,22 @@
                             <div class="mb-4">
                                 <h1 class="h1-landing">Account Info</h1>
                             </div>
-                            <div>
+                            <div class="d-flex flex-column gap-2"> 
                                 <div class="icon-textbox mb-2">
-                                    <asp:TextBox runat="server" ID="usernameTbx" CssClass="textbox" ReadOnly="false" Text="UncleWiggly@gmail.g"></asp:TextBox>
+                                    <asp:TextBox runat="server" ID="usernameTbx" CssClass="textbox" placeholder="Username" ReadOnly="false" Text="UncleWiggly@gmail.g"></asp:TextBox>
                                     <i id="usernameIcon" class="icon fa-solid fa-user"></i>
                                 </div>
-                            </div>
-                            <div>
                                 <div class="icon-textbox">
-                                    <asp:TextBox runat="server" ID="emailTbx" CssClass="textbox" ReadOnly="false" Text="UncleWiggly@gmail.g"></asp:TextBox>
+                                    <asp:TextBox runat="server" ID="emailTbx" CssClass="textbox" placeholder="Email" ReadOnly="false" Text="UncleWiggly@gmail.g"></asp:TextBox>
                                     <i id="emailIcon" class="icon fa-solid fa-envelope"></i>
+                                </div>
+                                <div class="icon-textbox">
+                                    <asp:TextBox runat="server" ID="fnameTbx" CssClass="textbox" placeholder="First Name" ReadOnly="false" Text="Uncle"></asp:TextBox>
+                                    <i id="fnameIcon" class="icon fa-solid fa-user"></i>
+                                </div>
+                                <div class="icon-textbox">
+                                    <asp:TextBox runat="server" ID="lnameTbx" CssClass="textbox" placeholder="Last Name" ReadOnly="false" Text="Wiggly"></asp:TextBox>
+                                    <i id="lnameIcon" class="icon fa-solid fa-user"></i>
                                 </div>
                             </div>
                         </div>

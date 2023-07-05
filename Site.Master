@@ -28,59 +28,9 @@
     </form>
     <script type="text/javascript" src="Scripts/Script.js"></script>
     <script>
-        function initialize() {
-
-            <%--console.log('<%= Session["mainColor"] %>' + ' ' + '<%= Session["backgroundColor"] %>')
-
-            // Get the backgroundColor value from the ASP.NET session
-            const mainColor = '<%= Session["mainColor"] %>';
-            const backgroundColor = '<%= Session["backgroundColor"] %>';
-
-            // Create a temporary element to set the background color
-            const main = document.createElement('div');
-            main.style.mainColor = hexToRgb(mainColor);
-
-            // Create a temporary element to set the background color
-            const background = document.createElement('div');
-            background.style.backgroundColor = hexToRgb(backgroundColor);
-
-            // Calculate the lightness of the main color
-            const mainLightness = calculateLightness(main.style.mainColor);
-
-            // Calculate the lightness of the background color
-            const backgroundLightness = calculateLightness(background.style.backgroundColor);
-
-            // Define the threshold value to determine light or dark
-            const threshold = 0.5;
-
-            // Compare the lightness of the main color to the lightness of the background color
-            console.log(mainLightness + ' -*-*- ' + backgroundLightness)
-            console.log('<%=Session["mainColor"]%>')
-            console.log(RGBToHSL('<%=Session["mainColor"]%>')[0])
-            if (mainLightness > backgroundLightness) {
-                console.log("main is lighter than background");
-                // status needs to be darker that main
-                root.style.setProperty('--status-color', `hsl(${RGBToHSL('<%=Session["mainColor"]%>')[0]}, 100%, 20%)`);
-
-            }
-            else if (mainLightness < .6 && backgroundLightness < .6) {
-                console.log('Both Dark')
-                root.style.setProperty('--status-color', `hsl(${RGBToHSL('<%=Session["mainColor"]%>')[0]}, 100%, 20%)`);
-
-            }
-            else {
-                console.log("main is not lighter than background")
-                // status needs to be lighter that main
-                root.style.setProperty('--status-color', `hsl(${RGBToHSL('<%=Session["mainColor"]%>')[0]}, 100%, 80%)`);
-            }--%>
             root.style.setProperty('--status-color', '<%=Session["statusColor"]%>');
             root.style.setProperty('--main-color', '<%=Session["mainColor"]%>');
             root.style.setProperty('--background-color', '<%=Session["backgroundColor"]%>');
-        }
-
-        // Use the window.onload event to execute the function when the page has finished loading
-        window.onload = initialize;
-
     </script>
 </body>
 </html>

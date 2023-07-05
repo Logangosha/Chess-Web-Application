@@ -15,6 +15,15 @@ namespace Chess_App
     {
 
         /// <summary>
+        /// goHomeBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton goHomeBtn;
+
+        /// <summary>
         /// primaryColor control.
         /// </summary>
         /// <remarks>
@@ -67,6 +76,24 @@ namespace Chess_App
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox emailTbx;
+
+        /// <summary>
+        /// fnameTbx control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox fnameTbx;
+
+        /// <summary>
+        /// lnameTbx control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox lnameTbx;
 
         /// <summary>
         /// Button3 control.

@@ -97,7 +97,7 @@ function checkContrastRatio(colors) {
         (Math.max(relativeLuminance1, relativeLuminance3) + luminanceOffset) /
         (Math.min(relativeLuminance1, relativeLuminance3) + luminanceOffset);
 
-    if (contrastRatio13 < 2.148) {
+    if (contrastRatio13 < 1.348) {
         goodContrast = false;
     }
 
@@ -106,7 +106,7 @@ function checkContrastRatio(colors) {
         (Math.max(relativeLuminance2, relativeLuminance3) + luminanceOffset) /
         (Math.min(relativeLuminance2, relativeLuminance3) + luminanceOffset);
 
-    if (contrastRatio23 < 2.148) {
+    if (contrastRatio23 < 1.348) {
         goodContrast = false;
     }
 
