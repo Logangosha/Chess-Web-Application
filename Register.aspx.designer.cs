@@ -24,24 +24,6 @@ namespace Chess_App
         protected global::System.Web.UI.WebControls.TextBox UnameTbx;
 
         /// <summary>
-        /// FnameTbx control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox FnameTbx;
-
-        /// <summary>
-        /// LnameTbx control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox LnameTbx;
-
-        /// <summary>
         /// EmailTbx control.
         /// </summary>
         /// <remarks>
@@ -69,12 +51,21 @@ namespace Chess_App
         protected global::System.Web.UI.WebControls.TextBox ConfirmPasswordTbx;
 
         /// <summary>
-        /// LoginBtn control.
+        /// ErrorLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button LoginBtn;
+        protected global::System.Web.UI.WebControls.CompareValidator ErrorLbl;
+
+        /// <summary>
+        /// CreateAccountBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button CreateAccountBtn;
     }
 }

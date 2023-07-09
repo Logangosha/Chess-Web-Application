@@ -14,7 +14,7 @@ namespace Chess_App
         {
             if (!Page.IsPostBack)
             {
-                primaryColor.Value = Session["mainColor"].ToString();
+                primaryColor.Value = Session["primaryColor"].ToString();
                 backgroundColor.Value = Session["backgroundColor"].ToString();
                 statusColor.Value = Session["statusColor"].ToString();
             }
@@ -22,7 +22,7 @@ namespace Chess_App
 
         protected void ChangeThemeSaveBtn_Click(object sender, EventArgs e)
         {
-            Session["mainColor"] = primaryColor.Value;
+            Session["primaryColor"] = primaryColor.Value;
             Session["backgroundColor"] = backgroundColor.Value;
             Session["statusColor"] = statusColor.Value;
         }

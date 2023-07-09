@@ -141,19 +141,21 @@
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Classes\AccountPassword.cs" />
+    <Compile Include="Classes\Theme.cs" />
     <Compile Include="Classes\AccountValidation.cs" />
     <Compile Include="Classes\Bishop.cs" />
     <Compile Include="Classes\Chessboard.cs" />
     <Compile Include="Classes\ChessboardTiles.cs" />
     <Compile Include="Classes\ChessPiece.cs" />
     <Compile Include="Classes\Computer.cs" />
+    <Compile Include="Classes\DatabaseAccess.cs" />
     <Compile Include="Classes\Friend.cs" />
     <Compile Include="Classes\Game.cs" />
     <Compile Include="Classes\Guest.cs" />
     <Compile Include="Classes\King.cs" />
     <Compile Include="Classes\Knight.cs" />
     <Compile Include="Classes\Notification.cs" />
+    <Compile Include="Classes\PasswordHasher.cs" />
     <Compile Include="Classes\Pawn.cs" />
     <Compile Include="Classes\Player.cs" />
     <Compile Include="Classes\PlayerAccount.cs" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chess_App.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,9 +16,25 @@ namespace Chess_App
         }
         protected void BtnLogin_Click(object sender, EventArgs e)
         {
-            PlayerAccount player = new PlayerAccount("fName", "lName", "uName", "email", "dob", new AccountPassword("password"));
-            Session["AccountInfo"] = player;
-            Response.Redirect("Home.aspx");
+            // Check if username and password are correct
+            PlayerAccount playerAccount = DatabaseAccess.GetUserAccount(UsernameTbx.Text, PasswordTbx.Text);
+            if (playerAccount == null)
+            {
+                // throw error
+                System.Diagnostics.Debug.WriteLine("Username or password was incorrect");
+            }
+            else {
+                // login the user in 
+                Session["AccountInfo"] = playerAccount;
+                Session["PrimaryColor"] = playerAccount.Theme.PrimaryColor;
+                Session["BackgroundColor"] = playerAccount.Theme.BackgroundColor;
+                Session["StatusColor"] = playerAccount.Theme.StatusColor;
+                Response.Redirect("Home.aspx");
+                return;
+            }
+
+
+
         }
 
         protected void FrogotPasswordBtn_Click(object sender, EventArgs e)

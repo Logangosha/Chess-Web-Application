@@ -29,7 +29,7 @@
     <script type="text/javascript" src="Scripts/Script.js"></script>
     <script>
             root.style.setProperty('--status-color', '<%=Session["statusColor"]%>');
-            root.style.setProperty('--main-color', '<%=Session["mainColor"]%>');
+            root.style.setProperty('--primary-color', '<%=Session["primaryColor"]%>');
             root.style.setProperty('--background-color', '<%=Session["backgroundColor"]%>');
     </script>
 </body>

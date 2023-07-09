@@ -17,7 +17,7 @@ namespace Chess_App
         {
             if (!Page.IsPostBack)
             {
-                primaryColor.Value = Session["mainColor"].ToString();
+                primaryColor.Value = Session["primaryColor"].ToString();
                 backgroundColor.Value = Session["backgroundColor"].ToString();
             }
 
@@ -40,7 +40,7 @@ namespace Chess_App
 
         protected void SaveBtn_Click(object sender, EventArgs e)
         {
-            Session["mainColor"] = primaryColor.Value;
+            Session["primaryColor"] = primaryColor.Value;
             Session["backgroundColor"] = backgroundColor.Value;
         }
         protected void AccountBtn_Click(object sender, EventArgs e)

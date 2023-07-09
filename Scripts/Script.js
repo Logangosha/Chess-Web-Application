@@ -39,10 +39,10 @@ function getColorPickers() {
 if (primaryColorPicker) {
     primaryColorPicker.addEventListener("input", () => {
         if (checkContrastRatio(getColorPickers())) {
-            root.style.setProperty("--main-color", primaryColorPicker.value);
+            root.style.setProperty("--primary-color", primaryColorPicker.value);
         } else {
             primaryColorPicker.value = getComputedStyle(root).getPropertyValue(
-                "--main-color"
+                "--primary-color"
             );
         }
     });
@@ -191,7 +191,7 @@ function generateRandomTheme() {
         }
     }
     primaryColorPicker.value = colors[0];
-    root.style.setProperty("--main-color", primaryColorPicker.value);
+    root.style.setProperty("--primary-color", primaryColorPicker.value);
     backgroundColorPicker.value = colors[1];
     root.style.setProperty("--background-color", backgroundColorPicker.value);
     statusColorPicker.value = colors[2];
