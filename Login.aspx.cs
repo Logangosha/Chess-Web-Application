@@ -25,16 +25,10 @@ namespace Chess_App
             }
             else {
                 // login the user in 
-                Session["AccountInfo"] = playerAccount;
-                Session["PrimaryColor"] = playerAccount.Theme.PrimaryColor;
-                Session["BackgroundColor"] = playerAccount.Theme.BackgroundColor;
-                Session["StatusColor"] = playerAccount.Theme.StatusColor;
+                playerAccount.Login();
                 Response.Redirect("Home.aspx");
                 return;
             }
-
-
-
         }
 
         protected void FrogotPasswordBtn_Click(object sender, EventArgs e)

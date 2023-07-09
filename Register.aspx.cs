@@ -24,19 +24,21 @@ namespace Chess_App
                 // they do exist, display an error message
                 System.Diagnostics.Debug.WriteLine("Username or Email already taken");
             }
-            else {
+            else
+            {
                 // they do not exist, create new PlayerAccount
 
                 // generate salt and hash password
                 byte[] salt = PasswordHashHelper.GenerateSalt();
-                byte[][] passwordData = { 
-                PasswordHashHelper.CreatePasswordHash(PasswordTbx.Text, salt),
-                salt
+                byte[][] passwordData =
+                {
+                    PasswordHashHelper.CreatePasswordHash(PasswordTbx.Text, salt),
+                    salt
                 };
-
+                
                 PlayerAccount newPlayerAccount = new PlayerAccount(UnameTbx.Text, EmailTbx.Text, passwordData);
                 DatabaseAccess.InsertNewUser(newPlayerAccount);
-                Session["AccountInfo"] = newPlayerAccount;
+                newPlayerAccount.Login();
                 Response.Redirect("Home.aspx");
                 return;
             }

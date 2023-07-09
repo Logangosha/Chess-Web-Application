@@ -26,7 +26,7 @@ namespace Chess_App
             Session["primaryColor"] = "#FF0000";
             Session["backgroundColor"] = "#000000";
             Session["statusColor"] = "#660000";
-            string connectionString = ConfigurationManager.ConnectionStrings["ChessAppDBConnectionString"].ConnectionString;
-        }
+            //string connectionString = ConfigurationManager.ConnectionStrings["ChessAppDBConnectionString"].ConnectionString;
+        } 
     }
 }

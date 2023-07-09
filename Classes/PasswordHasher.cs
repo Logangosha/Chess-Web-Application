@@ -2,6 +2,7 @@
 using System.Security.Cryptography;
 using System.Linq;
 using System.Text;
+using Chess_App;
 
 public static class PasswordHashHelper
 {

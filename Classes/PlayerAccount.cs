@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Chess_App.Classes;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace Chess_App
 {
@@ -17,12 +19,10 @@ namespace Chess_App
         public List<Friend> Friends { get; set; }
         public List<Classes.Game> GameHistory { get; set; }
         public List<Notification> Notifications { get; set; }
-        public bool PlayerStatus { get; set; }
 
         //when account is logged into
         public PlayerAccount(string _uName, string _email, Theme theme)
         {
-
             Username = _uName;
             Email = _email;
             Theme = theme;
@@ -30,10 +30,24 @@ namespace Chess_App
         // when account is created 
         public PlayerAccount(string _uName, string _email, byte[][] _password)
         {
-
             Username = _uName;
             Email = _email;
             PasswordData = _password;
+        }
+
+        public void Login()
+        {
+            HttpContext.Current.Session["AccountInfo"] = this;
+            if (!string.IsNullOrEmpty(Theme.PrimaryColor)) {
+            HttpContext.Current.Session["PrimaryColor"] = this.Theme.PrimaryColor;
+            HttpContext.Current.Session["BackgroundColor"] = this.Theme.BackgroundColor;
+            HttpContext.Current.Session["StatusColor"] = this.Theme.StatusColor;
+            }
+        }
+
+        public static void Logout()
+        {
+            HttpContext.Current.Session["AccountInfo"] = null;
         }
     }
 }
