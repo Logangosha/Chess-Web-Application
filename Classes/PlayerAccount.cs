@@ -38,7 +38,7 @@ namespace Chess_App
         public void Login()
         {
             HttpContext.Current.Session["AccountInfo"] = this;
-            if (!string.IsNullOrEmpty(Theme.PrimaryColor)) {
+            if (this.Theme != null) {
             HttpContext.Current.Session["PrimaryColor"] = this.Theme.PrimaryColor;
             HttpContext.Current.Session["BackgroundColor"] = this.Theme.BackgroundColor;
             HttpContext.Current.Session["StatusColor"] = this.Theme.StatusColor;

@@ -8,8 +8,7 @@
                     <div class="profile-img-container">
                         <img class="profile-img" src="\Images\unclewiggly.png" />
                     </div>
-                    <h1 class="mt-3 h1-landing-sm text-break">SecularTalk34</h1>
-                    <h2 class="text-break">Logan Gauchat</h2>
+                    <h1 class="mt-3 h1-landing-sm text-break"><%= ((Chess_App.PlayerAccount)Session["AccountInfo"]).Username %></h1>
                 </div>
                 <hr />
                 <button type="button" class="Btn Btn-link" data-bs-toggle="modal" data-bs-target="#ChangeThemeModal">
