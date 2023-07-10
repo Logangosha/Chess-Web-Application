@@ -21,20 +21,26 @@ namespace Chess_App
                 backgroundColor.Value = Session["backgroundColor"].ToString();
             }
 
+            UsingAccount = IsUsingAccount();
+        }
+
+        public bool IsUsingAccount()
+        {
             if (Session["AccountInfo"] != null)
             {
                 if (Session["AccountInfo"] is Guest)
                 {
-                    UsingAccount = false;
+                    return false;
                 }
                 else
                 {
-                    UsingAccount = true;
+                    return true;
                 }
             }
             else
             {
                 Response.Redirect("Default.aspx");
+                return false;
             }
         }
 
@@ -79,6 +85,17 @@ namespace Chess_App
                 case "Friends":  Response.Redirect("GameSetup.aspx?type=" + e.CommandArgument + ""); break;
                 case "Default":  Response.Redirect("GameSetup.aspx?type=" + e.CommandArgument + ""); break;
             } 
+        }
+
+        protected void SignOutBtn_Click(object sender, EventArgs e)
+        {
+            PlayerAccount.Logout();
+            Response.Redirect("Default.aspx");
+        }
+
+        protected void SignInBtn_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Login.aspx");
         }
     }
 }

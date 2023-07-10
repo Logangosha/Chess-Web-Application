@@ -37,13 +37,17 @@
                     <asp:LinkButton runat="server" id="PlayComputereBtn" CommandArgument="Computer" OnCommand="GameSetup_Command" CssClass="Btn Btn-primary user-control-pannel-body-btn-text w-100"><span class="user-control-pannel-body-btn-icon fa fa-computer"></span><span class="text-wrap">&nbsp;Play Computer</span></asp:LinkButton>
                     <asp:LinkButton runat="server" id="PlayFriendBtn" CommandArgument="Friends" OnCommand="GameSetup_Command" CssClass="Btn Btn-primary user-control-pannel-body-btn-text w-100"><span class="user-control-pannel-body-btn-icon fa fa-user"></span><span class="text-wrap">&nbsp;Play Friends</span></asp:LinkButton>
                 </div>
-                <div class="d-flex mt-auto pt-5 flex-column gap-3">
+                <div class="d-flex mt-auto pt-4 flex-column gap-3">
                     <hr />
                     <button type="button" class="Btn Btn-link"  data-bs-toggle="modal" data-bs-target="#ChangeThemeModal">
                         <i class="Btn-link-icon fa-solid fa-palette"></i>
                         Change Theme
                 </button>
-                    <asp:LinkButton runat="server"  CssClass="Btn Btn-secondary w-100"><span class="user-control-pannel-body-btn-icon fa fa-sign-in"></span>&nbsp;Sign Out</asp:LinkButton>
+                    <% if (UsingAccount) { %>
+                    <asp:LinkButton runat="server" ID="SignOutBtn" OnClick="SignOutBtn_Click"  CssClass="Btn Btn-link Btn-secondary"><i class="Btn-link-icon fa fa-sign-in"></i>&nbsp;Sign Out</asp:LinkButton>
+                    <% } else { %>
+                    <asp:LinkButton runat="server" ID="SignInBtn" OnClick="SignInBtn_Click"  CssClass="Btn Btn-link Btn-secondary"><i class="Btn-link-icon fa fa-sign-in"></i>&nbsp;Sign In</asp:LinkButton>
+                    <% } %>
                 </div>
             </div>
         </div>
@@ -137,10 +141,6 @@
                 Cancle
             </button>
             <asp:Button runat="server" OnClick="SaveBtn_Click" ID="SaveBtn" type="button" class="Btn Btn-primary ms-auto" text="Save"></asp:Button>
-            <%--<script defer>
-                const primaryColorPicker = document.getElementById("<%=primaryColor.ClientID%>");
-                const backgroundColorPicker = document.getElementById("<%=backgroundColor.ClientID%>");
-            </script>--%>
           </div>
       </div>
     </div>

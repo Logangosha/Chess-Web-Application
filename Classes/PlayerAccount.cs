@@ -48,6 +48,11 @@ namespace Chess_App
         public static void Logout()
         {
             HttpContext.Current.Session["AccountInfo"] = null;
+            HttpContext.Current.Session["primaryColor"] = "#FF0000";
+            HttpContext.Current.Session["backgroundColor"] = "#000000";
+            HttpContext.Current.Session["statusColor"] = "#660000";
         }
+
+
     }
 }

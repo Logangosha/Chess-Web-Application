@@ -8,11 +8,11 @@ using Chess_App.Classes;
 
 namespace Chess_App
 {
-    public partial class SiteMaster : MasterPage
+    public partial class SiteMaster : System.Web.UI.MasterPage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+
         }
     }
 }
