@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Chess_App.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -25,6 +26,9 @@ namespace Chess_App
             Session["primaryColor"] = primaryColor.Value;
             Session["backgroundColor"] = backgroundColor.Value;
             Session["statusColor"] = statusColor.Value;
+            PlayerAccount playerAccount = ((Chess_App.PlayerAccount)Session["AccountInfo"]);
+            Theme newTheme = new Theme(primaryColor.Value, backgroundColor.Value, statusColor.Value);
+            DatabaseAccess.SaveThemeSettings(playerAccount.Username, newTheme);
         }
 
         protected void DeleteAccountModalBtn_Click(object sender, EventArgs e)

@@ -44,7 +44,7 @@
                     <i class="fa-solid fa-palette modal-icon my-auto"></i>
                     <h1 class="modal-title">Change Theme
                     </h1>
-                    <button type="button" class="Btn Btn-secondary modal-close pe-0" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
+                    <button type="button" onclick="CancleChangeTheme()" class="Btn Btn-secondary modal-close pe-0" data-bs-dismiss="modal"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <hr />
                 <div class="modal-body my-auto gap-2">
@@ -81,11 +81,14 @@
                 </div>
                 <hr />
                 <div class="modal-footer">
-                    <button type="button" class="Btn Btn-secondary ps-0" data-bs-dismiss="modal">
+                    <button type="button" onclick="CancleChangeTheme()"  class="Btn Btn-secondary ps-0" data-bs-dismiss="modal">
                         Cancle
                     </button>
                     <asp:Button runat="server" OnClick="ChangeThemeSaveBtn_Click" ID="ChangeThemeSaveBtn" type="button" class="Btn Btn-primary ms-auto" Text="Save"></asp:Button>
                     <script defer>
+                        const accountPrimaryColor = "<%=((Chess_App.PlayerAccount)Session["AccountInfo"]).Theme.PrimaryColor%>";
+                        const accountBackgroundColor = "<%=((Chess_App.PlayerAccount)Session["AccountInfo"]).Theme.BackgroundColor%>";
+                        const accountStatusColor = "<%=((Chess_App.PlayerAccount)Session["AccountInfo"]).Theme.StatusColor%>";
                         const primaryColorPicker = document.getElementById("<%=primaryColor.ClientID%>");
                         const backgroundColorPicker = document.getElementById("<%=backgroundColor.ClientID%>");
                         const statusColorPicker = document.getElementById("<%=statusColor.ClientID%>");

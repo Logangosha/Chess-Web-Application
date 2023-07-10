@@ -191,5 +191,44 @@ namespace Chess_App.Classes
 
             return null;
         }
+
+        // Save the user's theme settings
+        public static void SaveThemeSettings(string username, Theme theme)
+        {
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ChessAppDbConnectionString"].ConnectionString))
+            {
+                using (SqlCommand command = new SqlCommand("dbo.SaveThemeSettings", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    try
+                    {
+                        connection.Open();
+                        System.Diagnostics.Debug.WriteLine("Connection Opened");
+                        System.Diagnostics.Debug.WriteLine(username);
+                        System.Diagnostics.Debug.WriteLine(theme.PrimaryColor);
+                        System.Diagnostics.Debug.WriteLine(theme.BackgroundColor);
+                        System.Diagnostics.Debug.WriteLine(theme.StatusColor);
+                        command.Parameters.AddWithValue("@Username", username);
+                        command.Parameters.AddWithValue("@PrimaryColor", theme.PrimaryColor);
+                        command.Parameters.AddWithValue("@BackgroundColor", theme.BackgroundColor);
+                        command.Parameters.AddWithValue("@StatusColor", theme.StatusColor);
+                        command.ExecuteNonQuery();
+                        System.Diagnostics.Debug.WriteLine("SaveThemeSettings Executed");
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex.Message);
+                    }
+                    finally
+                    {
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                            System.Diagnostics.Debug.WriteLine("Connection Closed");
+                        }
+                    }
+                }
+            }
+        }
     }
 }

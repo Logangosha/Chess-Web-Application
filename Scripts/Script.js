@@ -72,6 +72,16 @@ if (statusColorPicker) {
     });
 }
 
+function CancleChangeTheme() {
+    primaryColorPicker.value = accountPrimaryColor;
+    backgroundColorPicker.value = accountBackgroundColor;
+    statusColorPicker.value = accountStatusColor;
+    root.style.setProperty("--primary-color", accountPrimaryColor);
+    root.style.setProperty("--background-color", accountBackgroundColor);
+    root.style.setProperty("--status-color", accountStatusColor);
+}
+
+
 // Function to check contrast ratio and update style
 // only works with three colors in colors array
 function checkContrastRatio(colors) {
