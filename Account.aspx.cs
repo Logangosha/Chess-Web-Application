@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -10,14 +11,20 @@ namespace Chess_App
 {
     public partial class Account : System.Web.UI.Page
     {
-        public string takenUsername = "test";
         protected void Page_Load(object sender, EventArgs e)
         {
+            
             if (!Page.IsPostBack)
             {
                 primaryColor.Value = Session["primaryColor"].ToString();
                 backgroundColor.Value = Session["backgroundColor"].ToString();
                 statusColor.Value = Session["statusColor"].ToString();
+                if (Session["AccountInfo"] != null)
+                {
+                    PlayerAccount account = (PlayerAccount)Session["AccountInfo"];
+                    usernameTbx.Value = account.Username;
+                    emailTbx.Value = account.Email;
+                }
             }
         }
 
@@ -31,6 +38,20 @@ namespace Chess_App
             DatabaseAccess.SaveThemeSettings(playerAccount.Username, newTheme);
         }
 
+        [WebMethod]
+        public static bool IsUsernameTaken(string username)
+        {
+            return DatabaseAccess.IsUsernameTaken(username);
+        }
+
+        [WebMethod]
+        public static bool IsEmailTaken(string email)
+        {
+            return DatabaseAccess.IsEmailTaken(email);
+        }
+
+
+
         protected void DeleteAccountModalBtn_Click(object sender, EventArgs e)
         {
             Response.Redirect("default.aspx");
@@ -39,6 +60,13 @@ namespace Chess_App
         protected void goHomeBtn_Click(object sender, EventArgs e)
         {
             Response.Redirect("home.aspx");
+        }
+
+        protected void EditAccountInfoSaveBtn_Click(object sender, EventArgs e)
+        {
+            DatabaseAccess.SaveNewAccountInfo((((PlayerAccount)Session["AccountInfo"]).Username), usernameTbx.Value, emailTbx.Value);
+            ((PlayerAccount)Session["AccountInfo"]).Username = usernameTbx.Value;
+            ((PlayerAccount)Session["AccountInfo"]).Email = emailTbx.Value;
         }
     }
 }

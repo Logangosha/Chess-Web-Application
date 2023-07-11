@@ -8,7 +8,7 @@
                     <div class="profile-img-container">
                         <img class="profile-img" src="\Images\unclewiggly.png" />
                     </div>
-                    <h1 class="mt-3 h1-landing-sm text-break"><%= ((Chess_App.PlayerAccount)Session["AccountInfo"]).Username %></h1>
+                    <h1 class="mt-3 h1-landing-sm text-break"><%=((Chess_App.PlayerAccount)Session["AccountInfo"]).Username %></h1>
                 </div>
                 <hr />
                 <button type="button" class="Btn Btn-link" data-bs-toggle="modal" data-bs-target="#ChangeThemeModal">
@@ -81,7 +81,7 @@
                 </div>
                 <hr />
                 <div class="modal-footer">
-                    <button type="button" onclick="CancleChangeTheme()"  class="Btn Btn-secondary ps-0" data-bs-dismiss="modal">
+                    <button type="button" onclick="CancleChangeTheme()" class="Btn Btn-secondary ps-0" data-bs-dismiss="modal">
                         Cancle
                     </button>
                     <asp:Button runat="server" OnClick="ChangeThemeSaveBtn_Click" ID="ChangeThemeSaveBtn" type="button" class="Btn Btn-primary ms-auto" Text="Save"></asp:Button>
@@ -115,74 +115,113 @@
                             <div class="mb-4">
                                 <h1 class="h1-landing">Account Info</h1>
                             </div>
-                            <div class="d-flex flex-column gap-2"> 
+                            <div class="d-flex flex-column gap-2">
                                 <div class="icon-textbox mb-2">
-                                    <asp:TextBox runat="server" ID="usernameTbx" CssClass="textbox" placeholder="Username" ReadOnly="false" Text="UncleWiggly@gmail.g"></asp:TextBox>
-                                    <i id="usernameIcon" class="icon fa-solid fa-user"></i>
+                                    <input runat="server" id="usernameTbx" class="textbox" placeholder="Username" />
+                                    <i id="usernameIcon" class="icon fa-solid fa-user-large-slash"></i>
                                 </div>
                                 <div class="icon-textbox">
-                                    <asp:TextBox runat="server" ID="emailTbx" CssClass="textbox" placeholder="Email" ReadOnly="false" Text="UncleWiggly@gmail.g"></asp:TextBox>
-                                    <i id="emailIcon" class="icon fa-solid fa-envelope"></i>
-                                </div>
-                                <div class="icon-textbox">
-                                    <asp:TextBox runat="server" ID="fnameTbx" CssClass="textbox" placeholder="First Name" ReadOnly="false" Text="Uncle"></asp:TextBox>
-                                    <i id="fnameIcon" class="icon fa-solid fa-user"></i>
-                                </div>
-                                <div class="icon-textbox">
-                                    <asp:TextBox runat="server" ID="lnameTbx" CssClass="textbox" placeholder="Last Name" ReadOnly="false" Text="Wiggly"></asp:TextBox>
-                                    <i id="lnameIcon" class="icon fa-solid fa-user"></i>
+                                    <input runat="server" id="emailTbx" class="textbox" placeholder="Email" />
+                                    <i id="emailIcon" class="icon fa-regular fa-envelope"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <hr />
+                <hr/>
                 <div class="modal-footer">
                     <button type="button" class="Btn Btn-secondary ps-0" data-bs-dismiss="modal">
                         Cancle
                     </button>
-                    <asp:Button runat="server" ID="Button3" type="button" class="Btn Btn-primary ms-auto" Text="Save"></asp:Button>
+                    <asp:Button runat="server" ID="EditAccountInfoSaveBtn" OnClick="EditAccountInfoSaveBtn_Click" type="button" class="Btn Btn-disabled Btn-primary ms-auto" Text="Save"></asp:Button>
                     <script defer>
-                        const _usernameTbx = document.getElementById("<%=usernameTbx.ClientID%>");
-                        const emailTbx = document.getElementById("<%=emailTbx.ClientID%>");
-                        const saveBtn = document.getElementById("<%=Button3.ClientID%>");
+                        const saveBtn = document.getElementById("<%=EditAccountInfoSaveBtn.ClientID%>");
                         const _usernameIcon = document.getElementById("usernameIcon");
                         const _emailIcon = document.getElementById("emailIcon");
-                        _usernameTbx.addEventListener("keyup", usernameTbxInput);
-                        emailTbx.addEventListener("keyup", emailTbxInput);
-                        function usernameTbxInput() {
-                            if (_usernameTbx.value == '<%=takenUsername%>' || _usernameTbx.value == '') {
-                                _usernameIcon.classList.remove("fa-user");
-                                _usernameIcon.classList.add("fa-user-large-slash");
-                            }
-                            else {
-                                _usernameIcon.classList.remove("fa-user-large-slash");
-                                _usernameIcon.classList.add("fa-user");
-                            }
+                        const _usernameTbx = document.getElementById("<%=usernameTbx.ClientID%>");
+                        const emailTbx = document.getElementById("<%=emailTbx.ClientID%>");
+                        var usernameStatus = false;
+                        var emailStatus = false;
+
+                        _usernameTbx.addEventListener("keyup", function () { isUsernameValid(_usernameTbx.value) });
+                        emailTbx.addEventListener("keyup", function () { isEmailValid(emailTbx.value) });
+
+                        // Check if the username is valid
+                        async function isUsernameValid(username) {
+                            console.log("Username is " + username);
+                            let startingUsername = (username == "<%=((Chess_App.PlayerAccount)Session["AccountInfo"]).Username%>")
+                            const isValid = (username !== '' && await isUsernameTaken(username) == false && startingUsername == false);
+                            _usernameIcon.classList.toggle("fa-user", isValid);
+                            _usernameIcon.classList.toggle("fa-user-large-slash", !isValid);
+                            console.log("Username is valid: " + isValid);
+                            usernameStatus = isValid;
                             checkValidation();
                         }
-                        function emailTbxInput() {
-                            if (!isEmailValid(emailTbx.value)) {
-                                _emailIcon.classList.remove("fa-solid");
-                                _emailIcon.classList.add("fa-regular");
-                            }
-                            else {
-                                _emailIcon.classList.remove("fa-regular");
-                                _emailIcon.classList.add("fa-solid");
-                            }
-                        }
-                        function isEmailValid(email) {
+
+                        // Check if the email is valid 
+                        async function isEmailValid(email) {
                             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                            return emailPattern.test(email);
+                            let startingEmail = (email == "<%=((Chess_App.PlayerAccount)Session["AccountInfo"]).Email%>")
+                            const isValid = emailPattern.test(email) && await isEmailTaken(email) == false && startingEmail == false;
+                            _emailIcon.classList.toggle("fa-solid", isValid);
+                            _emailIcon.classList.toggle("fa-regular", !isValid);
+                            console.log("Email is valid: " + isValid);
+                            emailStatus = isValid;
+                            checkValidation();
                         }
+
+                        // Check the overall validation status and enable/disable the save button
                         function checkValidation() {
-                            if (_usernameTbx.value == '<%=takenUsername%>' || _usernameTbx.value == '' || !isEmailValid(emailTbx.value)) {
+                            saveBtn.classList.remove("Btn-disabled");
+                            if (!usernameStatus && !emailStatus) {
                                 saveBtn.classList.add("Btn-disabled");
                             }
-                            else {
-                                saveBtn.classList.remove("Btn-disabled");
-                            }
+
                         }
+
+                        // Function to check the availability of a username
+                        function isUsernameTaken(username) {
+                            return new Promise((resolve, reject) => {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "Account.aspx/IsUsernameTaken",
+                                    data: JSON.stringify({ username: username }),
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (response) {
+                                        console.log("response.d " +response.d);
+                                        console.log("Username is", response.d ? "already taken" : "available");
+                                        resolve(response.d);
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.log(error);
+                                        reject(error);
+                                    }
+                                });
+                            });
+                        }
+
+                        // Function to check the availability of an email
+                        function isEmailTaken(email) {
+                            return new Promise((resolve, reject) => {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "Account.aspx/IsEmailTaken",
+                                    data: JSON.stringify({ email: email }),
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (response) {
+                                        console.log("Email is", response.d ? "already taken" : "available");
+                                        resolve(response.d);
+                                    },
+                                    error: function (xhr, status, error) {
+                                        console.log(error);
+                                        reject(error);
+                                    }
+                                });
+                            });
+                        }
+
                     </script>
                 </div>
             </div>

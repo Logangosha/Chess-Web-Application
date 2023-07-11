@@ -230,5 +230,42 @@ namespace Chess_App.Classes
                 }
             }
         }
+
+        // Save the user's new Username / Email
+        public static void SaveNewAccountInfo(string username, string newUsername, string newEmail)
+        {
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ChessAppDbConnectionString"].ConnectionString))
+            {
+                using (SqlCommand command = new SqlCommand("dbo.SaveNewAccountInfo", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    try
+                    {
+                        connection.Open();
+                        System.Diagnostics.Debug.WriteLine("Connection Opened");
+                        System.Diagnostics.Debug.WriteLine(username);
+                        System.Diagnostics.Debug.WriteLine(newUsername);
+                        System.Diagnostics.Debug.WriteLine(newEmail);
+                        command.Parameters.AddWithValue("@Username", username);
+                        command.Parameters.AddWithValue("@NewUsername", newUsername);
+                        command.Parameters.AddWithValue("@NewEmail", newEmail);
+                        command.ExecuteNonQuery();
+                        System.Diagnostics.Debug.WriteLine("SaveAccountSettings Executed");
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex.Message);
+                    }
+                    finally
+                    {
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                            System.Diagnostics.Debug.WriteLine("Connection Closed");
+                        }
+                    }
+                }
+            }
+        }
     }
 }
