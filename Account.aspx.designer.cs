@@ -78,13 +78,13 @@ namespace Chess_App
         protected global::System.Web.UI.HtmlControls.HtmlInputText emailTbx;
 
         /// <summary>
-        /// saveBtn control.
+        /// EditAccountInfoSaveBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button saveBtn;
+        protected global::System.Web.UI.WebControls.Button EditAccountInfoSaveBtn;
 
         /// <summary>
         /// oldPasswordTbx control.
@@ -105,13 +105,13 @@ namespace Chess_App
         protected global::System.Web.UI.WebControls.TextBox newPasswordTbx;
 
         /// <summary>
-        /// confrirmPasswordTbx control.
+        /// confirmPasswordTbx control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox confrirmPasswordTbx;
+        protected global::System.Web.UI.WebControls.TextBox confirmPasswordTbx;
 
         /// <summary>
         /// changePasswordSaveBtn control.

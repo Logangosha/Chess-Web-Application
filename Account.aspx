@@ -128,7 +128,7 @@
                         </div>
                     </div>
                 </div>
-                <hr/>
+                <hr />
                 <div class="modal-footer">
                     <button type="button" class="Btn Btn-secondary ps-0" data-bs-dismiss="modal">
                         Cancle
@@ -189,7 +189,7 @@
                                     contentType: "application/json; charset=utf-8",
                                     dataType: "json",
                                     success: function (response) {
-                                        console.log("response.d " +response.d);
+                                        console.log("response.d " + response.d);
                                         console.log("Username is", response.d ? "already taken" : "available");
                                         resolve(response.d);
                                     },
@@ -245,14 +245,12 @@
                         <h2>Passwords Must Match</h2>
                     </div>
                     <div>
-                        <%--<p class="p-bg my-2 d-block">Current Password</p>--%>
                         <div class="bordered-icon-textbox">
                             <asp:TextBox runat="server" ID="oldPasswordTbx" CssClass="textbox" placeholder="Old Password" TextMode="Password"></asp:TextBox>
                             <i id="oldPasswordIcon" class="icon fa-regular fa-square-check"></i>
                         </div>
                     </div>
                     <div>
-                        <%--<p class="p-bg my-2 d-block">New Password</p>--%>
                         <div class="bordered-icon-textbox">
                             <asp:TextBox runat="server" ID="newPasswordTbx" CssClass="textbox" placeholder="New Password" TextMode="Password"></asp:TextBox>
                             <i id="newPasswordIcon" class="icon fa-regular fa-square-check"></i>
@@ -260,9 +258,8 @@
                         </div>
                     </div>
                     <div>
-                        <%--<p class="p-bg my-2 d-block">Confirm New Password</p>--%>
                         <div class="bordered-icon-textbox">
-                            <asp:TextBox runat="server" ID="confrirmPasswordTbx" CssClass="textbox" placeholder="Confirm Password" TextMode="Password"></asp:TextBox>
+                            <asp:TextBox runat="server" ID="confirmPasswordTbx" CssClass="textbox" placeholder="Confirm Password" TextMode="Password"></asp:TextBox>
                             <i id="confirmPasswordIcon" class="icon fa-regular fa-square-check"></i>
                         </div>
                     </div>
@@ -272,40 +269,117 @@
                     <button type="button" class="Btn Btn-secondary ps-0" data-bs-dismiss="modal">
                         Cancle
                     </button>
-                    <asp:Button runat="server" ID="changePasswordSaveBtn" type="button" class="Btn Btn-primary ms-auto" Text="Save"></asp:Button>
+                    <asp:Button runat="server" ID="changePasswordSaveBtn" OnClick="changePasswordSaveBtn_Click" type="button" class="Btn Btn-disabled Btn-primary ms-auto" Text="Save"></asp:Button>
                     <script defer>
-                        const _oldPasswordTbx = document.getElementById("<%=oldPasswordTbx.ClientID%>");
-                        const _oldPasswordIcon = document.getElementById("oldPasswordIcon");
-                        const _newPasswordTbx = document.getElementById("<%=newPasswordTbx.ClientID%>");
-                        const _newPasswordIcon = document.getElementById("newPasswordIcon");
-                        const _confirmPasswordTbx = document.getElementById("<%=confrirmPasswordTbx.ClientID%>");
-                        const _confirmPasswordIcon = document.getElementById("confirmPasswordIcon");
-                        _oldPasswordTbx.addEventListener("keyup", function () {
-                            validatePasswords("old", _oldPasswordTbx.value);
+                        const oldPasswordTbx = document.getElementById("<%=oldPasswordTbx.ClientID%>");
+                        const oldPasswordIcon = document.getElementById("oldPasswordIcon");
+                        const newPasswordTbx = document.getElementById("<%=newPasswordTbx.ClientID%>");
+                        const newPasswordIcon = document.getElementById("newPasswordIcon");
+                        const confirmPasswordTbx = document.getElementById("<%=confirmPasswordTbx.ClientID%>");
+                        const confirmPasswordIcon = document.getElementById("confirmPasswordIcon");
+                        const changePasswordSaveBtn = document.getElementById("<%=changePasswordSaveBtn.ClientID%>");
+                        const passwordStatus = {
+                            old: false,
+                            new: false,
+                            confirm: false
+                        }
+
+                        oldPasswordTbx.addEventListener("keyup", function () {
+                            validatePasswords("old", oldPasswordTbx.value);
                         });
-                        _newPasswordTbx.addEventListener("keyup", function () {
-                            validatePasswords("new", _newPasswordTbx.value);
+                        newPasswordTbx.addEventListener("keyup", function () {
+                            validatePasswords("new", newPasswordTbx.value);
+                            checkConfirmPassword();
                         });
-                        _confirmPasswordTbx.addEventListener("keyup", function () {
-                            validatePasswords("confirm", _confirmPasswordTbx.value);
+                        confirmPasswordTbx.addEventListener("keyup", function () {
+                            validatePasswords("confirm", confirmPasswordTbx.value);
                         });
-                        function validatePasswords(feild, value) {
+
+                        function isOldPasswordCorrect() {
+                            return new Promise((resolve, reject) => {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "Account.aspx/IsOldPasswordCorrect",
+                                    data: JSON.stringify({ username: "<%=((Chess_App.PlayerAccount)Session["AccountInfo"]).Username%>", password: oldPasswordTbx.value }),
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (response) {
+                                        resolve(response.d);
+                                    },
+                                    failure: function (response) {
+                                        reject(response.d);
+                                    },
+                                    error: function (error) {
+                                        reject(error);
+                                    }
+                                });
+                            });
+                        }
+
+                        function checkValidation() {
+                            changePasswordSaveBtn.classList.remove("Btn-disabled");
+                            if (!passwordStatus.old && !passwordStatus.new && !passwordStatus.confirm) {
+                                changePasswordSaveBtn.classList.add("Btn-disabled");
+                            }
+                        }
+
+
+                        function checkConfirmPassword() {
+                            if (newPasswordTbx.value !== confirmPasswordTbx.value) {
+                                confirmPasswordIcon.classList.add("fa-regular");
+                                confirmPasswordIcon.classList.remove("fa-solid");
+                                passwordStatus.confirm = false;
+                            } else {
+                                confirmPasswordIcon.classList.add("fa-solid");
+                                confirmPasswordIcon.classList.remove("fa-regular");
+                                passwordStatus.confirm = true;
+                            }
+                            checkValidation();
+                        }
+
+                        async function validatePasswords(feild, value) {
                             switch (feild) {
                                 case "old":
-                                    (value == "") ? (_oldPasswordIcon.classList.add("fa-regular"), _oldPasswordIcon.classList.remove("fa-solid")) : (_oldPasswordIcon.classList.add("fa-solid"), _oldPasswordIcon.classList.remove("fa-regular"));
+                                    let _isOldPasswordCorrect = await isOldPasswordCorrect(value);
+                                    if (value === "" || _isOldPasswordCorrect === false) {
+                                        oldPasswordIcon.classList.add("fa-regular");
+                                        oldPasswordIcon.classList.remove("fa-solid");
+                                        passwordStatus.old = false;
+                                    }
+                                    else {
+                                        oldPasswordIcon.classList.add("fa-solid");
+                                        oldPasswordIcon.classList.remove("fa-regular");
+                                        passwordStatus.old = true;
+                                    };
                                     break;
                                 case "new":
-                                    (value == "") ? (_newPasswordIcon.classList.add("fa-regular"), _newPasswordIcon.classList.remove("fa-solid")) : (_newPasswordIcon.classList.add("fa-solid"), _newPasswordIcon.classList.remove("fa-regular"));
-                                    _confirmPasswordTbxswordTbx.value != _newPasswordTbx.value ? (_confirmPasswordIcon.classList.add("fa-regular"), _confirmPasswordIcon.classList.remove("fa-solid")) : (_confirmPasswordIcon.classList.add("fa-solid"), _confirmPasswordIcon.classList.remove("fa-regular"));
-
+                                    if (value === "" || value === oldPasswordTbx.value) {
+                                        newPasswordIcon.classList.add("fa-regular");
+                                        newPasswordIcon.classList.remove("fa-solid");
+                                        passwordStatus.new = false;
+                                    }
+                                    else {
+                                        newPasswordIcon.classList.add("fa-solid");
+                                        newPasswordIcon.classList.remove("fa-regular");
+                                        passwordStatus.new = true;
+                                    };
                                     break;
                                 case "confirm":
-                                    (value == "" || value != _newPasswordTbx.value) ? (_confirmPasswordIcon.classList.add("fa-regular"), _confirmPasswordIcon.classList.remove("fa-solid")) : (_confirmPasswordIcon.classList.add("fa-solid"), _confirmPasswordIcon.classList.remove("fa-regular"));
-
+                                    if (value === "" || value != newPasswordTbx.value) {
+                                        confirmPasswordIcon.classList.add("fa-regular");
+                                        confirmPasswordIcon.classList.remove("fa-solid");
+                                        passwordStatus.confirm = false;
+                                    }
+                                    else {
+                                        confirmPasswordIcon.classList.add("fa-solid");
+                                        confirmPasswordIcon.classList.remove("fa-regular");
+                                        passwordStatus.confirm = true;
+                                    }
                                     break;
                                 default:
                                     break;
                             }
+                            checkValidation();
                         }
                     </script>
                 </div>

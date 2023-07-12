@@ -50,6 +50,14 @@ namespace Chess_App
             return DatabaseAccess.IsEmailTaken(email);
         }
 
+        [WebMethod]
+        public static bool IsOldPasswordCorrect(string username, string password)
+        {
+            return DatabaseAccess.CheckCurrentPassword(username, password);
+        }
+
+
+
 
 
         protected void DeleteAccountModalBtn_Click(object sender, EventArgs e)
@@ -67,6 +75,11 @@ namespace Chess_App
             DatabaseAccess.SaveNewAccountInfo((((PlayerAccount)Session["AccountInfo"]).Username), usernameTbx.Value, emailTbx.Value);
             ((PlayerAccount)Session["AccountInfo"]).Username = usernameTbx.Value;
             ((PlayerAccount)Session["AccountInfo"]).Email = emailTbx.Value;
+        }
+
+        protected void changePasswordSaveBtn_Click(object sender, EventArgs e)
+        {
+            DatabaseAccess.SaveNewPassword((((PlayerAccount)Session["AccountInfo"]).Username), newPasswordTbx.Text);
         }
     }
 }

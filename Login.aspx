@@ -6,9 +6,9 @@
             <div class="d-grid text-center flex-column gap-3 overflow-auto">
                 <h2>Complete to Continue</h2>
                 <asp:TextBox runat="server" ID="UsernameTbx" CssClass="" placeholder="Username"></asp:TextBox>
-                <asp:TextBox runat="server" ID="PasswordTbx" CssClass="" placeholder="Password" TextMode="Password"></asp:TextBox>
-                <asp:Button runat="server" ID="FrogotPasswordBtn" OnClick="FrogotPasswordBtn_Click" CssClass="Btn Btn-secondary" Text="Frogot Password?"/>
+                <asp:TextBox runat="server" ID="PasswordTbx" CssClass="mb-2" placeholder="Password" TextMode="Password"></asp:TextBox>
                 <asp:Button runat="server" ID="LoginBtn" OnClick="BtnLogin_Click" disabled CssClass="Btn Btn-primary Btn-toggle Btn-disabled" Text="Login" />
+                <asp:Button runat="server" ID="FrogotPasswordBtn" OnClick="FrogotPasswordBtn_Click" CssClass="Btn Btn-secondary" Text="Frogot Password?"/>
                 <asp:Button runat="server" ID="AccountBtn" OnClick="AccountBtn_Click" CssClass="Btn Btn-secondary" Text="Need an Account?"/>
             </div>
         </div>

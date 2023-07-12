@@ -267,5 +267,87 @@ namespace Chess_App.Classes
                 }
             }
         }
+
+        // Check if password matches the user's current password
+        public static bool CheckCurrentPassword(string username, string password)
+        {
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ChessAppDbConnectionString"].ConnectionString))
+            {
+                using (SqlCommand command = new SqlCommand("dbo.CheckCurrentPassword", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    try
+                    {
+                        connection.Open();
+                        System.Diagnostics.Debug.WriteLine("Connection Opened");
+                        command.Parameters.Add("@Username", SqlDbType.VarChar, 50).Value = username;
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                System.Diagnostics.Debug.WriteLine("username match");
+                                while (reader.Read())
+                                {
+                                    byte[] hashedPassword = (byte[])reader["PasswordHash"];
+                                    byte[] salt = (byte[])reader["Salt"];
+                                    if (PasswordHashHelper.VerifyPassword(password, salt, hashedPassword))
+                                    {
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        System.Diagnostics.Debug.WriteLine("password does not match");
+                                        return false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex.Message);
+                    }
+                }
+            }
+            return false;
+        }
+
+        // Save the user's new password
+        public static void SaveNewPassword(string username, string newPassword)
+        {
+            byte[] salt = PasswordHashHelper.GenerateSalt();
+            byte[] hashedPassword = PasswordHashHelper.CreatePasswordHash(newPassword, salt);
+
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ChessAppDbConnectionString"].ConnectionString))
+            {
+                using (SqlCommand command = new SqlCommand("dbo.SaveNewPassword", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    try
+                    {
+                        connection.Open();
+                        System.Diagnostics.Debug.WriteLine("Connection Opened");
+                        command.Parameters.AddWithValue("@Username", username);
+                        command.Parameters.AddWithValue("@PasswordHash", hashedPassword);
+                        command.Parameters.AddWithValue("@Salt", salt);
+
+                        command.ExecuteNonQuery();
+                        System.Diagnostics.Debug.WriteLine("SaveNewPassword Executed");
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex.Message);
+                    }
+                    finally
+                    {
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                            System.Diagnostics.Debug.WriteLine("Connection Closed");
+                        }
+                    }
+                }
+            }
+        }
     }
 }
