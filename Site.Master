@@ -19,7 +19,7 @@
 </head>
 <body id="PageBody" runat="server" class="theme Custom-Styles overflow-hidden hidden-scroll-bar">
     <form runat="server">
-        <div class="container-fluid p-0 m-0 h-100 overflow-auto hidden-scroll-bar">
+        <div class="container-fluid MainCard p-0 m-0 h-100 overflow-auto hidden-scroll-bar">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
             <footer>
