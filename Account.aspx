@@ -146,38 +146,48 @@
                         _usernameTbx.addEventListener("keyup", function () { isUsernameValid(_usernameTbx.value) });
                         emailTbx.addEventListener("keyup", function () { isEmailValid(emailTbx.value) });
 
+                        // Check the overall validation status and enable/disable the save button
+                        function checkEditAccountValidation() {
+                            console.log("checking validation");
+                            console.log("saveBtn.classList " + saveBtn.classList.contains("Btn-disabled"))
+                            saveBtn.classList.remove("Btn-disabled");
+                            console.log("if statement " + (!usernameStatus && !emailStatus))
+                            if (!usernameStatus && !emailStatus) {
+                                saveBtn.classList.add("Btn-disabled");
+                            }
+
+                        }
+
                         // Check if the username is valid
                         async function isUsernameValid(username) {
                             console.log("Username is " + username);
                             let startingUsername = (username == "<%=((Chess_App.PlayerAccount)Session["AccountInfo"]).Username%>")
+                            console.log('test1');
                             const isValid = (username !== '' && await isUsernameTaken(username) == false && startingUsername == false);
+                            console.log('test2');
                             _usernameIcon.classList.toggle("fa-user", isValid);
+                            console.log('test3');
                             _usernameIcon.classList.toggle("fa-user-large-slash", !isValid);
+                            console.log('test4');
                             console.log("Username is valid: " + isValid);
+                            console.log('test5');
                             usernameStatus = isValid;
-                            checkValidation();
+                            console.log('test6');
+                            checkEditAccountValidation();
                         }
 
                         // Check if the email is valid 
                         async function isEmailValid(email) {
                             const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                             let startingEmail = (email == "<%=((Chess_App.PlayerAccount)Session["AccountInfo"]).Email%>")
-                            const isValid = emailPattern.test(email) && await isEmailTaken(email) == false && startingEmail == false;
+                            const isValid = (emailPattern.test(email) && await isEmailTaken(email) == false && startingEmail == false);
                             _emailIcon.classList.toggle("fa-solid", isValid);
                             _emailIcon.classList.toggle("fa-regular", !isValid);
                             console.log("Email is valid: " + isValid);
                             emailStatus = isValid;
-                            checkValidation();
+                            checkEditAccountValidation();
                         }
 
-                        // Check the overall validation status and enable/disable the save button
-                        function checkValidation() {
-                            saveBtn.classList.remove("Btn-disabled");
-                            if (!usernameStatus && !emailStatus) {
-                                saveBtn.classList.add("Btn-disabled");
-                            }
-
-                        }
 
                         // Function to check the availability of a username
                         function isUsernameTaken(username) {
@@ -316,7 +326,7 @@
                             });
                         }
 
-                        function checkValidation() {
+                        function checkChangePasswordValidation() {
                             changePasswordSaveBtn.classList.remove("Btn-disabled");
                             if (!passwordStatus.old && !passwordStatus.new && !passwordStatus.confirm) {
                                 changePasswordSaveBtn.classList.add("Btn-disabled");
@@ -334,7 +344,7 @@
                                 confirmPasswordIcon.classList.remove("fa-regular");
                                 passwordStatus.confirm = true;
                             }
-                            checkValidation();
+                            checkChangePasswordValidation();
                         }
 
                         async function validatePasswords(feild, value) {
@@ -379,7 +389,7 @@
                                 default:
                                     break;
                             }
-                            checkValidation();
+                            checkChangePasswordValidation();
                         }
                     </script>
                 </div>

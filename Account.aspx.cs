@@ -62,6 +62,10 @@ namespace Chess_App
 
         protected void DeleteAccountModalBtn_Click(object sender, EventArgs e)
         {
+            // get current user account
+            PlayerAccount playerAccount = (PlayerAccount)Session["AccountInfo"];
+            DatabaseAccess.DeleteUser(playerAccount.Username);
+            playerAccount.Logout();
             Response.Redirect("default.aspx");
         }
 

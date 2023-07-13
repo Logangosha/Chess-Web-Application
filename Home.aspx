@@ -107,7 +107,7 @@
       </div>
     </div>
   </div>
-    <div class="modal fade" id="ChangeThemeModal" tabindex="-1" aria-labelledby="Modal" aria-hidden="true">
+    <%--<div class="modal fade" id="ChangeThemeModal" tabindex="-1" aria-labelledby="Modal" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
       <div class="modal-content">
         <div class="modal-head">
@@ -144,7 +144,7 @@
           </div>
       </div>
     </div>
-  </div>
+  </div>--%>
 </asp:Content>
 
 

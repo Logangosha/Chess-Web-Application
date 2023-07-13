@@ -35,9 +35,12 @@ namespace Chess_App
                     PasswordHashHelper.CreatePasswordHash(PasswordTbx.Text, salt),
                     salt
                 };
-                
+                System.Diagnostics.Debug.WriteLine("creating account");
                 PlayerAccount newPlayerAccount = new PlayerAccount(UnameTbx.Text, EmailTbx.Text, passwordData);
+                System.Diagnostics.Debug.WriteLine("inserting account");
+
                 DatabaseAccess.InsertNewUser(newPlayerAccount);
+                newPlayerAccount.Theme = new Theme("#FF0000", "#000000", "#660000");
                 newPlayerAccount.Login();
                 Response.Redirect("Home.aspx");
                 return;

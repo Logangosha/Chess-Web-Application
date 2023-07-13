@@ -17,8 +17,8 @@ namespace Chess_App
         {
             if (!Page.IsPostBack)
             {
-                primaryColor.Value = Session["primaryColor"].ToString();
-                backgroundColor.Value = Session["backgroundColor"].ToString();
+                //primaryColor.Value = Session["primaryColor"].ToString();
+                //backgroundColor.Value = Session["backgroundColor"].ToString();
             }
 
             UsingAccount = IsUsingAccount();
@@ -44,11 +44,11 @@ namespace Chess_App
             }
         }
 
-        protected void SaveBtn_Click(object sender, EventArgs e)
-        {
-            Session["primaryColor"] = primaryColor.Value;
-            Session["backgroundColor"] = backgroundColor.Value;
-        }
+        //protected void SaveBtn_Click(object sender, EventArgs e)
+        //{
+        //    Session["primaryColor"] = primaryColor.Value;
+        //    Session["backgroundColor"] = backgroundColor.Value;
+        //}
         protected void AccountBtn_Click(object sender, EventArgs e)
         {
             Response.Redirect("Account.aspx");
@@ -89,7 +89,8 @@ namespace Chess_App
 
         protected void SignOutBtn_Click(object sender, EventArgs e)
         {
-            PlayerAccount.Logout();
+            PlayerAccount playerAccount = (PlayerAccount)Session["AccountInfo"];
+            playerAccount.Logout();
             Response.Redirect("Default.aspx");
         }
 
