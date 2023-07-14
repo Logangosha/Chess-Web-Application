@@ -6,7 +6,7 @@
             <div class="profile-body p-0 px-4 d-flex flex-column">
                 <div>
                     <div class="profile-img-container">
-                        <img class="profile-img" src="\Images\unclewiggly.png" />
+                        <img runat="server" id="profileImg" class="profile-img"/>
                     </div>
                     <h1 class="mt-3 h1-landing-sm text-break"><%=((Chess_App.PlayerAccount)Session["AccountInfo"]).Username %></h1>
                 </div>
@@ -48,7 +48,9 @@
                 </div>
                 <hr />
                 <div class="modal-body my-auto gap-2">
-                    <div class="">
+                     <div class="row p-0 justify-content-center h-100 MainCard overflow-scroll hidden-scroll-bar">
+                        <div class="col-auto py-4 p-0 justify-content-center my-auto align-items-center">
+                            <div class="mb-4">
                         <h1 class="h1-landing">Select Colors</h1>
                     </div>
                     <div>
@@ -78,6 +80,8 @@
                             Randomize <i class="fa-solid fa-shuffle"></i>
                         </button>
                     </div>
+                            </div>
+                         </div>
                 </div>
                 <hr />
                 <div class="modal-footer">
@@ -116,6 +120,10 @@
                                 <h1 class="h1-landing">Account Info</h1>
                             </div>
                             <div class="d-flex flex-column gap-2">
+                                <div class="icon-textbox">
+                                    <input runat="server" type="file" class="file-input" title="Choose Profile Picture" id="fileInput">
+                                    <i class="icon fa-regular fa-file-image"></i>
+                                </div>
                                 <div class="icon-textbox mb-2">
                                     <input runat="server" id="usernameTbx" class="textbox" placeholder="Username" />
                                     <i id="usernameIcon" class="icon fa-solid fa-user-large-slash"></i>
@@ -142,6 +150,7 @@
                         const emailTbx = document.getElementById("<%=emailTbx.ClientID%>");
                         var usernameStatus = false;
                         var emailStatus = false;
+                        var profilePictureStatus = false;
 
                         _usernameTbx.addEventListener("keyup", function () { isUsernameValid(_usernameTbx.value) });
                         emailTbx.addEventListener("keyup", function () { isEmailValid(emailTbx.value) });
@@ -152,10 +161,25 @@
                             console.log("saveBtn.classList " + saveBtn.classList.contains("Btn-disabled"))
                             saveBtn.classList.remove("Btn-disabled");
                             console.log("if statement " + (!usernameStatus && !emailStatus))
-                            if (!usernameStatus && !emailStatus) {
+                            if (!usernameStatus && !emailStatus && !profilePictureStatus) {
                                 saveBtn.classList.add("Btn-disabled");
                             }
 
+                        }
+
+                        // Check if the Profile Picture is valid
+                        function isProfilePictureValid() {
+                            const fileInput = document.getElementById("fileInput");
+                            const file = fileInput.files[0];
+                            const fileType = file['type'];
+                            const validImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/jpg'];
+                            if (validImageTypes.includes(fileType)) {
+                                profilePictureStatus = true;
+                            }
+                            else {
+                                profilePictureStatus = false;
+                            }
+                            checkEditAccountValidation();
                         }
 
                         // Check if the username is valid
@@ -250,7 +274,9 @@
                 </div>
                 <hr />
                 <div class="modal-body my-auto gap-2">
-                    <div class="mb-4">
+                     <div class="row p-0 justify-content-center h-100 MainCard overflow-scroll hidden-scroll-bar">
+                        <div class="col-auto py-4 p-0 justify-content-center my-auto align-items-center">
+                            <div class="mb-4">
                         <h1 class="h1-landing mb-4">Change Password</h1>
                         <h2>Passwords Must Match</h2>
                     </div>
@@ -274,6 +300,8 @@
                         </div>
                     </div>
                 </div>
+                         </div>
+                    </div>
                 <hr />
                 <div class="modal-footer">
                     <button type="button" class="Btn Btn-secondary ps-0" data-bs-dismiss="modal">

@@ -15,6 +15,15 @@ namespace Chess_App
     {
 
         /// <summary>
+        /// profileImg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlImage profileImg;
+
+        /// <summary>
         /// goHomeBtn control.
         /// </summary>
         /// <remarks>
@@ -58,6 +67,15 @@ namespace Chess_App
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button ChangeThemeSaveBtn;
+
+        /// <summary>
+        /// fileInput control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputFile fileInput;
 
         /// <summary>
         /// usernameTbx control.

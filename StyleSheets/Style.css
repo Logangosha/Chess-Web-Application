@@ -384,9 +384,16 @@ input {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     color: var(--primary-color);
-    font-weight: bold;
+    font-weight: normal; /*might change*/
     transition: background-color 0.2s ease;
 }
+
+    input[type="file"],
+    input[type="text"],
+    input[type="password"],
+    input[type="color"] {
+        width: 100%;
+    }
 
     input:hover {
         background-color: var(--status-color);
@@ -432,10 +439,12 @@ input {
     display: flex;
 }
 
-    .icon-textbox:hover i,
+    .icon-textbox:hover .icon,
     .icon-textbox:hover .textbox,
-    .icon-textbox:focus-within i,
-    .icon-textbox:focus-within .textbox {
+    .icon-textbox:focus-within .icon,
+    .icon-textbox:focus-within .textbox,
+    .icon-textbox:hover .file-input,
+    .icon-textbox:focus-within .file-input {
         background-color: var(--status-color) !important;
         /*border-bottom: 5px solid var(--primary-color) !important;*/
         box-sizing: border-box;
@@ -444,7 +453,7 @@ input {
 
     .icon-textbox > * {
         display: flex !important;
-        align-self: center !important;
+        /*align-self: center !important;*/
         border-bottom: 5px solid var(--primary-color);
         font-size: 1em;
         line-height: inherit !important;
@@ -1013,12 +1022,18 @@ hr {
     height: 5em !important;
 }
     .search-bar > .search-bar-input {
-        background-color: var(--status-color);
+        color: var(--background-color) !important;
+        background-color: var(--primary-color) !important;
         width: 100%;
         border: none;
         border-radius: 4px 0px 0px 4px;
         padding: .65em;
     }
+
+        .search-bar > .search-bar-input::placeholder {
+            color: var(--background-color) !important;
+        }
+
     .search-bar > .search-bar-Btn {
         width: 4em;
         border-radius: 0px 4px 4px 0px;
@@ -1097,6 +1112,14 @@ hr {
         background-color: var(--primary-color); /* Online status */
     }
 
+
+.file-input {
+    
+}
+
+::-webkit-file-upload-button {
+    display: none;
+}
 
 
 /*.Btn-link {

@@ -16,16 +16,20 @@ namespace Chess_App
         public string Email { get; set; }
         public byte[][] PasswordData { get; set; }
         public Theme Theme { get; set; }
+        public byte[] ProfilePicture { get; set; } 
+        public bool OnlineStatus { get; set; } 
         public List<Friend> Friends { get; set; }
         public List<Classes.Game> GameHistory { get; set; }
         public List<Notification> Notifications { get; set; }
 
         //when account is logged into
-        public PlayerAccount(string _uName, string _email, Theme theme)
+        public PlayerAccount(string _uName, string _email, Theme theme, byte[] profilePicture, bool onlineStatus)
         {
             Username = _uName;
             Email = _email;
             Theme = theme;
+            ProfilePicture = profilePicture;
+            OnlineStatus = onlineStatus;
         }
         // when account is created 
         public PlayerAccount(string _uName, string _email, byte[][] _password)

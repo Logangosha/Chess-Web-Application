@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Diagnostics;
-
+using Chess_App.Classes;
 
 namespace Chess_App
 {
@@ -14,34 +14,8 @@ namespace Chess_App
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string connectionString = "Data Source=DESKTOP-DCC5NI2\\SQLEXPRESS01;Initial Catalog=chess_app_db;Integrated Security=True;";
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    connection.Open();
-
-                    // Perform a test query or operation
-                    SqlCommand command = new SqlCommand("SELECT 1", connection);
-                    object result = command.ExecuteScalar();
-
-                    // Check the result or perform further operations
-
-                    // Connection is successful
-                    Debug.WriteLine("Succsess");
-                }
-                catch (Exception ex)
-                {
-                    // Connection failed or exception occurred
-                    Debug.WriteLine(ex.ToString());
-                }
-                finally
-                {
-                    // Close the connection after testing
-                    connection.Close();
-                }
-            }
+           
             if (Session["AccountInfo"] != null)
             {
                 Session["AccountInfo"] = null;

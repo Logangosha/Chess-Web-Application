@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Sql;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -160,10 +161,12 @@ namespace Chess_App.Classes
                                 byte[] hashedPassword = (byte[])reader["PasswordHash"];
                                 byte[] salt = (byte[])reader["Salt"];
                                 Theme theme = new Theme(reader["PrimaryColor"].ToString(), reader["BackgroundColor"].ToString(), reader["StatusColor"].ToString());
+                                byte[] profilePicture = (byte[])reader["ProfilePicture"];
+                                bool OnlineStatus = (bool)reader["OnlineStatus"];
 
                                 if (PasswordHashHelper.VerifyPassword(password, salt, hashedPassword))
                                 {
-                                    PlayerAccount playerAccount = new PlayerAccount(username, email, theme);
+                                    PlayerAccount playerAccount = new PlayerAccount(username, email, theme, profilePicture, OnlineStatus);
                                     return playerAccount;
                                 }
                                 else
@@ -232,7 +235,7 @@ namespace Chess_App.Classes
         }
 
         // Save the user's new Username / Email
-        public static void SaveNewAccountInfo(string username, string newUsername, string newEmail)
+        public static void SaveNewAccountInfo(string username, string newUsername, string newEmail, byte[] imageBytes)
         {
             using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ChessAppDbConnectionString"].ConnectionString))
             {
@@ -246,9 +249,10 @@ namespace Chess_App.Classes
                         System.Diagnostics.Debug.WriteLine(username);
                         System.Diagnostics.Debug.WriteLine(newUsername);
                         System.Diagnostics.Debug.WriteLine(newEmail);
-                        command.Parameters.AddWithValue("@Username", username);
-                        command.Parameters.AddWithValue("@NewUsername", newUsername);
-                        command.Parameters.AddWithValue("@NewEmail", newEmail);
+                        command.Parameters.AddWithValue("@username", username);
+                        command.Parameters.AddWithValue("@newUsername", newUsername);
+                        command.Parameters.AddWithValue("@newEmail", newEmail);
+                        command.Parameters.AddWithValue("@newProfilePicture", imageBytes);
                         command.ExecuteNonQuery();
                         System.Diagnostics.Debug.WriteLine("SaveAccountSettings Executed");
                     }
@@ -372,5 +376,19 @@ namespace Chess_App.Classes
                 }
             }
         }
+
+        public static byte[] GetImageBytes(HttpPostedFile uploadedFile)
+        {
+            byte[] imageBytes;
+            using (var memoryStream = new MemoryStream())
+            {
+                uploadedFile.InputStream.CopyTo(memoryStream);
+                imageBytes = memoryStream.ToArray();
+            }
+            return imageBytes;
+        }
+        //byte[] bytes = DatabaseAccess.defaultImageBytes("C:\\Users\\Logan\\OneDrive\\Documents\\GitHub\\Chess_App\\Chess_App\\Images\\DefaultProfilePicture.png");
+        //string hexString = BitConverter.ToString(bytes).Replace("-", string.Empty);
+        //System.Diagnostics.Debug.WriteLine(hexString);
     }
 }

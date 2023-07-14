@@ -24,6 +24,17 @@ namespace Chess_App
                     PlayerAccount account = (PlayerAccount)Session["AccountInfo"];
                     usernameTbx.Value = account.Username;
                     emailTbx.Value = account.Email;
+                    // Retrieve the profile picture byte array
+                    byte[] profilePictureBytes = account.ProfilePicture;
+
+                    // Convert the byte array to a Base64-encoded string
+                    string base64String = Convert.ToBase64String(profilePictureBytes);
+
+                    // Construct the image source with the Base64-encoded string
+                    string imageSource = "data:image/jpeg;base64," + base64String;
+
+                    // Set the src attribute of the <img> tag
+                    profileImg.Src = imageSource;
                 }
             }
         }
@@ -76,9 +87,47 @@ namespace Chess_App
 
         protected void EditAccountInfoSaveBtn_Click(object sender, EventArgs e)
         {
-            DatabaseAccess.SaveNewAccountInfo((((PlayerAccount)Session["AccountInfo"]).Username), usernameTbx.Value, emailTbx.Value);
-            ((PlayerAccount)Session["AccountInfo"]).Username = usernameTbx.Value;
-            ((PlayerAccount)Session["AccountInfo"]).Email = emailTbx.Value;
+            // Check if a file was uploaded
+            if (fileInput.PostedFile != null && fileInput.PostedFile.ContentLength > 0)
+            {
+                // Get the uploaded file
+                HttpPostedFile uploadedFile = fileInput.PostedFile;
+
+                // Get the file bytes using the GetImageBytes method
+                byte[] imageBytes = DatabaseAccess.GetImageBytes(uploadedFile);
+
+                // Call the SaveNewAccountInfo method with the imageBytes
+                DatabaseAccess.SaveNewAccountInfo(
+                    ((PlayerAccount)Session["AccountInfo"]).Username,
+                    usernameTbx.Value,
+                    emailTbx.Value,
+                    imageBytes
+                );
+
+                // Update the PlayerAccount object with the new profile picture
+                ((PlayerAccount)Session["AccountInfo"]).ProfilePicture = imageBytes;
+
+                // Convert the byte array to a Base64-encoded string
+                string base64String = Convert.ToBase64String(imageBytes);
+
+                // Construct the image source with the Base64-encoded string
+                string imageSource = "data:image/jpeg;base64," + base64String;
+
+                // Set the src attribute of the <img> tag
+                profileImg.Src = imageSource;
+            }
+            else
+            {
+                // No file uploaded, perform other necessary updates without changing the profile picture
+                DatabaseAccess.SaveNewAccountInfo(
+                    ((PlayerAccount)Session["AccountInfo"]).Username,
+                    usernameTbx.Value,
+                    emailTbx.Value,
+                    null // Pass null or handle the case appropriately in your SaveNewAccountInfo method
+                );
+                ((PlayerAccount)Session["AccountInfo"]).Username = usernameTbx.Value;
+                ((PlayerAccount)Session["AccountInfo"]).Email = emailTbx.Value;
+            }
         }
 
         protected void changePasswordSaveBtn_Click(object sender, EventArgs e)
