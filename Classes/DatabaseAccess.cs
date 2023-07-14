@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Sql;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -385,6 +386,7 @@ namespace Chess_App.Classes
                 uploadedFile.InputStream.CopyTo(memoryStream);
                 imageBytes = memoryStream.ToArray();
             }
+            Debug.WriteLine(imageBytes);
             return imageBytes;
         }
         //byte[] bytes = DatabaseAccess.defaultImageBytes("C:\\Users\\Logan\\OneDrive\\Documents\\GitHub\\Chess_App\\Chess_App\\Images\\DefaultProfilePicture.png");

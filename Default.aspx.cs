@@ -14,8 +14,6 @@ namespace Chess_App
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
-           
             if (Session["AccountInfo"] != null)
             {
                 Session["AccountInfo"] = null;

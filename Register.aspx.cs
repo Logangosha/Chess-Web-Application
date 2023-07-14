@@ -40,7 +40,6 @@ namespace Chess_App
                 System.Diagnostics.Debug.WriteLine("inserting account");
 
                 DatabaseAccess.InsertNewUser(newPlayerAccount);
-                newPlayerAccount.Theme = new Theme("#FF0000", "#000000", "#660000");
                 newPlayerAccount.Login();
                 Response.Redirect("Home.aspx");
                 return;

@@ -1103,7 +1103,7 @@ hr {
         width: 0.8em; /* Adjust the size as needed */
         height: 0.8em; /* Adjust the size as needed */
         border-radius: 50%;
-        background-color: var(--status-color); /* Online status */
+        background-color: var(--background-color); /* Online status */
         margin-right: 2em;
         transition: background-color 0.1s ease;
     }

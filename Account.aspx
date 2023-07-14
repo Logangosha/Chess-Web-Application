@@ -6,7 +6,7 @@
             <div class="profile-body p-0 px-4 d-flex flex-column">
                 <div>
                     <div class="profile-img-container">
-                        <img runat="server" id="profileImg" class="profile-img"/>
+                        <img runat="server" id="profileImg" class="profile-img" />
                     </div>
                     <h1 class="mt-3 h1-landing-sm text-break"><%=((Chess_App.PlayerAccount)Session["AccountInfo"]).Username %></h1>
                 </div>
@@ -48,40 +48,40 @@
                 </div>
                 <hr />
                 <div class="modal-body my-auto gap-2">
-                     <div class="row p-0 justify-content-center h-100 MainCard overflow-scroll hidden-scroll-bar">
+                    <div class="row p-0 justify-content-center h-100 MainCard overflow-scroll hidden-scroll-bar">
                         <div class="col-auto py-4 p-0 justify-content-center my-auto align-items-center">
                             <div class="mb-4">
-                        <h1 class="h1-landing">Select Colors</h1>
-                    </div>
-                    <div>
-                        <p class="p-bg my-2 d-block">Primary Color</p>
-                        <div class="d-flex justify-content-center align-items-center">
-                            <i class="primary-color-picker-icon color-picker-icon fa-solid fa-paintbrush"></i>
-                            <input runat="server" id="primaryColor" type="color" class="color-picker" />
-                        </div>
-                    </div>
-                    <div>
-                        <p class="p-bg my-2 d-block">Background Color</p>
-                        <div class="d-flex justify-content-center align-items-center">
-                            <i class="background-color-picker-icon  color-picker-icon fa-solid fa-paintbrush"></i>
-                            <input runat="server" id="backgroundColor" type="color" class="color-picker" />
-                        </div>
-                    </div>
-                    <div>
-                        <p class="p-bg my-2 d-block">Status Color</p>
-                        <div class="d-flex justify-content-center align-items-center">
-                            <i class="background-color-picker-icon  color-picker-icon fa-solid fa-paintbrush"></i>
-                            <input runat="server" id="statusColor" type="color" class="color-picker" />
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button class="Btn Btn-secondary"><i class="fa-solid fa-book"></i></></button>
-                        <button type="button" class="Btn Btn-secondary ps-0" onclick="generateRandomTheme()">
-                            Randomize <i class="fa-solid fa-shuffle"></i>
-                        </button>
-                    </div>
+                                <h1 class="h1-landing">Select Colors</h1>
                             </div>
-                         </div>
+                            <div>
+                                <p class="p-bg my-2 d-block">Primary Color</p>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <i class="primary-color-picker-icon color-picker-icon fa-solid fa-paintbrush"></i>
+                                    <input runat="server" id="primaryColor" type="color" class="color-picker" />
+                                </div>
+                            </div>
+                            <div>
+                                <p class="p-bg my-2 d-block">Background Color</p>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <i class="background-color-picker-icon  color-picker-icon fa-solid fa-paintbrush"></i>
+                                    <input runat="server" id="backgroundColor" type="color" class="color-picker" />
+                                </div>
+                            </div>
+                            <div>
+                                <p class="p-bg my-2 d-block">Status Color</p>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <i class="background-color-picker-icon  color-picker-icon fa-solid fa-paintbrush"></i>
+                                    <input runat="server" id="statusColor" type="color" class="color-picker" />
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <button class="Btn Btn-secondary"><i class="fa-solid fa-book"></i></></button>
+                                <button type="button" class="Btn Btn-secondary ps-0" onclick="generateRandomTheme()">
+                                    Randomize <i class="fa-solid fa-shuffle"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <hr />
                 <div class="modal-footer">
@@ -274,34 +274,34 @@
                 </div>
                 <hr />
                 <div class="modal-body my-auto gap-2">
-                     <div class="row p-0 justify-content-center h-100 MainCard overflow-scroll hidden-scroll-bar">
+                    <div class="row p-0 justify-content-center h-100 MainCard overflow-scroll hidden-scroll-bar">
                         <div class="col-auto py-4 p-0 justify-content-center my-auto align-items-center">
                             <div class="mb-4">
-                        <h1 class="h1-landing mb-4">Change Password</h1>
-                        <h2>Passwords Must Match</h2>
-                    </div>
-                    <div>
-                        <div class="bordered-icon-textbox">
-                            <asp:TextBox runat="server" ID="oldPasswordTbx" CssClass="textbox" placeholder="Old Password" TextMode="Password"></asp:TextBox>
-                            <i id="oldPasswordIcon" class="icon fa-regular fa-square-check"></i>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="bordered-icon-textbox">
-                            <asp:TextBox runat="server" ID="newPasswordTbx" CssClass="textbox" placeholder="New Password" TextMode="Password"></asp:TextBox>
-                            <i id="newPasswordIcon" class="icon fa-regular fa-square-check"></i>
+                                <h1 class="h1-landing mb-4">Change Password</h1>
+                                <h2>Passwords Must Match</h2>
+                            </div>
+                            <div>
+                                <div class="bordered-icon-textbox">
+                                    <asp:TextBox runat="server" ID="oldPasswordTbx" CssClass="textbox" placeholder="Old Password" TextMode="Password"></asp:TextBox>
+                                    <i id="oldPasswordIcon" class="icon fa-regular fa-square-check"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="bordered-icon-textbox">
+                                    <asp:TextBox runat="server" ID="newPasswordTbx" CssClass="textbox" placeholder="New Password" TextMode="Password"></asp:TextBox>
+                                    <i id="newPasswordIcon" class="icon fa-regular fa-square-check"></i>
 
-                        </div>
-                    </div>
-                    <div>
-                        <div class="bordered-icon-textbox">
-                            <asp:TextBox runat="server" ID="confirmPasswordTbx" CssClass="textbox" placeholder="Confirm Password" TextMode="Password"></asp:TextBox>
-                            <i id="confirmPasswordIcon" class="icon fa-regular fa-square-check"></i>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="bordered-icon-textbox">
+                                    <asp:TextBox runat="server" ID="confirmPasswordTbx" CssClass="textbox" placeholder="Confirm Password" TextMode="Password"></asp:TextBox>
+                                    <i id="confirmPasswordIcon" class="icon fa-regular fa-square-check"></i>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                         </div>
-                    </div>
                 <hr />
                 <div class="modal-footer">
                     <button type="button" class="Btn Btn-secondary ps-0" data-bs-dismiss="modal">

@@ -21,12 +21,17 @@ namespace Chess_App
         void Session_Start(object sender, EventArgs e)
         {
             // Code that runs when a new session is started
-            Session["AccountInfo"] = null;
-            Session["GameType"] = null;
-            Session["primaryColor"] = "#FF0000";
-            Session["backgroundColor"] = "#000000";
-            Session["statusColor"] = "#660000";
+            ClearSessionData();
             //string connectionString = ConfigurationManager.ConnectionStrings["ChessAppDBConnectionString"].ConnectionString;
-        } 
+        }
+
+        public static void ClearSessionData() {
+            // clear session data
+            HttpContext.Current.Session["AccountInfo"] = null;
+            HttpContext.Current.Session["GameType"] = null;
+            HttpContext.Current.Session["primaryColor"] = "#FF0000";
+            HttpContext.Current.Session["backgroundColor"] = "#000000";
+            HttpContext.Current.Session["statusColor"] = "#660000";
+        }
     }
 }

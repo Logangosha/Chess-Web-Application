@@ -2,12 +2,13 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="container-fluid h-100">
-        <div class="row h-100 justify-content-center">
-            <div class="d-flex gap-3 flex-column justify-content-center align-items-center col-lg-6 col-10 mb-4">
+         <div class="row p-0 justify-content-center h-100 MainCard overflow-scroll hidden-scroll-bar">
+                        <div class="d-flex flex-column gap-2 col-auto py-4 p-0 text-center justify-content-center my-auto align-items-center">
+                            
                 <h1 class=" h1-landing">FRIENDS</h1>
                 <hr class="w-100" />
                 <div class="search-bar">
-                    <input class="search-bar-input" type="text" placeholder="Search" />
+                    <input class="search-bar-input" autofocus="autofocus" type="text" placeholder="Search" />
                     <button class="Btn Btn-primary search-bar-Btn">
                         <i class="fas fa-search"></i>
                     </button>
@@ -49,6 +50,8 @@
                     <span class="status-indicator"></span>
                 </div>
                 <div class="mt-5"></div>
+
+                            
             </div>
         </div>
     </div>
