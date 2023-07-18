@@ -26,5 +26,7 @@ namespace Chess_App
                 }
             }
         }
+
+
     }
 }

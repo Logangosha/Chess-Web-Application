@@ -1041,7 +1041,7 @@ hr {
     }
 
 /*friend tile*/
-.friend-tile {
+.user-tile {
     display: flex;
     flex-direction: row;
     width: 100%;
@@ -1054,30 +1054,30 @@ hr {
     position: relative;
 }
 
-    .friend-tile:hover {
+    .user-tile:hover {
         background-color: var(--status-color);
     }
 
-        .friend-tile:hover img {
+        .user-tile:hover img {
             opacity: 0.9;
         }
 
-        .friend-tile:hover p {
+        .user-tile:hover p {
             color: var(--primary-color);
         }
 
-        .friend-tile:hover .status-indicator {
+        .user-tile:hover .status-indicator {
             background-color: var(--primary-color);
         }
 
-        .friend-tile:hover .status-indicator.offline {
+        .user-tile:hover .status-indicator.offline {
             background-color: var(--status-color);
         }
 
 
 
     /*profile picture*/
-    .friend-tile > img {
+    .user-tile > img {
         height: 5em;
         width: 5em;
         border-radius: 4px 0px 0px 4px;
@@ -1086,7 +1086,7 @@ hr {
     }
 
     /*username*/
-    .friend-tile > p {
+    .user-tile > p {
         font-size: var(--h4-font-size) !important;
         color: var(--background-color);
         margin: 0em;
@@ -1094,7 +1094,7 @@ hr {
         transition: color 0.1s ease;
     }
 
-    .friend-tile > .status-indicator {
+    .user-tile > .status-indicator {
         content: "";
         position: absolute;
         top: 50%;
@@ -1108,7 +1108,7 @@ hr {
         transition: background-color 0.1s ease;
     }
 
-    .friend-tile > .offline {
+    .user-tile > .offline {
         background-color: var(--primary-color); /* Online status */
     }
 

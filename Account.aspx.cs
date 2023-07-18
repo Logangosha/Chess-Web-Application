@@ -24,17 +24,7 @@ namespace Chess_App
                     PlayerAccount account = (PlayerAccount)Session["AccountInfo"];
                     usernameTbx.Value = account.Username;
                     emailTbx.Value = account.Email;
-                    // Retrieve the profile picture byte array
-                    byte[] profilePictureBytes = account.ProfilePicture;
-
-                    // Convert the byte array to a Base64-encoded string
-                    string base64String = Convert.ToBase64String(profilePictureBytes);
-
-                    // Construct the image source with the Base64-encoded string
-                    string imageSource = "data:image/jpeg;base64," + base64String;
-
-                    // Set the src attribute of the <img> tag
-                    profileImg.Src = imageSource;
+                    profileImg.Src = account.ProfilePictureString;
                 }
             }
         }

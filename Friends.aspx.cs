@@ -5,60 +5,71 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
+using Chess_App.Classes;
+using System.Web.Services;
+using System.Diagnostics;
+using Newtonsoft.Json;
+using System.Security.Principal;
 
 namespace Chess_App
 {
     public partial class Friends : System.Web.UI.Page
     {
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            //if (!IsPostBack)
-            //{
-            //    // Assuming you have a List<User> containing multiple user records retrieved from the database
-            //    List<PlayerAccount> friendList = GetUsersFromDatabase(); // Retrieve the list of users
+            if (IsPostBack)
+            {
+                string eventTarget = Request["__EVENTTARGET"];
+                string eventArgument = Request["__EVENTARGUMENT"];
 
-            //    foreach (PlayerAccount friend in friendList)
-            //    {
-            //        // Create the div element for the friend tile
-            //        HtmlGenericControl friendTileDiv = new HtmlGenericControl("div");
-            //        friendTileDiv.Attributes["class"] = "Btn friend-tile";
-
-            //        // Create the img element and set its src attribute to the ProfileImageUrl
-            //        HtmlGenericControl img = new HtmlGenericControl("img");
-            //        img.Attributes["src"] = friend.ProfileImageUrl;
-
-            //        // Create the p element and set its inner text to the Username
-            //        HtmlGenericControl username = new HtmlGenericControl("p");
-            //        username.InnerText = friend.Username;
-
-            //        // Create the span element for the status indicator
-            //        HtmlGenericControl statusIndicator = new HtmlGenericControl("span");
-            //        statusIndicator.Attributes["class"] = friend.Status ? "status-indicator online" : "status-indicator offline";
-
-            //        // Add the img, p, and span elements to the friend tile div
-            //        friendTileDiv.Controls.Add(img);
-            //        friendTileDiv.Controls.Add(username);
-            //        friendTileDiv.Controls.Add(statusIndicator);
-
-            //        // Add the friend tile div to the FriendTilesPlaceholder control
-            //        FriendTilesPlaceholder.Controls.Add(friendTileDiv);
-            //    }
-            //}
+                if (eventTarget == "SearchedUser")
+                {
+                    // Handle the postback from the button with the button value
+                    string buttonValue = eventArgument;
+                    Debug.WriteLine(buttonValue);
+                    List<PlayerAccount> SearchResults = Session["SearchUserResults"] as List<PlayerAccount>;
+                    if (SearchResults != null)
+                    {
+                        PlayerAccount selectedAccount = SearchResults.FirstOrDefault(a => a.Username == buttonValue);
+                        if (selectedAccount != null)
+                        {
+                            // Perform necessary server-side logic with the selected account
+                            Session["SearchUserResults"] = null;
+                            Session["SelectedUserAccount"] = selectedAccount;
+                            Response.Redirect("FriendAccount.aspx");
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Selected Account not found.");
+                        }
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Session data not found or invalid.");
+                    }
+                }
+            }
         }
 
-        protected void BtnAddFriend_Click(object sender, EventArgs e)
+        [WebMethod]
+        public static List<PlayerAccount> SearchUsers(string searchText)
         {
-
-        }
-
-        protected void BtnFindFrined_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void BtnSelectFriend_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("FriendAccount.aspx");
+            try
+            {
+                Debug.WriteLine("SearchText is " + searchText);
+                List<PlayerAccount> results = DatabaseAccess.SearchUsers(searchText);
+                HttpContext.Current.Session["SearchUserResults"] = results;
+                Debug.WriteLine("Results count: " + results.Count);
+                // Access the UserTilesPlaceholder control through the class-level variable
+                Friends page = HttpContext.Current.Handler as Friends;
+                return results;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
         }
     }
 }

@@ -40,6 +40,7 @@ namespace Chess_App
                 System.Diagnostics.Debug.WriteLine("inserting account");
 
                 DatabaseAccess.InsertNewUser(newPlayerAccount);
+                newPlayerAccount.ID = DatabaseAccess.GetUserId(newPlayerAccount.Username);
                 newPlayerAccount.Login();
                 Response.Redirect("Home.aspx");
                 return;

@@ -15,21 +15,30 @@ namespace Chess_App
     {
 
         /// <summary>
-        /// btnRemoveFriend control.
+        /// profileImg control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnRemoveFriend;
+        protected global::System.Web.UI.HtmlControls.HtmlImage profileImg;
 
         /// <summary>
-        /// btnPlayFriend control.
+        /// usernameLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnPlayFriend;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl usernameLbl;
+
+        /// <summary>
+        /// goHomeBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton goHomeBtn;
     }
 }

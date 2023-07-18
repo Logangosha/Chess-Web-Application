@@ -158,6 +158,7 @@ namespace Chess_App.Classes
                             // If a record is found, read the data and create a PlayerAccount object
                             while (reader.Read())
                             {
+                                int ID = (int)reader["ID"];
                                 string email = reader["Email"].ToString();
                                 byte[] hashedPassword = (byte[])reader["PasswordHash"];
                                 byte[] salt = (byte[])reader["Salt"];
@@ -167,7 +168,7 @@ namespace Chess_App.Classes
 
                                 if (PasswordHashHelper.VerifyPassword(password, salt, hashedPassword))
                                 {
-                                    PlayerAccount playerAccount = new PlayerAccount(username, email, theme, profilePicture, OnlineStatus);
+                                    PlayerAccount playerAccount = new PlayerAccount(ID, username, email, theme, profilePicture, OnlineStatus);
                                     return playerAccount;
                                 }
                                 else
@@ -392,5 +393,186 @@ namespace Chess_App.Classes
         //byte[] bytes = DatabaseAccess.defaultImageBytes("C:\\Users\\Logan\\OneDrive\\Documents\\GitHub\\Chess_App\\Chess_App\\Images\\DefaultProfilePicture.png");
         //string hexString = BitConverter.ToString(bytes).Replace("-", string.Empty);
         //System.Diagnostics.Debug.WriteLine(hexString);
+
+
+        // Set users online status to status parameter
+        public static void SetOnlineStatus(string username, string status)
+        {
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ChessAppDbConnectionString"].ConnectionString))
+            {
+                using (SqlCommand command = new SqlCommand("dbo.SetOnlineStatus", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    try
+                    {
+                        connection.Open();
+                        System.Diagnostics.Debug.WriteLine("Connection Opened");
+                        command.Parameters.AddWithValue("@Username", username);
+                        command.Parameters.AddWithValue("@Status", status);
+                        command.ExecuteNonQuery();
+                        System.Diagnostics.Debug.WriteLine("SetOnlineStatus Executed");
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex.Message);
+                    }
+                    finally
+                    {
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                            System.Diagnostics.Debug.WriteLine("Connection Closed");
+                        }
+                    }
+                }
+            }
+        }
+
+        // Get Users that contin the search string
+        public static List<PlayerAccount> SearchUsers(string searchString)
+        {
+            List<PlayerAccount> users = new List<PlayerAccount>();
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ChessAppDbConnectionString"].ConnectionString))
+            {
+                using (SqlCommand command = new SqlCommand("dbo.SearchUsers", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    try
+                    {
+                        connection.Open();
+                        System.Diagnostics.Debug.WriteLine("Connection Opened");
+                        command.Parameters.AddWithValue("@SearchString", searchString);
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                System.Diagnostics.Debug.WriteLine("reader has rows");
+                                while (reader.Read())
+                                {
+                                    // Retrieve the data from the reader and populate the PlayerAccount objects
+
+                                    int id = (int)reader["ID"];
+                                    string userName = reader["UserName"].ToString();
+                                    Debug.WriteLine(userName);
+                                    Theme theme = new Theme(
+                                        reader["PrimaryColor"].ToString(),
+                                        reader["BackgroundColor"].ToString(),
+                                        reader["StatusColor"].ToString()
+                                    );
+                                    byte[] profilePicture = (byte[])reader["ProfilePicture"];
+                                    bool onlineStatus = (bool)reader["OnlineStatus"];
+
+                                    PlayerAccount user = new PlayerAccount(id, userName, theme, profilePicture, onlineStatus);
+                                    users.Add(user);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex.Message);
+                    }
+                    finally
+                    {
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                            System.Diagnostics.Debug.WriteLine("Connection Closed");
+                        }
+                    }
+                }
+            }
+            return users;
+        }
+
+        // get user id
+        public static int GetUserId(string username)
+        {
+            int id = 0;
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ChessAppDbConnectionString"].ConnectionString))
+            {
+                using (SqlCommand command = new SqlCommand("dbo.GetUserId", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    try
+                    {
+                        connection.Open();
+                        System.Diagnostics.Debug.WriteLine("Connection Opened");
+                        command.Parameters.AddWithValue("@Username", username);
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                System.Diagnostics.Debug.WriteLine("reader has rows");
+                                while (reader.Read())
+                                {
+                                    id = (int)reader["Id"];
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex.Message);
+                    }
+                    finally
+                    {
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                            System.Diagnostics.Debug.WriteLine("Connection Closed");
+                        }
+                    }
+                }
+            }
+            return id;
+        }
+
+        // check if user is a friend
+        public static int IsFriend(int currentUserId, int potentialFriendId)
+        {
+            int friendshipStatus = 0; // Default value for no friendship
+
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ChessAppDbConnectionString"].ConnectionString))
+            {
+                using (SqlCommand command = new SqlCommand("dbo.IsFriend", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    try
+                    {
+                        connection.Open();
+                        System.Diagnostics.Debug.WriteLine("Connection Opened");
+                        command.Parameters.AddWithValue("@CurrentUserId", currentUserId);
+                        command.Parameters.AddWithValue("@PotentialFriendId", potentialFriendId);
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                            {
+                                System.Diagnostics.Debug.WriteLine("reader has rows");
+                                while (reader.Read())
+                                {
+                                    int status = Convert.ToInt32(reader["Status"]);
+                                    friendshipStatus = status;
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex.Message);
+                    }
+                    finally
+                    {
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                            System.Diagnostics.Debug.WriteLine("Connection Closed");
+                        }
+                    }
+                }
+            }
+
+            return friendshipStatus;
+        }
     }
 }

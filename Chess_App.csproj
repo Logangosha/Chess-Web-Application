@@ -119,6 +119,8 @@
     <Content Include="Home.aspx" />
     <Content Include="Images\twomenplayingchessdarkroom.jpg" />
     <Content Include="Images\whitehandmovingchesspiece.jpg" />
+    <Content Include="Logout.aspx" />
+    <Content Include="Logout.html" />
     <Content Include="Media\Toccata-and-fugue-in-d-minor.mp3" />
     <Content Include="Login.aspx" />
     <Content Include="Messages.aspx" />
@@ -219,6 +221,13 @@
     </Compile>
     <Compile Include="Home.aspx.designer.cs">
       <DependentUpon>Home.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Logout.aspx.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Logout.aspx.designer.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
     </Compile>
     <Compile Include="Messages.aspx.cs">
       <DependentUpon>Messages.aspx</DependentUpon>

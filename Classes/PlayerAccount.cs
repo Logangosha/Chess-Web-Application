@@ -8,28 +8,33 @@ using Chess_App.Classes;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Globalization;
+using System.Security.Principal;
 
 namespace Chess_App
 {
     public class PlayerAccount
     {
+        public int ID { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
         public byte[][] PasswordData { get; set; }
         public Theme Theme { get; set; }
         public byte[] ProfilePicture { get; set; } 
+        public string ProfilePictureString { get; set; }
         public bool OnlineStatus { get; set; } 
         public List<Friend> Friends { get; set; }
         public List<Classes.Game> GameHistory { get; set; }
         public List<Notification> Notifications { get; set; }
 
         //when account is logged into
-        public PlayerAccount(string _uName, string _email, Theme theme, byte[] profilePicture, bool onlineStatus)
+        public PlayerAccount(int ID, string _uName, string _email, Theme theme, byte[] profilePicture, bool onlineStatus)
         {
+            this.ID = ID;
             Username = _uName;
             Email = _email;
             Theme = theme;
             ProfilePicture = profilePicture;
+            ProfilePictureString = GetImgSrc(profilePicture);
             OnlineStatus = onlineStatus;
         }
         // when account is created 
@@ -46,12 +51,25 @@ namespace Chess_App
                 ImageBytes[i / 2] = Convert.ToByte(hexString.Substring(i, 2), 16);
             }
             ProfilePicture = ImageBytes;
+            ProfilePictureString = GetImgSrc(ImageBytes);
             OnlineStatus = true;
 
         }
 
+        // when account is searched and loaded from database
+        public PlayerAccount(int ID, string _uName, Theme theme, byte[] profilePicture, bool onlineStatus)
+        {
+            this.ID = ID;
+            Username = _uName;
+            Theme = theme;
+            ProfilePicture = profilePicture;
+            ProfilePictureString= GetImgSrc(profilePicture);
+            OnlineStatus = onlineStatus;
+        }
+
         public void Login()
         {
+            DatabaseAccess.SetOnlineStatus(this.Username,"1");
             HttpContext.Current.Session["AccountInfo"] = this;
             if (this.Theme != null) {
             HttpContext.Current.Session["PrimaryColor"] = this.Theme.PrimaryColor;
@@ -62,9 +80,23 @@ namespace Chess_App
 
         public void Logout()
         {
+            DatabaseAccess.SetOnlineStatus(this.Username,"0");
             Global.ClearSessionData();
         }
 
+        public static string GetImgSrc(byte[] imageData)
+        {
+            // Retrieve the profile picture byte array
+            byte[] profilePictureBytes = imageData;
+
+            // Convert the byte array to a Base64-encoded string
+            string base64String = Convert.ToBase64String(profilePictureBytes);
+
+            // Construct the image source with the Base64-encoded string
+            string imageSource = "data:image/jpeg;base64," + base64String;
+
+            return imageSource;
+        }
 
     }
 }
