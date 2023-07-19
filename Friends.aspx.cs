@@ -59,10 +59,17 @@ namespace Chess_App
             {
                 Debug.WriteLine("SearchText is " + searchText);
                 List<PlayerAccount> results = DatabaseAccess.SearchUsers(searchText);
+                //here
+                foreach (PlayerAccount account in results)
+                {
+                    if(account.ID == (HttpContext.Current.Session["AccountInfo"] as PlayerAccount).ID)
+                    {
+                        results.Remove(account);
+                        break;
+                    }
+                }
                 HttpContext.Current.Session["SearchUserResults"] = results;
                 Debug.WriteLine("Results count: " + results.Count);
-                // Access the UserTilesPlaceholder control through the class-level variable
-                Friends page = HttpContext.Current.Handler as Friends;
                 return results;
             }
             catch (Exception e)

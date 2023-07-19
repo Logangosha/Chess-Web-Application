@@ -12,13 +12,13 @@
                     Find New Friends
                         <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
                 </button>
+                <hr class="w-100 m-0" />
                 <div class="search-bar">
                     <input class="search-bar-input" autofocus="autofocus" type="text" placeholder="Search Friends" />
                     <button class="Btn Btn-primary search-bar-Btn">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
-                <hr class="w-100 m-0" />
                  <%--<asp:PlaceHolder runat="server" ID="FriendTilesPlaceholder"></asp:PlaceHolder>--%>
                 <div class="Btn user-tile">
                     <img src="Images/whitehandmovingchesspiece.jpg" />
@@ -72,8 +72,9 @@
                 <hr />
                 <div class="modal-body gap-2">
                     <div class="row p-0 justify-content-center h-100 MainCard overflow-scroll hidden-scroll-bar">
-                        <div class="col-auto py-4 p-0 justify-content-center my-auto align-items-center">
-                            <h1 class=" h1-landing mb-2">Search Users</h1>
+                        <div class="col-auto py-4 p-0 justify-content-center align-items-center">
+                            <h1 class=" h1-landing mb-2">SEARCH</h1>
+                            <hr />
                             <div class="search-bar">
                                 <input class="search-bar-input" id="SearchUsers" autofocus="autofocus" type="text" placeholder="Find Friends" />
                                 <button type="button" class="Btn Btn-primary search-bar-Btn">

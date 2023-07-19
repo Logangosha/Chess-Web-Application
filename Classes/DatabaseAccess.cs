@@ -544,17 +544,14 @@ namespace Chess_App.Classes
                         System.Diagnostics.Debug.WriteLine("Connection Opened");
                         command.Parameters.AddWithValue("@CurrentUserId", currentUserId);
                         command.Parameters.AddWithValue("@PotentialFriendId", potentialFriendId);
-                        using (SqlDataReader reader = command.ExecuteReader())
+
+                        // Use ExecuteScalar to get the single value returned by the stored procedure
+                        object result = command.ExecuteScalar();
+
+                        if (result != null && result != DBNull.Value)
                         {
-                            if (reader.HasRows)
-                            {
-                                System.Diagnostics.Debug.WriteLine("reader has rows");
-                                while (reader.Read())
-                                {
-                                    int status = Convert.ToInt32(reader["Status"]);
-                                    friendshipStatus = status;
-                                }
-                            }
+                            friendshipStatus = Convert.ToInt32(result);
+                            System.Diagnostics.Debug.WriteLine("Friendship Status: " + friendshipStatus);
                         }
                     }
                     catch (Exception ex)
@@ -573,6 +570,72 @@ namespace Chess_App.Classes
             }
 
             return friendshipStatus;
+        }
+
+        // send friend request
+        public static void SendFriendRequest(int currentUserId, int potentialFriendId)
+        {
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ChessAppDbConnectionString"].ConnectionString))
+            {
+                using (SqlCommand command = new SqlCommand("dbo.SendFriendRequest", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    try
+                    {
+                        connection.Open();
+                        System.Diagnostics.Debug.WriteLine("Connection Opened");
+                        command.Parameters.AddWithValue("@CurrentUserId", currentUserId);
+                        command.Parameters.AddWithValue("@PotentialFriendId", potentialFriendId);
+                        command.ExecuteNonQuery();
+                        System.Diagnostics.Debug.WriteLine("SendFriendRequest Executed");
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex.Message);
+                    }
+                    finally
+                    {
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                            System.Diagnostics.Debug.WriteLine("Connection Closed");
+                        }
+                    }
+                }
+            }
+        }
+
+        // remove friend
+        public static void RemoveFriend(int currentUserId, int potentialFriendId)
+        {
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ChessAppDbConnectionString"].ConnectionString))
+            {
+                using (SqlCommand command = new SqlCommand("dbo.RemoveFriend", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    try
+                    {
+                        connection.Open();
+                        System.Diagnostics.Debug.WriteLine("Connection Opened");
+                        command.Parameters.AddWithValue("@CurrentUserId", currentUserId);
+                        command.Parameters.AddWithValue("@PotentialFriendId", potentialFriendId);
+                        command.ExecuteNonQuery();
+                        System.Diagnostics.Debug.WriteLine("RemoveFriend Executed");
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex.Message);
+                    }
+                    finally
+                    {
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                            System.Diagnostics.Debug.WriteLine("Connection Closed");
+                        }
+                    }
+                }
+            }
         }
     }
 }

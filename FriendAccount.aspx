@@ -11,7 +11,7 @@
                     <h1 runat="server" id="usernameLbl" class="mt-3 h1-landing-sm text-break"></h1>
                 </div>
                 <hr />
-                <button type="button" class="Btn Btn-link" runat="server" onclick="">
+                <button type="button" class="Btn Btn-link" runat="server" id="FriendStatusBtn" onserverclick="FriendStatusBtn_Click">
                     <%if ((int)ViewState["friendStatus"] == 0){%>
                     <i class="Btn-link-icon fa-solid fa-plus"></i>
                     Add Friend
@@ -29,12 +29,17 @@
                     Error
                     <%}%>
                 </button>
-                <button type="button" class="Btn Btn-link" data-bs-toggle="modal" data-bs-target="#EditAccountModal">
+                <button type="button" class="Btn Btn-link">
                     <i class="Btn-link-icon fa-solid fa-envelope"></i>
                     Send Message
                         <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
                 </button>
-                <asp:LinkButton runat="server" ID="goHomeBtn" CssClass="Btn Btn-primary Btn-large mt-2"><span class="user-control-pannel-body-btn-icon fa fa-sign-in"></span>&nbsp;Go Home</asp:LinkButton>
+                 <button type="button" class="Btn Btn-link">
+                    <i class="Btn-link-icon fa-solid fa-chess-board"></i>
+                    Challenge
+                        <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
+                </button>
+                <asp:LinkButton runat="server" ID="goHomeBtn" OnClick="goHomeBtn_Click" CssClass="Btn Btn-primary Btn-large mt-2"><span class="user-control-pannel-body-btn-icon fa fa-sign-in"></span>&nbsp;Go Home</asp:LinkButton>
             </div>
         </div>
     </div>

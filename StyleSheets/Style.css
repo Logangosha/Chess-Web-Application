@@ -782,6 +782,11 @@ hr {
 }
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
+    .message-dialoge > .message {
+        /* Styles for the first occurrence of message.username within message-dialoge */
+        padding-left: 10em!important;
+        padding-right: 10em!important;
+    }
 }
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
@@ -872,6 +877,32 @@ hr {
 
     .modal-body {
         /*justify-content: start;*/
+    }
+
+    .message-profile > .message-profile-body > .message-profile-heading > .status-indicator.online {
+        /* Styles for the status indicator */
+        min-width: 6px !important; /* Set a fixed width */
+        min-height: 6px !important; /* Set a fixed height */
+    }
+
+    .message-profile > .message-profile-body > .message-profile-heading > .status-indicator {
+        /* Styles for the status indicator */
+        font-size: 1em !important;
+    }
+
+    .message-profile > .message-profile-body > .message-profile-heading > .username > h4 {
+        /* Styles for the username container */
+        font-size: .8em !important;
+    }
+
+    .message-profile > .message-profile-body > .message-profile-heading > .timestamp > p {
+        /* Styles for the timestamp container */
+        font-size: .7em !important;
+    }
+
+    .message-profile > .message-profile-body > .message-profile-message > p {
+        /* Styles for the message text */
+        font-size: .6em !important;
     }
 }
 /* Extra large devices (large laptops and desktops, 1200px and down) */
@@ -1017,10 +1048,11 @@ hr {
 
 /*search bar*/
 .search-bar {
-    display:flex;
+    display: flex;
     width: 100%;
     height: 5em !important;
 }
+
     .search-bar > .search-bar-input {
         color: var(--background-color) !important;
         background-color: var(--primary-color) !important;
@@ -1070,16 +1102,16 @@ hr {
             background-color: var(--primary-color);
         }
 
-        .user-tile:hover .status-indicator.offline {
-            background-color: var(--status-color);
-        }
+            .user-tile:hover .status-indicator.offline {
+                background-color: var(--status-color);
+            }
 
 
 
     /*profile picture*/
     .user-tile > img {
-        height: 5em;
-        width: 5em;
+        height: 7rem;
+        width: 7rem;
         border-radius: 4px 0px 0px 4px;
         object-fit: cover;
         object-position: center;
@@ -1114,7 +1146,6 @@ hr {
 
 
 .file-input {
-    
 }
 
 ::-webkit-file-upload-button {
@@ -1122,26 +1153,212 @@ hr {
 }
 
 
-/*.Btn-link {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
+.message-profile {
+    /* Styles for the outer container */
+    display: flex !important;
+    flex-direction: row !important;
+    background-color: var(--primary-color);
     height: fit-content;
-    background-color: var(--background-color);
-    color: var(--primary-color);
-    align-items: center;
-    padding: 1em;
+    width: 100% !important;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: background-color 0.1s ease;
+    padding: 0 !important;
+    border: none !important;
 }
 
-    .Btn-link:hover {
+    .message-profile:hover {
+        /* Hover styles for the outer container */
         background-color: var(--status-color);
     }
 
-    .Btn-link > i.Btn-link-icon {
-        margin-right: 1em !important;
+        .message-profile:hover * {
+            color: var(--primary-color);
+        }
+
+
+        .message-profile:hover > .message-profile-image img {
+            opacity: 0.9;
+        }
+
+        .message-profile:hover > .message-profile-body > .message-profile-heading > .status-indicator.online {
+            background-color: var(--primary-color);
+        }
+
+    .message-profile * {
+        color: var(--background-color);
     }
 
-    .Btn-link > i.Btn-link-arrow {
-        margin-left: auto;
-        padding-left: .5em;
-    }*/
+    /*body*/
+
+    .message-profile > .message-profile-body {
+        /* Styles for the body container */
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 1rem;
+        flex-grow: 1;
+        overflow: hidden;
+        width: 75%;
+        height: 100%;
+        margin-top: auto !important;
+        margin-bottom: auto !important;
+    }
+
+        /*head*/
+
+        .message-profile > .message-profile-body > .message-profile-heading {
+            /* Styles for the heading container */
+            display: flex !important;
+            flex-direction: row !important;
+            align-items: baseline !important;
+            width: 100% !important;
+            justify-content: center;
+        }
+
+            .message-profile > .message-profile-body > .message-profile-heading > .status-indicator.online {
+                /* Styles for the status indicator */
+                min-width: 8px; /* Set a fixed width */
+                min-height: 8px; /* Set a fixed height */
+                border-radius: 50%; /* Create a circular shape */
+                background-color: var(--background-color); /* Use the background color */
+                margin-right: .25em;
+                align-self: center
+            }
+
+            .message-profile > .message-profile-body > .message-profile-heading > .status-indicator.offline {
+                /* Styles for the status indicator */
+                display: none;
+            }
+
+            .message-profile > .message-profile-body > .message-profile-heading > .username {
+                width: 60%;
+                height: 100%;
+                display: flex;
+            }
+
+                .message-profile > .message-profile-body > .message-profile-heading > .username > h4 {
+                    /* Styles for the username container */
+                    display: block;
+                    overflow: hidden; /* Prevents content from overflowing */
+                    text-overflow: ellipsis; /* Adds ellipsis (...) for truncated text */
+                    white-space: nowrap; /* Prevents line breaks */
+                    text-align: start;
+                }
+
+            .message-profile > .message-profile-body > .message-profile-heading > .timestamp {
+                /* Styles for the timestamp container */
+                margin-left: auto;
+                height: 100%;
+                min-width: 40%;
+                text-align: end;
+            }
+
+                .message-profile > .message-profile-body > .message-profile-heading > .timestamp > p {
+                    /* Styles for the timestamp container */
+                    display: block;
+                    overflow: hidden; /* Prevents content from overflowing */
+                    text-overflow: ellipsis; /* Adds ellipsis (...) for truncated text */
+                    white-space: nowrap; /* Prevents line breaks */
+                    height: 100%;
+                    align-self: center;
+                    margin: 0;
+                    padding: 0;
+                }
+
+        /*message*/
+
+        .message-profile > .message-profile-body > .message-profile-message > .message-text {
+            /* Styles for the message text */
+            display: block;
+            overflow: hidden; /* Prevents content from overflowing */
+            text-overflow: ellipsis; /* Adds ellipsis (...) for truncated text */
+            white-space: nowrap; /* Prevents line breaks */
+            height: fit-content;
+            margin: auto;
+            font-weight: 300;
+            text-align: start;
+        }
+
+            .message-profile > .message-profile-body > .message-profile-message > .message-text.new-message {
+                /*make font bold*/
+                font-weight: 600 !important;
+            }
+
+    .message-profile > img {
+        /* Styles for the image container */
+        height: 7rem !important;
+        width: 7rem;
+        border-radius: 0px 4px 4px 0px;
+        object-fit: cover;
+        object-position: center;
+    }
+
+.message-dialoge {
+    /* Styles for the message-dialoge class within the container */
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100%;
+    width: 100%;
+}
+
+    .message-dialoge > .message {
+        /* Styles for the first occurrence of message.username within message-dialoge */
+        display: flex !important;
+        flex-direction: column !important;
+        height: fit-content;
+        width: 100%;
+        text-align: start;
+        padding: 2em;
+    }
+
+.user2 {
+    text-align: end !important;
+    align-items: flex-end;
+    background-color: var(--primary-color);
+}
+
+    .user2 > * {
+        color: var(--background-color);
+    }
+
+.message-dialoge > .message > .message-time {
+    width: 65%;
+    font-weight: 300;
+    margin: 0px;
+}
+
+.message-dialoge > .message > .message-text {
+    width: 65%;
+    font-weight: 600;
+    font-size: 1.5rem !important;
+    margin: 0px;
+}
+
+.message-prompt {
+    /* Styles for the message-prompt class within the container */
+    margin: 0 !important;
+    display: flex;
+    width: 100%;
+    height: 5em !important;
+}
+
+    .message-prompt > input {
+        /* Styles for the input element within message-input */
+        color: var(--background-color) !important;
+        background-color: var(--primary-color) !important;
+        width: 100%;
+        border: none;
+        border-radius: 4px 0px 0px 4px;
+        padding: .65em;
+    }
+
+        .message-prompt > input::placeholder {
+            color: var(--background-color) !important;
+        }
+
+    .message-prompt > button {
+        /* Styles for the button element within message-send-btn */
+        width: 4em;
+        border-radius: 0px 4px 4px 0px;
+        transition: background-color .1s ease;
+    }

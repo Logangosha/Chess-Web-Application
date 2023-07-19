@@ -50,14 +50,39 @@ namespace Chess_App
             return DatabaseAccess.IsFriend(currentUserId, potientialFriendId);
         }
 
-        protected void BtnRemoveFriend_Click(object sender, EventArgs e)
+        protected void FriendStatusBtn_Click(object sender, EventArgs e)
         {
-
+            PlayerAccount CurrentPlayerAccount = (PlayerAccount)Session["AccountInfo"];
+            PlayerAccount SelectedUserAccount = (PlayerAccount)Session["SelectedUserAccount"];
+            switch (ViewState["friendStatus"])
+            {
+                case 0: // not friends
+                    Debug.WriteLine("Not friends");
+                    DatabaseAccess.SendFriendRequest(CurrentPlayerAccount.ID, SelectedUserAccount.ID);
+                    ViewState["friendStatus"] = 2;
+                    break;
+                case 1: // friends
+                    Debug.WriteLine("Friends");
+                    DatabaseAccess.RemoveFriend(CurrentPlayerAccount.ID, SelectedUserAccount.ID);
+                    ViewState["friendStatus"] = 0;
+                    break;
+                case 2: // pending
+                    Debug.WriteLine("Pending");
+                    DatabaseAccess.RemoveFriend(CurrentPlayerAccount.ID, SelectedUserAccount.ID);
+                    ViewState["friendStatus"] = 0;
+                    break;
+                default: // error
+                    Debug.WriteLine("Error");
+                    ViewState["friendStatus"] = -1;
+                    break;
+            }
         }
 
-        protected void BtnPlayFriend_Click(object sender, EventArgs e)
+        protected void goHomeBtn_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Setup.aspx");
+            ViewState["friendStatus"] = null;
+            Session["SelectedUserAccount"] = null;
+            Response.Redirect("Home.aspx");
         }
     }
 }
