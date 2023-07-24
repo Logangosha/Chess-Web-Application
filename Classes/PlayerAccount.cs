@@ -9,6 +9,9 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Globalization;
 using System.Security.Principal;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 
 namespace Chess_App
 {
@@ -23,8 +26,8 @@ namespace Chess_App
         public string ProfilePictureString { get; set; }
         public bool OnlineStatus { get; set; } 
         public List<Friend> Friends { get; set; }
-        public List<Classes.Game> GameHistory { get; set; }
-        public List<Notification> Notifications { get; set; }
+
+        public string[] MessageData { get; set; }
 
         //when account is logged into
         public PlayerAccount(int ID, string _uName, string _email, Theme theme, byte[] profilePicture, bool onlineStatus)
@@ -63,8 +66,23 @@ namespace Chess_App
             Username = _uName;
             Theme = theme;
             ProfilePicture = profilePicture;
-            ProfilePictureString= GetImgSrc(profilePicture);
+            ProfilePictureString = GetImgSrc(profilePicture);
             OnlineStatus = onlineStatus;
+        }
+
+        // when account is loaded from database for message list 
+        public PlayerAccount(int ID, string _uName,bool onlineStatus, byte[] profilePicture, bool isNewMessage, int messageType, string message, DateTime timestamp)
+        {
+            this.ID = ID;
+            Username = _uName;
+            ProfilePicture = profilePicture;
+            ProfilePictureString = GetImgSrc(profilePicture);
+            OnlineStatus = onlineStatus;
+            MessageData = new string[4];
+            MessageData[0] = isNewMessage.ToString();
+            MessageData[1] = messageType.ToString();
+            MessageData[2] = message;
+            MessageData[3] = timestamp.ToString();
         }
 
         public void Login()
@@ -94,6 +112,8 @@ namespace Chess_App
 
             // Construct the image source with the Base64-encoded string
             string imageSource = "data:image/jpeg;base64," + base64String;
+
+
 
             return imageSource;
         }

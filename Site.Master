@@ -37,6 +37,11 @@
     </form>
     <script type="text/javascript" src="Scripts/Script.js"></script>
     <script>
+        document.addEventListener("keydown", function (event) {
+            if (event.keyCode === 13) { // Check if the key code is for the Enter key (key code 13)
+                event.preventDefault(); // Prevent the default behavior of the Enter key (i.e., prevent form submission)
+            }
+        });
             root.style.setProperty('--status-color', '<%=Session["statusColor"]%>');
             root.style.setProperty('--primary-color', '<%=Session["primaryColor"]%>');
             root.style.setProperty('--background-color', '<%=Session["backgroundColor"]%>');

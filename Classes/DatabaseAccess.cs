@@ -387,7 +387,6 @@ namespace Chess_App.Classes
                 uploadedFile.InputStream.CopyTo(memoryStream);
                 imageBytes = memoryStream.ToArray();
             }
-            Debug.WriteLine(imageBytes);
             return imageBytes;
         }
         //byte[] bytes = DatabaseAccess.defaultImageBytes("C:\\Users\\Logan\\OneDrive\\Documents\\GitHub\\Chess_App\\Chess_App\\Images\\DefaultProfilePicture.png");
@@ -637,5 +636,164 @@ namespace Chess_App.Classes
                 }
             }
         }
+
+        // Send Message
+        public static void SendMessage(string message, int senderId, int receiverId, int messageType, bool? isAccepted = null)
+        {
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ChessAppDbConnectionString"].ConnectionString))
+            {
+                using (SqlCommand command = new SqlCommand("dbo.SendMessage", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    try
+                    {
+                        connection.Open();
+                        System.Diagnostics.Debug.WriteLine("Connection Opened");
+                        command.Parameters.AddWithValue("@SenderId", senderId);
+                        command.Parameters.AddWithValue("@ReceiverId", receiverId);
+                        command.Parameters.AddWithValue("@Message", message);
+                        command.Parameters.AddWithValue("@MessageType", messageType);
+
+                        // Handle specific cases based on MessageType
+                        switch (messageType)
+                        {
+                            case 0: // Simple text message
+                                    // No additional action needed
+                                break;
+
+                            case 1: // Friend request
+                                command.Parameters.AddWithValue("@IsAccepted", isAccepted);
+                                break;
+
+                            case 2: // Challenge to a match
+                                command.Parameters.AddWithValue("@IsAccepted", isAccepted);
+                                break;
+
+                            default:
+                                throw new ArgumentException("Invalid MessageType. Supported values: 0, 1, 2");
+                        }
+
+                        command.ExecuteNonQuery();
+                        System.Diagnostics.Debug.WriteLine("SendMessage Executed");
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Error SendMessage: " + ex.Message);
+                    }
+                    finally
+                    {
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                            System.Diagnostics.Debug.WriteLine("Connection Closed");
+                        }
+                    }
+                }
+            }
+        }
+
+        // RetrieveAccountMessages
+        public static List<PlayerAccount> RetrieveLastAccountMessagesWithUserInfo(int userId)
+        {
+            List<PlayerAccount> accountMessages = new List<PlayerAccount>();
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ChessAppDbConnectionString"].ConnectionString))
+            {
+                using (SqlCommand command = new SqlCommand("dbo.RetrieveLastAccountMessagesWithUserInfo", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    try
+                    {
+                        connection.Open();
+                        command.Parameters.AddWithValue("@UserId", userId);
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                int ConversationPartnerId = (int)reader["ConversationPartnerId"];
+                                string Username = (string)reader["Username"];
+                                Debug.WriteLine("OnlineStatus: " + reader["OnlineStatus"]);
+                                bool OnlineStatus = (bool)reader["OnlineStatus"];
+                                byte[] ProfilePicture = (byte[])reader["ProfilePicture"];
+                                Debug.WriteLine("IsNewMessage: " + reader["IsNewMessage"]);
+                                bool IsNewMessage = (bool)reader["IsNewMessage"];
+                                int MessageType = int.Parse((string)reader["MessageType"]);
+                                string Content = (string)reader["Content"];
+                                DateTime Timestamp = (DateTime)reader["Timestamp"];
+                                PlayerAccount message = new PlayerAccount(ConversationPartnerId, Username, OnlineStatus, ProfilePicture, IsNewMessage, MessageType, Content, Timestamp);
+                                accountMessages.Add(message);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine("Error RetrieveLastAccountMessagesWithUserInfo: " + ex);
+                    }
+                    finally
+                    {
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                        }
+                    }
+                }
+            }
+            return accountMessages;
+        }
+        public static List<Message> GetMessagesBetweenUsers(int currentUserId, int targetRecipientId)
+        {
+            List<Message> messages = new List<Message>();
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ChessAppDbConnectionString"].ConnectionString))
+            {
+                using (SqlCommand command = new SqlCommand("dbo.GetMessagesBetweenUsers", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    try
+                    {
+                        connection.Open();
+                        command.Parameters.AddWithValue("@CurrentUserId", currentUserId);
+                        command.Parameters.AddWithValue("@RecipientId", targetRecipientId); // Use targetRecipientId as the parameter name
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                int messageId = (int)reader["MessageId"];
+                                Debug.WriteLine("MessageId: " + messageId);
+                                int senderId = (int)reader["SenderId"];
+                                Debug.WriteLine("SenderId: " + senderId);
+                                int recipientId = (int)reader["RecipientId"];
+                                Debug.WriteLine("RecipientId: " + recipientId);
+                                string content = (string)reader["Content"];
+                                Debug.WriteLine("Content: " + content);
+                                DateTime timestamp = (DateTime)reader["Timestamp"];
+                                Debug.WriteLine("Timestamp: " + timestamp);
+                                int messageType = int.Parse((string)reader["MessageType"]);
+                                Debug.WriteLine("MessageType: " + messageType);
+                                bool? isAccepted = Convert.IsDBNull(reader["IsAccepted"]) ? null : (bool?)reader["IsAccepted"];
+                                Debug.WriteLine("IsAccepted: " + isAccepted);
+                                bool isNewMessage = (bool)reader["IsNewMessage"];
+                                Debug.WriteLine("IsNewMessage: " + isNewMessage);
+
+                                Message message = new Message(messageId, senderId, recipientId, content, timestamp, messageType, isAccepted, isNewMessage);
+                                messages.Add(message);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine("Error in GetMessagesBetweenUsers: " + ex.Message);
+                    }
+                    finally
+                    {
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                        }
+                    }
+                }
+            }
+            return messages;
+        }
     }
 }
+
+
