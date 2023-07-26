@@ -1082,44 +1082,49 @@ border-radius: 0px 4px 4px 0px;
 transition: background-color .1s ease;
 }
 
-/*friend tile*/
-.user-tile {
-display: flex;
-flex-direction: row;
-width: 100%;
-height: fit-content;
-background-color: var(--primary-color);
-color: var(--background-color);
-align-items: center;
-padding: 0em;
-transition: background-color 0.1s ease;
-position: relative;
+.friend-board {
+width:100%;
 }
 
-.user-tile:hover {
+/*friend tile*/
+.friend {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: fit-content;
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    align-items: center;
+    padding: 0em;
+    transition: background-color 0.1s ease;
+    position: relative;
+    margin-bottom: 0.5rem;
+}
+
+.friend:hover {
 background-color: var(--status-color);
 }
 
-.user-tile:hover img {
+.friend:hover img {
 opacity: 0.9;
 }
 
-.user-tile:hover p {
+.friend:hover p {
 color: var(--primary-color);
 }
 
-.user-tile:hover .status-indicator {
+.friend:hover .status-indicator {
 background-color: var(--primary-color);
 }
 
-.user-tile:hover .status-indicator.offline {
+.friend:hover .status-indicator.offline {
 background-color: var(--status-color);
 }
 
 
 
 /*profile picture*/
-.user-tile > img {
+.friend > img {
 height: 7rem;
 width: 7rem;
 border-radius: 4px 0px 0px 4px;
@@ -1128,7 +1133,7 @@ object-position: center;
 }
 
 /*username*/
-.user-tile > p {
+.friend > p {
 font-size: var(--h4-font-size) !important;
 color: var(--background-color);
 margin: 0em;
@@ -1136,7 +1141,7 @@ margin-left: 1em;
 transition: color 0.1s ease;
 }
 
-.user-tile > .status-indicator {
+.friend > .status-indicator {
 content: "";
 position: absolute;
 top: 50%;
@@ -1150,7 +1155,7 @@ margin-right: 2em;
 transition: background-color 0.1s ease;
 }
 
-.user-tile > .offline {
+.friend > .offline {
 background-color: var(--primary-color); /* Online status */
 }
 
@@ -1168,7 +1173,7 @@ width: 100%;
 
 .message-profile {
 /* Styles for the outer container */
-display: flex !important;
+display: flex;
 flex-direction: row !important;
 background-color: var(--primary-color);
 height: fit-content;
@@ -1335,6 +1340,7 @@ background-color: var(--primary-color);
 color: var(--background-color);
 }
 
+
 .message-dialoge > .message > .message-time {
 width: 65%;
 font-weight: 300;
@@ -1346,10 +1352,11 @@ font-weight: 600;
 }
 
 .message-dialoge > .message > .message-text {
-width: 65%;
-font-weight: 600;
-font-size: 1.5rem !important;
-margin: 0px;
+    width: 65%;
+    font-weight: 600;
+    font-size: 1.5rem !important;
+    margin: 0px;
+    overflow-wrap: break-word;
 }
 
 .message-prompt {
@@ -1387,7 +1394,7 @@ transition: background-color .1s ease;
     width: fit-content;
     margin: 1em;
     max-width: 100%;
-    min-width:50%;
+    min-width:30%;
     margin-left: 0em;
     margin-right: 0em;
     padding: 2em;
@@ -1403,10 +1410,13 @@ align-items: center;
 width: 100%;
 }
 
+.message-dialoge > .message > .friend-request > .friend-request-header > * {
+margin:0;
+}
+
 .message-dialoge > .message > .friend-request > .friend-request-header > .message-text {
 font-size: 1.2rem !important;
 display: flex;
-margin: 0;
 }
 
 .message-dialoge > .message > .friend-request > .friend-request-header > .message-text > .icon {
@@ -1428,6 +1438,10 @@ font-size: 3rem !important;
 display: flex;
 justify-content: space-around;
 }
+.message-dialoge > .message > .friend-request > .friend-request-header > .status > .status-icon {
+margin-right:.25em;
+margin-left: .25em;
+}
 /*recieved*/
 .message-dialoge > .message.recieved > .friend-request {
 border: 1px solid var(--primary-color);
@@ -1445,13 +1459,8 @@ border: 1px solid var(--background-color);
 
 .message-dialoge > .message.sent > .friend-request > .friend-request-header > *{
 color: var(--background-color);
-margin:0px;
 }
 
-.message-dialoge > .message.sent > .friend-request > .friend-request-header > .status > .status-icon {
-margin-right:.25em;
-margin-left: .25em;
-}
 
 /* game-invite */
 .message-dialoge > .message > .game-invite {
@@ -1460,6 +1469,7 @@ margin-left: .25em;
     width: fit-content;
     margin: 1em;
     max-width: 100%;
+    min-width: 30%;
     margin-left: 0em;
     margin-right: 0em;
     padding: 2em;
@@ -1473,6 +1483,10 @@ margin-left: .25em;
         justify-content: center;
         align-items: center;
         width: 100%;
+    }
+
+    .message-dialoge > .message > .game-invite > .game-invite-header > * {
+        margin: 0;
     }
 
         .message-dialoge > .message > .game-invite > .game-invite-header > .message-text {
@@ -1498,7 +1512,7 @@ margin-left: .25em;
 
     .message-dialoge > .message > .game-invite > .game-invite-btn-div {
         display: flex;
-        justify-content: center;
+        justify-content: space-around;
     }
 
 /* Recieved game-invite */

@@ -21,53 +21,9 @@ namespace Chess_App
         {
             if (IsPostBack)
             {
-                //string eventTarget = Request["__EVENTTARGET"];
-                //string eventArgument = Request["__EVENTARGUMENT"];
-
-                //if (eventTarget == "SearchedUser")
-                //{
-                //    // Handle the postback from the button with the button value
-                //    string buttonValue = eventArgument;
-                //    Debug.WriteLine(buttonValue);
-                //    List<PlayerAccount> SearchResults = Session["SearchUserResults"] as List<PlayerAccount>;
-                //    if (SearchResults != null)
-                //    {
-                //        PlayerAccount selectedAccount = SearchResults.FirstOrDefault(a => a.Username == buttonValue);
-                //        if (selectedAccount != null)
-                //        {
-                //            // Perform necessary server-side logic with the selected account
-                //            Session["SearchUserResults"] = null;
-                //            Session["SelectedUserAccount"] = selectedAccount;
-                //            Response.Redirect("FriendAccount.aspx");
-                //        }
-                //        else
-                //        {
-                //            Debug.WriteLine("Selected Account not found.");
-                //        }
-                //    }
-                //    else
-                //    {
-                //        Debug.WriteLine("Session data not found or invalid.");
-                //    }
-                //}
+                
             }
         }
-
-        //[WebMethod]
-        //public static List<object> PopulateMessageBoard()
-        //{
-        //    try
-        //    {
-        //        List<object> messageList = DatabaseAccess.GetMessageList((HttpContext.Current.Session["AccountInfo"] as PlayerAccount).ID);
-        //        HttpContext.Current.Session["MessageList"] = messageList;
-        //        return messageList;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Debug.WriteLine(e.Message);
-        //        return null;
-        //    }
-        //}
         [WebMethod]
         public static List<PlayerAccount> RetrieveLastAccountMessagesWithUserInfo()
         {
@@ -75,6 +31,7 @@ namespace Chess_App
             {
                 List<PlayerAccount> accountMessages = DatabaseAccess.RetrieveLastAccountMessagesWithUserInfo((HttpContext.Current.Session["AccountInfo"] as PlayerAccount).ID);
                 HttpContext.Current.Session["AccountMessages"] = accountMessages;
+
                 Debug.WriteLine("Account Messages Recieved!");
                 return accountMessages;
             }
@@ -118,6 +75,22 @@ namespace Chess_App
                 return "Error sending the message.";
             }
         }
+
+        [WebMethod]
+        public static void HandleFriendRequest(int recipientId, int isAccepted, int messageId)
+        {
+            try
+            {
+                Debug.WriteLine("Attempting to handle friend request");
+                DatabaseAccess.HandleFriendRequest((HttpContext.Current.Session["AccountInfo"] as PlayerAccount).ID,recipientId, isAccepted, messageId);
+                Debug.WriteLine("friend request handled!");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("C# Error" +e.Message);
+            }
+        }
+
         [WebMethod]
         public static List<PlayerAccount> SearchUsers(string searchText)
         {
@@ -125,15 +98,20 @@ namespace Chess_App
             {
                 Debug.WriteLine("SearchText is " + searchText);
                 List<PlayerAccount> results = DatabaseAccess.SearchUsers(searchText);
-                //here
-                foreach (PlayerAccount account in results)
+                int currentUserId = (HttpContext.Current.Session["AccountInfo"] as PlayerAccount).ID;
+
+                // Retrieve the account messages for the current user
+                List<PlayerAccount> accountMessages = DatabaseAccess.RetrieveLastAccountMessagesWithUserInfo(currentUserId);
+
+                // Check if the account is the current user or if there are messages with the current user
+                foreach (PlayerAccount account in results.ToList()) // Using ToList() to create a copy of the list to avoid modification issues
                 {
-                    if (account.ID == (HttpContext.Current.Session["AccountInfo"] as PlayerAccount).ID)
+                    if (account.ID == currentUserId || accountMessages.Any(accountMsg => accountMsg.ID == account.ID))
                     {
                         results.Remove(account);
-                        break;
                     }
                 }
+
                 HttpContext.Current.Session["SearchUserResults"] = results;
                 Debug.WriteLine("Results count: " + results.Count);
                 return results;

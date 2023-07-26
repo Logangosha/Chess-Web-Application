@@ -583,14 +583,49 @@ namespace Chess_App.Classes
                     {
                         connection.Open();
                         System.Diagnostics.Debug.WriteLine("Connection Opened");
-                        command.Parameters.AddWithValue("@CurrentUserId", currentUserId);
-                        command.Parameters.AddWithValue("@PotentialFriendId", potentialFriendId);
+                        command.Parameters.AddWithValue("@SenderUserId", currentUserId);
+                        command.Parameters.AddWithValue("@ReceiverFriendId", potentialFriendId);
                         command.ExecuteNonQuery();
                         System.Diagnostics.Debug.WriteLine("SendFriendRequest Executed");
                     }
                     catch (Exception ex)
                     {
                         System.Diagnostics.Debug.WriteLine(ex.Message);
+                    }
+                    finally
+                    {
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                            System.Diagnostics.Debug.WriteLine("Connection Closed");
+                        }
+                    }
+                }
+            }
+        }
+
+        // handle friend request
+        public static void HandleFriendRequest(int currentUserId, int potentialFriendId, int isAccepted, int messageId)
+        {
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ChessAppDbConnectionString"].ConnectionString))
+            {
+                using (SqlCommand command = new SqlCommand("dbo.HandleFriendRequest", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    try
+                    {
+                        connection.Open();
+                        System.Diagnostics.Debug.WriteLine("Connection Opened");
+                        command.Parameters.AddWithValue("@CurrentUserId", currentUserId);
+                        command.Parameters.AddWithValue("@PotentialFriendId", potentialFriendId);
+                        command.Parameters.AddWithValue("@Accept", isAccepted);
+                        command.Parameters.AddWithValue("@MessageId", messageId);
+                        command.ExecuteNonQuery();
+                        System.Diagnostics.Debug.WriteLine("HandleFriendRequest Executed");
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine("Sql Error "+ex.Message);
                     }
                     finally
                     {
@@ -635,6 +670,52 @@ namespace Chess_App.Classes
                     }
                 }
             }
+        }
+
+        // get friends
+        public static List<PlayerAccount> GetFriends(int currentUserId)
+        {
+            List<PlayerAccount> friends = new List<PlayerAccount>();
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ChessAppDbConnectionString"].ConnectionString))
+            {
+                using (SqlCommand command = new SqlCommand("dbo.GetFriends", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@CurrentUserId", currentUserId);
+                    try
+                    {
+                        connection.Open();
+                        System.Diagnostics.Debug.WriteLine("Connection Opened");
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                int friendshipId = (int)reader["ID"];
+                                string userName = (string)reader["UserName"];
+                                byte[] profilePicture = (byte[])reader["ProfilePicture"];
+                                bool onlineStatus = (bool)reader["OnlineStatus"];
+
+                                PlayerAccount friend = new PlayerAccount(friendshipId, userName, profilePicture, onlineStatus);
+                                friends.Add(friend);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex.Message);
+                    }
+                    finally
+                    {
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                            System.Diagnostics.Debug.WriteLine("Connection Closed");
+                        }
+                    }
+                }
+            }
+            return friends;
         }
 
         // Send Message

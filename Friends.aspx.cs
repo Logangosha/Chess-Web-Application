@@ -49,6 +49,32 @@ namespace Chess_App
                         Debug.WriteLine("Session data not found or invalid.");
                     }
                 }
+                if (eventTarget == "FriendSelected")
+                {
+                    // Handle the postback from the button with the button value
+                    string buttonValue = eventArgument;
+                    Debug.WriteLine(buttonValue);
+                    List<PlayerAccount> FriendResults = Session["FriendResults"] as List<PlayerAccount>;
+                    if (FriendResults != null)
+                    {
+                        PlayerAccount selectedAccount = FriendResults.FirstOrDefault(a => a.Username == buttonValue);
+                        if (selectedAccount != null)
+                        {
+                            // Perform necessary server-side logic with the selected account
+                            Session["FriendResults"] = null;
+                            Session["SelectedUserAccount"] = selectedAccount;
+                            Response.Redirect("FriendAccount.aspx");
+                        }
+                        else
+                        {
+                            Debug.WriteLine("Selected Account not found.");
+                        }
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Session data not found or invalid.");
+                    }
+                }
             }
         }
 
@@ -59,17 +85,37 @@ namespace Chess_App
             {
                 Debug.WriteLine("SearchText is " + searchText);
                 List<PlayerAccount> results = DatabaseAccess.SearchUsers(searchText);
-                //here
-                foreach (PlayerAccount account in results)
+                int currentUserId = (HttpContext.Current.Session["AccountInfo"] as PlayerAccount).ID;
+
+                // Retrieve the friend list for the current user
+                List<PlayerAccount> friendResults = HttpContext.Current.Session["FriendResults"] as List<PlayerAccount>;
+
+                // Check if the account is a friend or the current user
+                foreach (PlayerAccount account in results.ToList()) // Using ToList() to create a copy of the list to avoid modification issues
                 {
-                    if(account.ID == (HttpContext.Current.Session["AccountInfo"] as PlayerAccount).ID)
+                    if (account.ID == currentUserId || (friendResults != null && friendResults.Any(friend => friend.ID == account.ID)))
                     {
                         results.Remove(account);
-                        break;
                     }
                 }
+
                 HttpContext.Current.Session["SearchUserResults"] = results;
                 Debug.WriteLine("Results count: " + results.Count);
+                return results;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+        }
+        [WebMethod]
+        public static List<PlayerAccount> GetFriends()
+        {
+            try
+            {
+                List<PlayerAccount> results = DatabaseAccess.GetFriends((HttpContext.Current.Session["AccountInfo"] as PlayerAccount).ID);
+                HttpContext.Current.Session["FriendResults"] = results;
                 return results;
             }
             catch (Exception e)

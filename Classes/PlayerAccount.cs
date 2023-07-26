@@ -82,7 +82,17 @@ namespace Chess_App
             MessageData[0] = isNewMessage.ToString();
             MessageData[1] = messageType.ToString();
             MessageData[2] = message;
-            MessageData[3] = timestamp.ToString();
+            MessageData[3] = timestamp.ToString("h:mm tt");
+        }
+
+        // when account is loaded from database for friend list
+        public PlayerAccount(int ID, string _uName, byte[] profilePicture, bool onlineStatus)
+        {
+            this.ID = ID;
+            Username = _uName;
+            ProfilePicture = profilePicture;
+            ProfilePictureString = GetImgSrc(profilePicture);
+            OnlineStatus = onlineStatus;
         }
 
         public void Login()

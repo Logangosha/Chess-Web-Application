@@ -36,7 +36,7 @@
                 </button>
                  <button type="button" class="Btn Btn-link">
                     <i class="Btn-link-icon fa-solid fa-chess-board"></i>
-                    Challenge
+                    Invite to Game
                         <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
                 </button>
                 <asp:LinkButton runat="server" ID="goHomeBtn" OnClick="goHomeBtn_Click" CssClass="Btn Btn-primary Btn-large mt-2"><span class="user-control-pannel-body-btn-icon fa fa-sign-in"></span>&nbsp;Go Home</asp:LinkButton>

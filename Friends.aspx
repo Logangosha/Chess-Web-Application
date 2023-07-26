@@ -14,48 +14,13 @@
                 </button>
                 <hr class="w-100 m-0" />
                 <div class="search-bar">
-                    <input class="search-bar-input" autofocus="autofocus" type="text" placeholder="Search Friends" />
-                    <button class="Btn Btn-primary search-bar-Btn">
+                    <input class="search-bar-input" id="SearchFriendsInp" autofocus="autofocus" type="text" placeholder="Search Friends" />
+                    <button id="SearchFriendsBtn" class="Btn Btn-primary search-bar-Btn">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
-                 <%--<asp:PlaceHolder runat="server" ID="FriendTilesPlaceholder"></asp:PlaceHolder>--%>
-                <div class="Btn user-tile">
-                    <img src="Images/whitehandmovingchesspiece.jpg" />
-                    <p>Friend 1</p>
-                    <span class="status-indicator offline"></span>
+                <div id="friendBoardDiv" class="friend-board">
                 </div>
-                <div class="Btn user-tile">
-                    <img src="Images/twomenplayingchessdarkroom.jpg" />
-                    <p>Friend 2</p>
-                    <span class="status-indicator"></span>
-                </div>
-                <div class="Btn user-tile offline">
-                    <img src="Images/unclewiggly.png" />
-                    <p>Friend 3</p>
-                    <span class="status-indicator"></span>
-                </div>
-                <div class="Btn user-tile">
-                    <img src="Images/untitled.png" />
-                    <p>Friend 4</p>
-                    <span class="status-indicator"></span>
-                </div>
-                <div class="Btn user-tile">
-                    <img src="Images/whitehandmovingchesspiece.jpg" />
-                    <p>Friend 1</p>
-                    <span class="status-indicator"></span>
-                </div>
-                <div class="Btn user-tile">
-                    <img src="Images/twomenplayingchessdarkroom.jpg" />
-                    <p>Friend 2</p>
-                    <span class="status-indicator"></span>
-                </div>
-                <div class="Btn user-tile">
-                    <img src="Images/unclewiggly.png" />
-                    <p>Friend 3</p>
-                    <span class="status-indicator"></span>
-                </div>
-                <div class="mt-5"></div>
             </div>
         </div>
     </div>
@@ -81,15 +46,106 @@
                                     <i class="fas fa-search"></i>
                                 </button>
                             </div>
-                         <div ID="UserTilesPlaceholder" class="d-flex flex-column gap-2 mt-2">
-
-                         </div>
+                            <div id="UserTilesPlaceholder" class="d-flex flex-column mt-2">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <script>
+            $(document).ready(function () {
+                getFriendsFromServer();
+            });
+
+            // SearchFriendsInp and SearchFriendsBtn event handler on keyup and click respectively
+            $("#SearchFriendsInp").on("keyup", searchFriends);
+            $("#SearchFriendsBtn").on("click", searchFriends);
+
+            // SearchFriends function
+            function searchFriends() {
+                var friendBoardDiv = $("#friendBoardDiv"); 
+                var searchText = $("#SearchFriendsInp").val(); // Get the current text from the search input
+                // check to see if the friendBoardDiv children username contains the searchText
+                friendBoardDiv.children().each(function () {
+                    var friendName = $(this).children("p").text();
+                    if (friendName.toLowerCase().includes(searchText.toLowerCase())) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            }
+
+
+            function getFriendsFromServer() {
+                $.ajax({
+                    type: "POST",
+                    url: "Friends.aspx/GetFriends", // The name of the web method in the page
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response && response.d && Array.isArray(response.d)) {
+                            console.log("Friends data received:", response.d);
+
+                            // Clear the friendBoardDiv before updating with new data
+                            $("#friendBoardDiv").empty();
+
+                            // Loop through each friend in the response
+                            response.d.forEach(function (friend) {
+                                // Create a friend tile div element
+                                var friendTile = $("<button>", {
+                                    type:"button",
+                                    class: "Btn friend",
+                                    value: friend.Username,
+                                });
+
+                                // Create the image element
+                                var image = $("<img>", {
+                                    src: friend.ProfilePictureString,
+                                });
+
+                                // Create the paragraph element for the friend's name
+                                var friendName = $("<p>").text(friend.Username);
+
+                                // Create the status indicator element based on OnlineStatus
+                                var statusIndicator = $("<span>", {
+                                    class: "status-indicator " + (friend.OnlineStatus ? "online" : "offline"),
+                                });
+
+                                // Append the elements to the friendTile div
+                                friendTile.append(image, friendName, statusIndicator);
+
+                                //add button event 
+                                friendTile.on("click", function () {
+                                    var buttonValue = $(this).val();
+                                    console.log("Button value:", buttonValue);
+                                    // Initiate postback with the button value
+                                    __doPostBack("FriendSelected", buttonValue);
+                                });
+
+                                // Append the friendTile to the friendBoardDiv
+                                $("#friendBoardDiv").append(friendTile);
+                            });
+                            
+                                // Create the div element with class "mt-5"
+                                var mtDiv = $("<div>", {
+                                    class: "mt-5",
+                                });
+                            $("#friendBoardDiv").append(mtDiv);
+
+                        } else {
+                            console.log("No friends data received.");
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.log("AJAX error. Status:", textStatus);
+                        console.log("Error: " + errorThrown);
+                    }
+                });
+            }
+
+
             var searchTimeout;
 
             function searchUsers() {
@@ -126,7 +182,7 @@
 
                                 var tile = $("<button>", {
                                     runat: "server",
-                                    class: "Btn user-tile",
+                                    class: "Btn friend",
                                     value: account.Username,
                                 });
                                 var image = $("<img>", { src: account.ProfilePictureString });

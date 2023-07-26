@@ -13,8 +13,8 @@
                 </button>
                 <hr class="w-100 m-0" />
                 <div class="search-bar">
-                    <input class="search-bar-input" autofocus="autofocus" type="text" placeholder="Search Messages" />
-                    <button class="Btn Btn-primary search-bar-Btn">
+                    <input id="SearchMessagesInp" class="search-bar-input" autofocus="autofocus" type="text" placeholder="Search Messages" />
+                    <button id="SearchMessagesBtn" class="Btn Btn-primary search-bar-Btn">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
@@ -67,69 +67,10 @@
                 </div>
                 <hr class="w-100 m-0" />
                 <div class="modal-body mh-100 p-0">
-                    <div class="row p-0 justify-content-center h-100 MainCard overflow-scroll hidden-scroll-bar">
+                    <div id="messageDialogeDivParent" class="row p-0 justify-content-center h-100 MainCard overflow-scroll hidden-scroll-bar">
                         <div class="d-flex flex-column py-0 p-0 justify-content-center align-items-center">
                             <div id="messageDialogeDiv" class="message-dialoge">
-                                <!-- Recieved Friend Request -->
-                                <div class="message recieved">
-                                    <img src="Images/whitehandmovingchesspiece.jpg" style="width: 4rem; height: 4rem; object-fit: cover; border-radius: 4px;" />
-                                    <div class="friend-request">
-                                        <div class="friend-request-header">
-                                            <p class="message-text"><span class="icon fa-solid fa-user-group"></span>Friend Request From</p>
-                                            <p class="username"><b>Choblo</b></p>
-                                        </div>
-                                        <hr />
-                                        <div class="friend-request-btn-div">
-                                            <button class="Btn Btn-secondary">decline</button>
-                                            <button class="Btn Btn-primary">accept</button>
-                                        </div>
-                                    </div>
-                                    <p class="message-time"><b>test</b> 12:13 AM</p>
-                                </div>
-                                <!-- Sent Friend Request -->
-                                <div class="message sent">
-                                    <img src="Images/whitehandmovingchesspiece.jpg" style="width: 4rem; height: 4rem; object-fit: cover; border-radius: 4px;" />
-                                    <div class="friend-request">
-                                        <div class="friend-request-header">
-                                            <p class="message-text"><span class="icon fa-solid fa-user-group"></span>Friend Request Sent To</p>
-                                            <p class="username"><b>Choblo</b></p>
-                                            <p class="status">Status:<span class="status-icon fa-regular fa-clock"></span><b>Pending</b></p>
-                                        </div>
-                                    </div>
-                                    <p class="message-time"><b>test</b> 12:13 AM</p>
-                                </div>
-                                <!-- Recieved Game Invite -->
-                                <div class="message recieved">
-                                    <img src="Images/whitehandmovingchesspiece.jpg" style="width: 4rem; height: 4rem; object-fit: cover; border-radius: 4px;" />
-                                    <div class="game-invite">
-                                        <!-- Using the new class 'game-invite' -->
-                                        <div class="game-invite-header">
-                                            <!-- Using the same structure as friend-request-header -->
-                                            <p class="message-text"><span class="icon fa-solid fa-chess-board"></span>Game Invite From</p>
-                                            <p class="username"><b>Choblo</b></p>
-                                        </div>
-                                        <div class="game-invite-btn-div">
-                                            <!-- Using the same structure as friend-request-btn-div -->
-                                            <button class="Btn Btn-secondary">decline</button>
-                                            <button class="Btn Btn-primary">accept</button>
-                                        </div>
-                                    </div>
-                                    <p class="message-time"><b>test</b> 12:13 AM</p>
-                                </div>
-                                <!-- Sent Game Invite -->
-                                <div class="message sent">
-                                    <img src="Images/whitehandmovingchesspiece.jpg" style="width: 4rem; height: 4rem; object-fit: cover; border-radius: 4px;" />
-                                    <div class="game-invite">
-                                        <!-- Using the new class 'game-invite' -->
-                                        <div class="game-invite-header">
-                                            <!-- Using the same structure as friend-request-header -->
-                                            <p class="message-text"><span class="icon fa-solid fa-user-group"></span>Game Invite To</p>
-                                            <p class="username"><b>Choblo</b></p>
-                                            <p class="status">Status:<span class="status-icon fa-regular fa-clock"></span><b>Pending</b></p>
-                                        </div>
-                                    </div>
-                                    <p class="message-time"><b>test</b> 12:13 AM</p>
-                                </div>
+                                <!-- messages go here -->
                             </div>
                         </div>
                     </div>
@@ -150,15 +91,36 @@
 
         $(document).ready(function () {
             RetrieveAccountMessages();
+            // SearchFriendsInp and SearchFriendsBtn event handler on keyup and click respectively
+            $("#SearchMessagesInp").on("keyup", searchMessages);
+            $("#SearchMessagesBtn").on("click", searchMessages);
         });
 
-        function DissmisMessageDialogeModal() {
-            var messageDialogeDiv = $("#messageDialogeDiv");
-            messageDialogeDiv.empty();
-            RetrieveAccountMessages();
+        
+
+        function searchMessages() {
+            var messageBoardDiv = $("#messageBoardDiv");
+            var searchText = $("#SearchMessagesInp").val();
+
+            console.log("Search Text:", searchText);
+
+            messageBoardDiv.children().each(function () {
+                var messageProfile = $(this); // Store the reference to the current element
+
+                var messageName = messageProfile.data('username');
+                console.log("Message Name:", messageName);
+
+                if (messageName.toLowerCase().includes(searchText.toLowerCase())) {
+                    console.log("Showing:", messageName);
+                    messageProfile.show(); // Use the stored reference to show the element
+                } else {
+                    console.log("Hiding:", messageName);
+                    messageProfile.hide(); // Use the stored reference to hide the element
+                }
+            });
         }
 
-        // AJAX call to server passing the current user id and retreiving all unique conversations
+        // Gets All Accounts You Have Messages With
         function RetrieveAccountMessages() {
             // Make the AJAX request to send the message
             $.ajax({
@@ -174,7 +136,6 @@
 
                         // Loop through the search results and create user tiles
                         for (var i = 0; i < response.d.length; i++) {
-                            console.table(response.d[i]);
                             var account = response.d[i];
                             var tileStatusClass = account.OnlineStatus ? "online" : "offline";
                             var isNewMessage = account.MessageData[0] ? "new-message" : "";
@@ -200,7 +161,7 @@
                                 class: "timestamp",
                             });
                             var timestampTxt = $("<p>", {});
-                            timestampTxt.text("12:34 AM");
+                            timestampTxt.text(account.MessageData[3]);
                             var messageProfileMessage = $("<div>", {
                                 class: "message-profile-message",
                             });
@@ -219,7 +180,7 @@
                             messageProfileMessage.append(messageProfileMessageTxt);
                             messageProfileHeading.append(statusIndicator, username, timestamp);
                             messageProfileBody.append(messageProfileHeading, messageProfileMessage);
-                            messageProfile.append(messageProfileBody, messageProfileImg);
+                            messageProfile.append(messageProfileImg, messageProfileBody);
                             messageBoardDiv.append(messageProfile);
 
                             messageProfile.data('username', account.Username); // Store the username as a data attribute in the tile button element
@@ -238,18 +199,46 @@
                 }
             });
         }
+
+        // Function that runs when X button is pressed in modal
+        function DissmisMessageDialogeModal() {
+            var messageDialogeDiv = $("#messageDialogeDiv");
+            messageDialogeDiv.empty();
+            RetrieveAccountMessages();
+        }
+
+        // AJAX call to server passing the current user id and retreiving all unique conversations
         function handleMessageProfileClick(event) {
             event.preventDefault();
             var recipientId = $(event.currentTarget).data('recipient-id');
             var username = $(event.currentTarget).data('username');
-            var profilePictureString = $(event.currentTarget).data('profile-picture'); // Retrieve the profile picture URL
+            var profilePictureString = $(event.currentTarget).data('profile-picture');
 
             $("#MessageDialogeModalHeading").text(username);
             $("#MessageDialogeModalHeading").data('recipient-id', recipientId);
             getMessagesBetweenUsers(recipientId, profilePictureString);
+            // Scroll to the bottom of the messageDialogeDiv
+            setTimeout(function () {
+                let messageContainer = document.getElementById("messageDialogeDivParent");
+                scrollToBottom(messageContainer);
+            }, 200);
             $("#MessageDialogeModal").modal("show");
         }
 
+        function handleTileClick(event) {
+            event.preventDefault(); // Prevent the default button behavior
+            $("#NewMessageModal").modal("hide");
+
+            var username = $(event.currentTarget).data('username'); // Retrieve the username from the data attribute of the clicked tile
+            var recipientId = $(event.currentTarget).data('recipient-id'); // Retrieve the recipientId from the data attribute of the clicked tile
+
+            $("#MessageDialogeModalHeading").text(username); // Set the modal heading to the username of the clicked tile
+            $("#MessageDialogeModalHeading").data('recipient-id', recipientId); // Store the recipientId as a data attribute in the heading element
+
+            $("#MessageDialogeModal").modal("show"); // Show the modal after setting the recipientId
+        }
+
+        // Gets All Individual Messages Between Users
         function getMessagesBetweenUsers(recipientId, recipientProfilePictureString) {
             $.ajax({
                 type: "POST",
@@ -258,7 +247,6 @@
                 data: JSON.stringify({ recipientId: recipientId }), // Pass the recipientId as data in the request
                 dataType: "json",
                 success: function (response) {
-                    console.log('getMessagesBetweenUsers: ' + response);
                     // Handle the response containing messages between users
                     if (response && response.d && Array.isArray(response.d)) {
                         // add messages to messageDialogeDiv
@@ -277,16 +265,244 @@
                             var messageDiv = $("<div>", {
                                 class: messageClass,
                             });
-
+                            messageDiv.data("messageId", message.MessageId);
                             var profileImage = $("<img>", {
                                 src: profilePictureString,
                                 style: "width: 4rem; height: 4rem; object-fit: cover; border-radius: 4px;",
                             });
 
-                            var messageText = $("<p>", {
-                                class: "message-text",
-                            });
-                            messageText.text(message.Content);
+                            var messageText;
+
+                            // content of message based on message type
+                            switch (message.MessageType) {
+                                case 0:
+                                    // text message
+                                    messageText = $("<p>", {
+                                        class: "message-text",
+                                    });
+                                    messageText.text(message.Content);
+                                    break;
+                                case 1:
+                                    // friend request
+                                    // sent friend request
+                                    if (messageClass == "message sent") {
+                                        messageText = $("<div>", {
+                                            class: "friend-request",
+                                        });
+                                        var friendRequestHeader = $("<div>", {
+                                            class: "friend-request-header",
+                                        });
+                                        var friendRequestHeaderMessageText = $("<p>", {
+                                            class: "message-text",
+                                        });
+                                        var friendRequestIcon = $("<span>", {
+                                            class: "icon fa-solid fa-user-group", // This class will be used to display the icon
+                                        });
+                                        friendRequestHeaderMessageText.append(friendRequestIcon); // Append the icon
+                                        friendRequestHeaderMessageText.append("Friend Request Sent To"); // Append the text
+                                        var friendRequestHeaderUsername = $("<p>", {
+                                            class: "username",
+                                        });
+                                        friendRequestHeaderUsername.text($("#MessageDialogeModalHeading").text());
+                                        var friendRequestHeaderStatus = $("<p>", {
+                                            class: "status",
+                                        });
+                                        var friendRequestStatusIcon = $("<span>", {});
+                                        switch (message.IsAccepted) {
+                                            case null:
+                                                friendRequestStatusIcon.addClass("status-icon fa-regular fa-clock");
+                                                friendRequestHeaderStatus.append("Pending"); // Append the text after the icon
+                                                friendRequestHeaderStatus.append(friendRequestStatusIcon); // Add the icon first
+                                                break;
+                                            case false:
+                                                friendRequestStatusIcon.addClass("status-icon fa-solid fa-xmark");
+                                                friendRequestHeaderStatus.append("Declined"); // Append the text after the icon
+                                                friendRequestHeaderStatus.append(friendRequestStatusIcon); // Add the icon first
+                                                break;
+                                            case true:
+                                                friendRequestStatusIcon.addClass("status-icon fa-solid fa-check");
+                                                friendRequestHeaderStatus.append("Accepted"); // Append the text after the icon
+                                                friendRequestHeaderStatus.append(friendRequestStatusIcon); // Add the icon first
+                                                break;
+                                        }
+                                        friendRequestHeader.append(friendRequestHeaderMessageText, friendRequestHeaderUsername, friendRequestHeaderStatus);
+                                        messageText.append(friendRequestHeader);
+                                    }
+                                    // recived friend request
+                                    else {
+                                        messageText = $("<div>", {
+                                            class: "friend-request",
+                                        });
+                                        var friendRequestHeader = $("<div>", {
+                                            class: "friend-request-header",
+                                        });
+                                        var friendRequestHeaderMessageText = $("<p>", {
+                                            class: "message-text",
+                                        });
+                                        var friendRequestIcon = $("<span>", {
+                                            class: "icon fa-solid fa-user-group", // This class will be used to display the icon
+                                        });
+                                        friendRequestHeaderMessageText.append(friendRequestIcon)
+                                        friendRequestHeaderMessageText.append("Friend Request From");
+                                        var friendRequestHeaderUsername = $("<p>", {
+                                            class: "username",
+                                        });
+                                        var friendRequestHeaderHr = $("<hr/>");
+                                        friendRequestHeaderUsername.text($("#MessageDialogeModalHeading").text());
+                                        var friendRequestBtnDiv = $("<div>", {
+                                            class: "friend-request-btn-div",
+                                        });
+                                        friendRequestHeader.append(friendRequestHeaderMessageText, friendRequestHeaderUsername);
+                                        messageText.append(friendRequestHeader, friendRequestHeaderHr, friendRequestBtnDiv);
+
+                                        switch (message.IsAccepted) {
+                                            case null:
+                                                // pending so display buttons
+                                                var friendRequestDeclineBtn = $("<button>", {
+                                                    type: "button",
+                                                    class: "Btn Btn-secondary",
+                                                });
+                                                friendRequestDeclineBtn.text("decline");
+                                                var friendRequestAcceptBtn = $("<button>", {
+                                                    type: "button",
+                                                    class: "Btn Btn-primary",
+                                                });
+                                                friendRequestAcceptBtn.text("accept");
+                                                friendRequestBtnDiv.append(friendRequestDeclineBtn, friendRequestAcceptBtn);
+
+                                                // Add event handlers to the buttons
+                                                friendRequestDeclineBtn.on("click", function () {
+                                                    handleFriendRequest(recipientId, 0, message.MessageId, messageText);
+
+                                                });
+
+                                                friendRequestAcceptBtn.on("click", function () {
+                                                    handleFriendRequest(recipientId, 1, message.MessageId, messageText);
+                                                });
+
+                                                break;
+                                            case false:
+                                                var friendRequestHeaderStatus = $("<p>", {
+                                                    class: "status",
+                                                });
+                                                var friendRequestStatusIcon = $("<span>", {});
+                                                friendRequestStatusIcon.addClass("status-icon fa-solid fa-xmark");
+                                                friendRequestHeaderStatus.append("Declined"); // Append the text after the icon
+                                                friendRequestHeaderStatus.append(friendRequestStatusIcon); // Add the icon first
+                                                // Append the status to friendRequestHeader instead of friendRequestBtnDiv
+                                                friendRequestHeader.append(friendRequestHeaderStatus);
+                                                // Remove the <hr> element and friendRequestBtnDiv
+                                                friendRequestHeader.next("hr").remove();
+                                                friendRequestBtnDiv.remove();
+                                                break;
+                                            case true:
+                                                var friendRequestHeaderStatus = $("<p>", {
+                                                    class: "status",
+                                                });
+                                                var friendRequestStatusIcon = $("<span>", {});
+                                                friendRequestStatusIcon.addClass("status-icon fa-solid fa-check");
+                                                friendRequestHeaderStatus.append("Accepted"); // Append the text after the icon
+                                                friendRequestHeaderStatus.append(friendRequestStatusIcon); // Add the icon first
+                                                // Append the status to friendRequestHeader instead of friendRequestBtnDiv
+                                                friendRequestHeader.append(friendRequestHeaderStatus);
+                                                // Remove the <hr> element and friendRequestBtnDiv
+                                                friendRequestHeader.next("hr").remove();
+                                                friendRequestBtnDiv.remove();
+                                                break;
+                                        }
+                                    }
+                                    break;
+                                    if (false) {
+                                        //case 2:
+                                        //    // game invite
+                                        //    // sent game invite
+                                        //    if (messageClass == "message sent") {
+                                        //        messageText = $("<div>", {
+                                        //            class: "game-invite",
+                                        //        });
+                                        //        var gameInviteHeader = $("<div>", {
+                                        //            class: "game-invite-header",
+                                        //        });
+                                        //        var gameInviteHeaderMessageText = $("<p>", {
+                                        //            class: "message-text",
+                                        //        });
+                                        //        gameInviteHeaderMessageText.text("Game Invite Sent To");
+                                        //        var gameInviteHeaderUsername = $("<p>", {
+                                        //            class: "username",
+                                        //        });
+                                        //        gameInviteHeaderUsername.text($("#MessageDialogeModalHeading").text());
+                                        //        var gameInviteHeaderStatus = $("<p>", {
+                                        //            class: "status",
+                                        //        });
+                                        //        switch (message.IsAccepted) {
+                                        //            case null:
+                                        //                gameInviteHeaderStatus.text("Pending");
+                                        //                break;
+                                        //            case 0:
+                                        //                gameInviteHeaderStatus.text("Declined");
+                                        //                break;
+                                        //            case 1:
+                                        //                gameInviteHeaderStatus.text("Accepted");
+                                        //                break;
+                                        //        }
+                                        //        gameInviteHeader.append(gameInviteHeaderMessageText, gameInviteHeaderUsername, gameInviteHeaderStatus);
+                                        //        messageText.append(gameInviteHeader);
+                                        //    }
+                                        //    // recived game invite
+                                        //    else {
+                                        //        messageText = $("<div>", {
+                                        //            class: "game-invite",
+                                        //        });
+                                        //        var gameInviteHeader = $("<div>", {
+                                        //            class: "game-invite-header",
+                                        //        });
+                                        //        var gameInviteHeaderMessageText = $("<p>", {
+                                        //            class: "message-text",
+                                        //        });
+                                        //        gameInviteHeaderMessageText.text("Game Invite Sent To");
+                                        //        var gameInviteHeaderUsername = $("<p>", {
+                                        //            class: "username",
+                                        //        });
+                                        //        var gameInviteBtnDiv = $("<div>", {
+                                        //            class: "game-invite-btn-div",
+                                        //        });
+                                        //        switch (message.IsAccepted) {
+                                        //            case null:
+                                        //                // pending so display buttons
+                                        //                var gameInviteDeclineBtn = $("<button>", {
+                                        //                    class: "Btn Btn-secondary",
+                                        //                });
+                                        //                gameInviteDeclineBtn.text("decline");
+                                        //                var gameInviteAcceptBtn = $("<button>", {
+                                        //                    class: "Btn Btn-primary",
+                                        //                });
+                                        //                gameInviteAcceptBtn.text("accept");
+                                        //                gameInviteBtnDiv.append(gameInviteDeclineBtn, gameInviteAcceptBtn);
+                                        //                break;
+                                        //            case 0:
+                                        //                // declined so display declined
+                                        //                var gameInviteStatus = $("<p>", {
+                                        //                    class: "status",
+                                        //                });
+                                        //                gameInviteStatus.text("declined");
+                                        //                gameInviteBtnDiv.append(gameInviteStatus)
+                                        //                break;
+                                        //            case 1:
+                                        //                // accepted so display accepted
+                                        //                var gameInviteStatus = $("<p>", {
+                                        //                    class: "status",
+                                        //                });
+                                        //                gameInviteStatus.text("accepted");
+                                        //                gameInviteBtnDiv.append(gameInviteStatus)
+                                        //                break;
+                                        //        }
+                                        //        gameInviteHeader.append(gameInviteHeaderMessageText, gameInviteHeaderUsername, gameInviteBtnDiv);
+                                        //        messageText.append(gameInviteHeader);
+                                        //    }
+                                        //    break;
+                                    }
+                            }
+
 
                             var messageTime = $("<p>", {
                                 class: "message-time",
@@ -300,6 +516,8 @@
                             // Append the messageDiv to messageDialogeDiv
                             messageDialogeDiv.append(messageDiv);
                         }
+                        scrollToBottom();
+
                     } else {
                         console.log("No messages found between users.");
                     }
@@ -310,9 +528,76 @@
             });
         }
 
+        // Scroll to the bottom of the messageDialogeDivParent
+        function scrollToBottom() {
+            var messageContainer = document.getElementById("messageDialogeDivParent");
+            messageContainer.scrollTop = messageContainer.scrollHeight - messageContainer.clientHeight;
+        }
+
+        // Create a mutationObserver to watch for changes in the messageDialogeDiv
+        var messageContainer = document.getElementById("messageDialogeDivParent");
+        var observer = new MutationObserver(scrollToBottom);
+
+        // Configuration of the observer:
+        var config = { childList: true, subtree: true };
+
+        // Start observing the target node for configured mutations
+        observer.observe(messageContainer, config);
+        observer.disconnect();
+
+        // event handler for when a user clicks a button on the friend request
+        function handleFriendRequest(recipientId, isAccepted, messageId, messageText) {
+            $.ajax({
+                type: "POST",
+                url: "Messages.aspx/HandleFriendRequest",
+                data: JSON.stringify({ recipientId: recipientId, isAccepted: isAccepted, messageId: messageId }), // Pass recipientId and decision to the server
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (isAccepted === 1) {
+                        console.log("Friend request accepted successfully.");
+                        // You can perform additional actions here after the friend request is accepted
+                        messageText.find("hr").remove();
+                        messageText.find(".friend-request-btn-div").remove();
 
 
+                        // Add the status to friendRequestHeader
+                        var friendRequestHeader = messageText.find(".friend-request-header");
+                        var friendRequestHeaderStatus = $("<p>", {
+                            class: "status",
+                        });
+                        var friendRequestStatusIcon = $("<span>", {});
+                        friendRequestStatusIcon.addClass("status-icon fa-solid fa-check");
+                        friendRequestHeaderStatus.append("Accepted"); // Append the text after the icon
+                        friendRequestHeaderStatus.append(friendRequestStatusIcon); // Add the icon first
+                        // Append the status to friendRequestHeader instead of friendRequestBtnDiv
+                        friendRequestHeader.append(friendRequestHeaderStatus);
 
+                    } else if (isAccepted === 0) {
+                        console.log("Friend request declined successfully.");
+                        // You can perform additional actions here after the friend request is declined
+                        messageText.find("hr").remove();
+                        messageText.find(".friend-request-btn-div").remove();
+
+
+                        // Add the status to friendRequestHeader
+                        var friendRequestHeader = messageText.find(".friend-request-header");
+                        var friendRequestHeaderStatus = $("<p>", {
+                            class: "status",
+                        });
+                        var friendRequestStatusIcon = $("<span>", {});
+                        friendRequestStatusIcon.addClass("status-icon fa-solid fa-xmark");
+                        friendRequestHeaderStatus.append("Declined"); // Append the text after the icon
+                        friendRequestHeaderStatus.append(friendRequestStatusIcon); // Add the icon first
+                        // Append the status to friendRequestHeader instead of friendRequestBtnDiv
+                        friendRequestHeader.append(friendRequestHeaderStatus);
+                    }
+                },
+                error: function (error) {
+                    console.log("Error handling friend request: " + error);
+                }
+            });
+        }
 
         var searchTimeout;
 
@@ -330,7 +615,6 @@
 
         // Function to perform user search using AJAX
         function performSearch(searchText) {
-            console.log("Searching for: " + searchText);
             $.ajax({
                 type: "POST",
                 url: "Messages.aspx/SearchUsers",
@@ -338,7 +622,6 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (response) {
-                    console.log("AJAX success. Response:", response);
 
                     if (response && response.d && Array.isArray(response.d) && response.d.length > 0) {
                         var userTilesContainer = $("#UserTilesPlaceholder");
@@ -352,7 +635,7 @@
 
                             var tile = $("<button>", {
                                 runat: "server",
-                                class: "Btn user-tile",
+                                class: "Btn friend",
                             });
                             var image = $("<img>", { src: account.ProfilePictureString });
                             var username = $("<p>").text(account.Username);
@@ -373,25 +656,12 @@
                     }
                 },
                 error: function (textStatus, errorThrown) {
-                    console.log("AJAX error. Status:", textStatus);
                     console.log("Error: " + errorThrown);
                 }
             });
         }
 
         // Function to handle tile click event
-        function handleTileClick(event) {
-            event.preventDefault(); // Prevent the default button behavior
-            $("#NewMessageModal").modal("hide");
-
-            var username = $(event.currentTarget).data('username'); // Retrieve the username from the data attribute of the clicked tile
-            var recipientId = $(event.currentTarget).data('recipient-id'); // Retrieve the recipientId from the data attribute of the clicked tile
-
-            $("#MessageDialogeModalHeading").text(username); // Set the modal heading to the username of the clicked tile
-            $("#MessageDialogeModalHeading").data('recipient-id', recipientId); // Store the recipientId as a data attribute in the heading element
-
-            $("#MessageDialogeModal").modal("show"); // Show the modal after setting the recipientId
-        }
 
         // Attach event handler to search button click
         $(".search-bar-Btn").on("click", function () {
@@ -439,29 +709,62 @@
                 type: "POST",
                 url: "Messages.aspx/SendMessage",
                 data: JSON.stringify({ message: message, recipientId: recipientId, messageType: messageType, isAccepted: isAccepted }),
-                contentType: "application/json; charset=utf-8", // Set the correct content type
-                dataType: "json", // Expect JSON as the response from the server
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
                 success: function (response) {
                     var newMessage = '<div class="message sent">' +
-                        '<img src="<%=((Chess_App.PlayerAccount)Session["AccountInfo"]).ProfilePictureString%>" style="width: 4rem; height: 4rem; object-fit: cover; border-radius: 4px;"/>' +
+                '<img src="<%=((Chess_App.PlayerAccount)Session["AccountInfo"]).ProfilePictureString%>" style="width: 4rem; height: 4rem; object-fit: cover; border-radius: 4px;"/>' +
                         '<p class="message-text">' + message + '</p>' +
-                        '<p class="message-time"><b><%=((Chess_App.PlayerAccount)Session["AccountInfo"]).Username%> </b>' + getCurrentTimeFormatted() + '</p>' +
+                '<p class="message-time"><b><%=((Chess_App.PlayerAccount)Session["AccountInfo"]).Username%> </b>' + getCurrentTimeFormatted() + '</p>' +
                         '</div>';
                     $('.message-dialoge').append(newMessage);
+                    // Get the container element
+                    var messageContainer = document.getElementById("messageDialogeDivParent");
+
+                    // Check if the user is near the bottom before scrolling
+                    if (isUserNearBottom(messageContainer)) {
+                        console.log('User is near the bottom. Scrolling to bottom...');
+                        scrollToBottom(messageContainer);
+
+                        // Create the MutationObserver if it doesn't exist
+                        if (!messageContainer.observer) {
+                            var observer = new MutationObserver(scrollToBottom);
+
+                            // Configuration of the observer:
+                            var config = { childList: true, subtree: true };
+
+                            // Start observing the target node for configured mutations
+                            observer.observe(messageContainer, config);
+
+                            // Store the observer as a property of the messageContainer
+                            messageContainer.observer = observer;
+                        }
+                    } else {
+                        console.log('User is not near the bottom.');
+                        // If the user is not near the bottom, disconnect the observer if it's connected
+                        if (messageContainer.observer) {
+                            messageContainer.observer.disconnect();
+                            messageContainer.observer = null;
+                            console.log('Observer disconnected.');
+                        }
+                    }
                 },
                 error: function (error) {
-                    // Handle the error response here
                     console.error('Error sending the message:', error);
-
-                    // Optionally, display an error message to the user
-                    // For example, you could create a <div> element with an error message and append it to the message-dialoge div
-                    //var errorMessage = '<div class="error-message">Error sending the message.</div>';
-                    //$('.message-dialoge').append(errorMessage);
                 }
             });
 
             // Optionally, you can clear the message input after sending the message
             $("#messagePromptInp").val("");
+        }
+
+        function isUserNearBottom(container) {
+            var buffer = 600; // Adjust this value as needed, it represents how close to the bottom the user should be considered "near"
+            var isNearBottom = container.scrollHeight - container.clientHeight - container.scrollTop <= buffer;
+
+            console.log("isNearBottom:", isNearBottom); // Log the value to the console for debugging
+
+            return isNearBottom;
         }
 
         function getCurrentTimeFormatted() {
