@@ -33,15 +33,6 @@ namespace Chess_App
         protected global::System.Web.UI.WebControls.LinkButton FriendsBtn;
 
         /// <summary>
-        /// GameSetupBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton GameSetupBtn;
-
-        /// <summary>
         /// MessageBtn control.
         /// </summary>
         /// <remarks>
@@ -51,49 +42,13 @@ namespace Chess_App
         protected global::System.Web.UI.WebControls.LinkButton MessageBtn;
 
         /// <summary>
-        /// PlayOnlineBtn control.
+        /// GameSetupBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton PlayOnlineBtn;
-
-        /// <summary>
-        /// PlayComputereBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton PlayComputereBtn;
-
-        /// <summary>
-        /// PlayFriendBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton PlayFriendBtn;
-
-        /// <summary>
-        /// SignOutBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton SignOutBtn;
-
-        /// <summary>
-        /// SignInBtn control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton SignInBtn;
+        protected global::System.Web.UI.WebControls.LinkButton GameSetupBtn;
 
         /// <summary>
         /// ModalLoginBtn control.

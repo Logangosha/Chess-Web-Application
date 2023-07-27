@@ -13,13 +13,20 @@ namespace Chess_App.Classes
             var accountInfo = HttpContext.Current.Session["AccountInfo"];
             if (accountInfo != null)
             {
-                if (accountInfo.GetType() == typeof(PlayerAccount))
-                    return true;
-                else
+                if (accountInfo is Guest)
+                {
                     return false;
+                }
+                else
+                {
+                    return true;
+                }
             }
             else
+            {
+                HttpContext.Current.Response.Redirect("Default.aspx");
                 return false;
+            }
         }
     }
 }

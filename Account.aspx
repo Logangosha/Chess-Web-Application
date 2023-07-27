@@ -31,7 +31,15 @@
                     Delete Account
                         <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
                 </button>
-                <asp:LinkButton runat="server" ID="goHomeBtn" OnClick="goHomeBtn_Click" CssClass="Btn Btn-primary Btn-large mt-2"><span class="user-control-pannel-body-btn-icon fa fa-sign-in"></span>&nbsp;Go Home</asp:LinkButton>
+                <button runat="server" id="signOutBtn" onserverclick="SignOutBtn_Click" type="button"  class="Btn Btn-link">
+                    <i class="Btn-link-icon fa fa-sign-out"></i>
+                    Sign Out
+                        <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
+                </button>
+                <asp:LinkButton runat="server" ID="goHomeBtn" OnClick="goHomeBtn_Click" CssClass="Btn Btn-primary Btn-large mt-2">
+                    <span class="pe-2 fa-solid fa-house"></span>
+                    Go Home
+                </asp:LinkButton>
             </div>
         </div>
     </div>

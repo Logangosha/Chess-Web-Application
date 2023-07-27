@@ -78,6 +78,11 @@ namespace Chess_App
             }
         }
 
+        protected void goHomeBtn_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("home.aspx");
+        }
+
         [WebMethod]
         public static List<PlayerAccount> SearchUsers(string searchText)
         {

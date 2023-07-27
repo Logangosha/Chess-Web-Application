@@ -17,8 +17,6 @@ namespace Chess_App
         {
             if (!Page.IsPostBack)
             {
-                //primaryColor.Value = Session["primaryColor"].ToString();
-                //backgroundColor.Value = Session["backgroundColor"].ToString();
             }
 
             UsingAccount = IsUsingAccount();
@@ -85,13 +83,6 @@ namespace Chess_App
                 case "Friends":  Response.Redirect("GameSetup.aspx?type=" + e.CommandArgument + ""); break;
                 case "Default":  Response.Redirect("GameSetup.aspx?type=" + e.CommandArgument + ""); break;
             } 
-        }
-
-        protected void SignOutBtn_Click(object sender, EventArgs e)
-        {
-            PlayerAccount playerAccount = (PlayerAccount)Session["AccountInfo"];
-            playerAccount.Logout();
-            Response.Redirect("Default.aspx");
         }
 
         protected void SignInBtn_Click(object sender, EventArgs e)

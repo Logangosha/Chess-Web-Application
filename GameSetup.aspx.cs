@@ -19,6 +19,11 @@ namespace Chess_App
                 }
             }
         }
+
+        protected void goHomeBtn_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("home.aspx");
+        }
         protected void GameSetup_Command(object sender, CommandEventArgs e)
         {
             switch (e.CommandArgument.ToString())

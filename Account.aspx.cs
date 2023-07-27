@@ -58,7 +58,12 @@ namespace Chess_App
         }
 
 
-
+        protected void SignOutBtn_Click(object sender, EventArgs e)
+        {
+            PlayerAccount playerAccount = (PlayerAccount)Session["AccountInfo"];
+            playerAccount.Logout();
+            Response.Redirect("Default.aspx");
+        }
 
 
         protected void DeleteAccountModalBtn_Click(object sender, EventArgs e)

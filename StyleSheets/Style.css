@@ -243,7 +243,7 @@ padding: 10px 20px;
 /*large button*/
 .Btn-large {
 padding: 1em;
-font-size: 20px;
+font-size: 1.5em;
 }
 
 /*icon*/
@@ -256,6 +256,16 @@ font-size: 1.5rem;
 .Btn-icon {
 padding: 10px 20px;
 }
+
+.Btn-icon:hover {
+    background-color: var(--primary-color) !important;
+    color: var(--background-color) !important;
+}
+
+    .Btn-icon:focus {
+        background-color: var(--primary-color) !important;
+        color: var(--background-color) !important;
+    }
 
 /*icon small button*/
 .Btn-icon-small {
@@ -356,7 +366,7 @@ width: 100%;
 height: fit-content;
 background-color: var(--background-color);
 color: var(--primary-color);
-align-items: center;
+align-items: baseline;
 padding: 1em;
 }
 
@@ -800,22 +810,7 @@ padding-right: 10em !important;
 }
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
-.user-control-pannel {
-height: 100% !important;
-}
 
-.user-content-pannel {
-height: 100% !important;
-}
-
-.user-control-pannel-nav {
-min-height: 10% !important;
-/**/
-}
-
-.user-control-pannel-body {
-height: calc(90% - 2em) !important;
-}
 
 .MiddleIcon::before {
 content: "\f0c0" !important;
@@ -853,20 +848,6 @@ font-size: var(--h2-font-size-mobile) !important;
 box-shadow: 0px -48px 62px 3px rgba(0,0,0,1) inset !important;
 -webkit-box-shadow: 0px -48px 62px 3px rgba(0,0,0,1) inset !important;
 -moz-box-shadow: 0px -48px 62px 3px rgba(0,0,0,1) inset !important;
-}
-
-.user-control-pannel {
-position: fixed;
-bottom: 0;
-height: 88px;
-}
-
-.user-control-pannel-nav {
-height: 100% !important;
-}
-
-.user-content-pannel {
-height: calc(100% - 88px) !important;
 }
 
 .MiddleIcon::before {
@@ -919,14 +900,43 @@ font-size: .8em !important;
 @media only screen and (max-width: 1200px) {
 }
 
-.section-col > .section {
-margin-bottom: 1em;
+.user-content {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.user-content-pannel {
+    overflow-y: auto; /* Add this line to enable scrolling when content overflows */
+}
+
+.user-control-pannel {
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    width: fit-content;
+    height:88px;
+    padding: 1em;
+    background-color: var(--primary-color);
+    gap: 1em;
+    border-radius: 4px 4px 0px 0px;
+    border-top: none;
+}
+
+img, svg {
+vertical-align: baseline !important;
 }
 
 .section {
 height: 60vh;
 margin: .1em !important;
 background-color: var(--background-color);
+border: 1px solid var(--primary-color);
 /*box-shadow: 0px 10px 13px 0px rgba(255,0,0,1);
 -webkit-box-shadow: 0px 10px 13px 0px rgba(255,0,0,1);
 -moz-box-shadow: 0px 10px 13px 0px rgba(255,0,0,1);*/
@@ -999,33 +1009,6 @@ box-shadow: 0px 0px 48px -9px rgba(0,0,0,1);
 -moz-box-shadow: 0px 0px 48px -9px rgba(0,0,0,1);
 }*/
 
-.user-control-pannel {
-background-color: var(--background-color);
-}
-
-.user-control-pannel-nav {
-padding: 1em !important;
-background-color: var(--primary-color);
-}
-
-.user-control-pannel-body-btn-icon {
-min-width: 1em;
-padding-right: .5em;
-}
-
-.user-control-pannel-body-btn-text {
-font-size: 2em;
-padding: 1em;
-padding-left: 2em;
-}
-
-.user-control-pannel-username {
-text-decoration: 1px solid underline;
-}
-
-.user-control-pannel-h {
-font-size: var(--user-control-pannel-h-font-size) !important;
-}
 
 /*.profile-head {
 background-color: var(--primary-color) !important;
@@ -1042,12 +1025,10 @@ margin: 0px auto 0px auto;
 }
 
 .profile-img {
-width: 100%;
 height: 100%;
 object-fit: cover;
 object-position: center;
-border-radius: 33%;
-border: 5px solid var(--primary-color);
+border-radius: 50%;
 }
 
 
