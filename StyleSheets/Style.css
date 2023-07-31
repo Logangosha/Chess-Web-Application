@@ -378,10 +378,55 @@ background-color: var(--status-color);
 margin-right: 1em !important;
 }
 
+
+    .Btn-link > p.Btn-link-text {
+        text-align: start;
+        font-size: 1.5rem !important;
+        word-wrap: break-word; /* Remove max-width and use word-wrap */
+        white-space: pre-wrap !important;
+        margin: 0;
+        margin-right: auto;
+        color: var(--primary-color);
+    }
+
 .Btn-link > i.Btn-link-arrow {
 margin-left: auto;
 padding-left: .5em;
 }
+
+.Btn-notification {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: fit-content;
+    height: fit-content;
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    align-items: center;
+    padding: 1em;
+}
+
+    .Btn-notification > i.Btn-notification-icon {
+        min-width:3em;
+        padding-right:.5em;
+    }
+
+    .Btn-notification > p.Btn-notification-text {
+        text-align: start;
+        font-size: 1.5rem !important;
+        word-wrap: break-word; /* Remove max-width and use word-wrap */
+        white-space: break-spaces !important;
+        text-overflow: ellipsis; /* Adds ellipsis (...) for truncated text */
+
+        margin: 0;
+        margin-right: auto;
+        color: var(--background-color)
+    }
+
+    .Btn-notification > i.Btn-notification-close {
+        min-width: 3em;
+        padding-left: .5em;
+    }
 
 input {
 display: block;
@@ -784,12 +829,7 @@ opacity: 1
 }
 
 /*SPECIFIC SIZE*/
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {
-}
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-}
+
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
 .message-dialoge > .message {
@@ -826,9 +866,14 @@ content: "\f0c0" !important;
 }
 /* Medium devices (landscape tablets, 768px and down) */
 @media only screen and (max-width: 768px) {
-/*h1.h1-landing {
-font-size:  !important;
-}*/
+
+    .button-content {
+        flex-direction: column !important;
+    }
+
+    .button-content > .Btn-square-icon {
+    width:100% !important;
+    }
 }
 /* Large devices (laptops/desktops, 992px and down) */
 @media only screen and (max-width: 992px) {
@@ -901,31 +946,45 @@ font-size: .8em !important;
 }
 
 .user-content {
-    height: 100vh;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-top: 88px; /* Height of .user-control-pannel */
+    height: 100vh; /* Set the height of the container to fill the viewport */
 }
 
 .user-content-pannel {
-    overflow-y: auto; /* Add this line to enable scrolling when content overflows */
+    margin: auto 0em;
+    /* ... Your existing styles ... */
+    min-width: 30%;
+    max-width: 100%;
+    align-items: center;
+    padding: 2em;
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    position: relative;
+    z-index: 1; /* Add z-index to the content panel */
 }
 
 .user-control-pannel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100% !important;
     display: flex;
     flex-direction: row;
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
+    justify-content: center;
     text-align: center;
-    width: fit-content;
-    height:88px;
+    width: auto;
+    height: 88px;
     padding: 1em;
     background-color: var(--primary-color);
     gap: 1em;
-    border-radius: 4px 4px 0px 0px;
+    border-radius: 0px 0px 0px 0px;
     border-top: none;
+    z-index: 2; /* Add higher z-index to the control panel */
 }
 
 img, svg {
@@ -933,69 +992,201 @@ vertical-align: baseline !important;
 }
 
 .section {
-height: 60vh;
-margin: .1em !important;
-background-color: var(--background-color);
-border: 1px solid var(--primary-color);
-/*box-shadow: 0px 10px 13px 0px rgba(255,0,0,1);
--webkit-box-shadow: 0px 10px 13px 0px rgba(255,0,0,1);
--moz-box-shadow: 0px 10px 13px 0px rgba(255,0,0,1);*/
+    position: relative;
+    height: fit-content;
+    width: 100%;
+    /*border: 1px solid var(--primary-color);*/
+    /*border-bottom: 1px solid var(--primary-color);*/
 }
 
-.section > .section-body {
-padding: 2em 2em 2em 2em;
+.section-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-color);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
-.section > .section-body > .section-header {
-display: block;
-text-align: center;
+.section-content {
+    position: relative;
+    display: flex;
+    /*z-index: 1;*/ /* Ensure the content is on top of the background */
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    margin: 0em;
 }
 
-.section > .section-body > .section-content {
-display: block;
-text-align: center;
+.button-content {
+    flex-wrap: nowrap;
+    gap:1.75em;
+    margin: 0em 0em;
+    flex-direction:row;
 }
 
-.section > .section-icon {
-background-color: var(--primary-color);
-display: block;
-text-align: center;
+.Btn-square-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: fit-content;
+    height: 10em !important;
+    padding: 0px !important;
+    margin: 0em .3em 0em 0em !important;
+    font-size: inherit !important;
+    background-color: var(--primary-color);
+    text-decoration: none;
+    border-radius: 10px;
+    transition: color .5s;
+    transition: box-shadow .15s, background-color .15s;
+    box-shadow: 5px 5px var(--status-color);
+    flex-wrap: nowrap;
 }
 
-.section > .section-icon > i {
-font-size: 4em;
-display: inline;
-padding: .5em;
-color: var(--background-color);
+    .Btn-square-icon:hover {
+        /* Styles for the button and the <p> element when hovering over .Btn-square-icon */
+        background-color: var(--status-color);
+        box-shadow: none;
+    }
+        .Btn-square-icon:hover > p {
+            color: var(--primary-color);
+        }
+
+        .Btn-square-icon:hover > i {
+            color: var(--primary-color);
+        }
+
+    .Btn-square-icon > img {
+        width: fit-content;
+        height: 75%;
+        margin: auto;
+    }
+
+    .Btn-square-icon > i {
+        height: auto;
+        margin: auto;
+        font-size: 5rem; /* Reset the font size for the icon */
+        color: var(--background-color);
+    }
+
+    .Btn-square-icon > p {
+        height: 25%;
+        display: block;
+        overflow: hidden; /* Prevents content from overflowing */
+        text-overflow: ellipsis; /* Adds ellipsis (...) for truncated text */
+        white-space: nowrap; /* Prevents line breaks */
+        /*align-self: center;*/
+        margin: 0;
+        padding: 0px 20px;
+        color: var(--background-color);
+    }
+
+.friends-table {
+    display: flex;
+    min-width: 100%;
+    flex-direction: column;
+    /* Optional: Add styling for the container */
+    border: 1px solid var(--primary-color);
+    border-collapse: collapse;
+    border-radius: 4px;
 }
 
-.section > .section-btn {
-display: inline-block;
-text-align: center;
-margin-bottom: 2em;
-padding-left: 0em;
-padding-right: 2em;
-box-sizing: border-box;
+.messages-table {
+    display: flex;
+    min-width: 100%;
+    flex-direction: column;
+    /* Optional: Add styling for the container */
+    border: 1px solid var(--primary-color);
+    border-collapse: collapse;
+    border-radius: 4px;
 }
 
-.LogInImg {
-background-image: url("../Images/twomenplayingchessdarkroom.jpg");
-background-position: center;
-background-repeat: no-repeat;
-background-size: cover;
-box-shadow: -25px -79px 118px 36px rgba(0,0,0,1) inset;
+.table-row {
+    display: flex;
+    text-align: left;
+    /* Optional: Add styling for the rows */
+    border: 1px solid var(--primary-color);
+}
+
+.header-row {
+    font-weight: bold;
+    /* Optional: Add styling for the header row */
+    background-color: var(--primary-color);
+    color: var(--background-color);
+}
+
+    .header-row > .table-cell {
+        color: var(--background-color);
+    }
+
+.table-cell {
+    flex: 1;
+    padding: 8px 16px;
+    /* Optional: Add styling for the cells */
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.overlay-button {
+    background-color:red;
+    color: white;
+    margin-bottom:2em;
+    padding:1em;
+    border-radius: 4px; 
+    z-index:2;
+}
+
+
+.blurred-image {
+    position: relative;
+    /* Update the position and size of the image to cover the whole container */
+    width: 100%;
+    border-radius: 8px;
+    height: 100%;
+    box-shadow:none;
+    /* Apply the blur filter */
+    filter: blur(7px); /* Adjust the blur strength as needed */
+    /* Add any other styles you need for the image */
+}
+/*#CreateAccountSectionBackground {
+    background-image: url("../Images/twomenplayingchessdarkroom.jpg");
+}
+#LoginSectionBackground {
+    background-image: url("../Images/treechessboard.jfif");
+}
+#PlayChessSectionBackground {
+    background-image: url("../Images/whitehandmovingchesspiece.jpg");
+}
+#FriendsSectionBackground {
+    background-image: url("../Images/peoplearoundchessboard.jpg");
+}
+#MessagesSectionBackground {
+    background-image: url("../Images/kidswritingmessage.jpg");
+}
+#UserAccountSectionBackground {
+    background-image: url("../Images/twomenplayingchessdarkroom.jpg");
+}
+#ChangeThemeSectionBackground {
+    background-image: url("../Images/ColorPicker.jfif");
+}*/
+.default-img {
+    background-image: url("../Images/Chessboard.gif");
+    background-position: center;
+    background-repeat: repeat-x;
+    background-size: auto;
+    filter: grayscale(100%);
+    /*box-shadow: -25px -79px 118px 36px rgba(0,0,0,1) inset;
 -webkit-box-shadow: -25px -79px 118px 36px rgba(0,0,0,1) inset;
--moz-box-shadow: -25px -79px 118px 36px rgba(0,0,0,1) inset;
+-moz-box-shadow: -25px -79px 118px 36px rgba(0,0,0,1) inset;*/
 }
 
-.logInBorder {
-box-shadow: 0px 0px 48px -9px rgba(0,0,0,1);
--webkit-box-shadow: 0px 0px 48px -9px rgba(0,0,0,1);
--moz-box-shadow: 0px 0px 48px -9px rgba(0,0,0,1);
-}
-
-.logInForm {
+.default-form {
 background-color: var(--login-background-color);
+padding: 6em;
+border-radius:0em;
 }
 
 .MainCard {
@@ -1288,7 +1479,7 @@ font-weight: 600 !important;
 /* Styles for the image container */
 height: 7rem !important;
 width: 7rem;
-border-radius: 0px 4px 4px 0px;
+border-radius: 4px 0px 0px 4px;
 object-fit: cover;
 object-position: center;
 }

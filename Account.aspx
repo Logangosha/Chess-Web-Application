@@ -13,27 +13,27 @@
                 <hr />
                 <button type="button" class="Btn Btn-link" data-bs-toggle="modal" data-bs-target="#ChangeThemeModal">
                     <i class="Btn-link-icon fa-solid fa-palette"></i>
-                    Change Theme
+                    <p class="Btn-link-text">Change Theme</p>
                         <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
                 </button>
                 <button type="button" class="Btn Btn-link" data-bs-toggle="modal" data-bs-target="#EditAccountModal">
                     <i class="Btn-link-icon fa-solid fa-pen"></i>
-                    Edit Account
+                    <p class="Btn-link-text">Edit Account</p>
                         <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
                 </button>
                 <button type="button" class="Btn Btn-link" data-bs-toggle="modal" data-bs-target="#ChangePasswordModal">
                     <i class="Btn-link-icon fa-solid fa-lock"></i>
-                    Change Password
+                    <p class="Btn-link-text">Change Password</p>
                         <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
                 </button>
                 <button text="Modal" type="button" class="Btn Btn-link" data-bs-toggle="modal" data-bs-target="#DeleteAccountModal">
                     <i class="Btn-link-icon fa-solid fa-trash"></i>
-                    Delete Account
+                    <p class="Btn-link-text">Delete Account</p>
                         <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
                 </button>
                 <button runat="server" id="signOutBtn" onserverclick="SignOutBtn_Click" type="button"  class="Btn Btn-link">
                     <i class="Btn-link-icon fa fa-sign-out"></i>
-                    Sign Out
+                    <p class="Btn-link-text">Sign Out</p>
                         <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
                 </button>
                 <asp:LinkButton runat="server" ID="goHomeBtn" OnClick="goHomeBtn_Click" CssClass="Btn Btn-primary Btn-large mt-2">

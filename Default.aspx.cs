@@ -16,7 +16,11 @@ namespace Chess_App
         {
             if (Session["AccountInfo"] != null)
             {
-                Session["AccountInfo"] = null;
+                HttpContext.Current.Session["AccountInfo"] = null;
+                HttpContext.Current.Session["GameType"] = null;
+                HttpContext.Current.Session["primaryColor"] = "#FFFFFF";
+                HttpContext.Current.Session["backgroundColor"] = "#000000";
+                HttpContext.Current.Session["statusColor"] = "#3B3B3B";
             }
         }
 
