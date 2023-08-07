@@ -89,5 +89,15 @@ namespace Chess_App
         {
             Response.Redirect("Login.aspx");
         }
+
+        protected void CreateAccountBtn_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Register.aspx");
+        }
+
+        protected void GoToGamePageBtn_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("GamePage.aspx");
+        }
     }
 }

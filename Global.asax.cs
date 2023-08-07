@@ -27,11 +27,7 @@ namespace Chess_App
 
         public static void ClearSessionData() {
             // clear session data
-            HttpContext.Current.Session["AccountInfo"] = null;
-            HttpContext.Current.Session["GameType"] = null;
-            HttpContext.Current.Session["primaryColor"] = "#FFFFFF";
-            HttpContext.Current.Session["backgroundColor"] = "#000000";
-            HttpContext.Current.Session["statusColor"] = "#3B3B3B";
+            HttpContext.Current.Session.Clear();
         }
     }
 }

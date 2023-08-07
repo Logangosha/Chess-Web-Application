@@ -11,7 +11,7 @@ namespace Chess_App.Classes
         public Player[] Players { get; set; }
         public string GameMode { get; set; }
         public string TimeSettings{ get; set; }
-        public Chessboard Chessboard { get; set; }
+        public testboard Chessboard { get; set; }
 
         public Game(Player[] players, string gameMode, string timeSettings)
         {
@@ -28,7 +28,7 @@ namespace Chess_App.Classes
             Players = players;
             GameMode = gameMode;
             TimeSettings = timeSettings;
-            Chessboard = new Chessboard(gameMode, timeSettings, players);
+            Chessboard = new testboard(gameMode, timeSettings, players);
         }
     }
 }

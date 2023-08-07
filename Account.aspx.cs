@@ -16,27 +16,26 @@ namespace Chess_App
             
             if (!Page.IsPostBack)
             {
-                primaryColor.Value = Session["primaryColor"].ToString();
-                backgroundColor.Value = Session["backgroundColor"].ToString();
-                statusColor.Value = Session["statusColor"].ToString();
                 if (Session["AccountInfo"] != null)
                 {
                     PlayerAccount account = (PlayerAccount)Session["AccountInfo"];
                     usernameTbx.Value = account.Username;
                     emailTbx.Value = account.Email;
                     profileImg.Src = account.ProfilePictureString;
+                    primaryColor.Value = account.Theme.PrimaryColor.ToString();
+                    backgroundColor.Value = account.Theme.BackgroundColor.ToString();
+                    statusColor.Value = account.Theme.StatusColor.ToString();
                 }
             }
         }
 
         protected void ChangeThemeSaveBtn_Click(object sender, EventArgs e)
         {
-            Session["primaryColor"] = primaryColor.Value;
-            Session["backgroundColor"] = backgroundColor.Value;
-            Session["statusColor"] = statusColor.Value;
-            PlayerAccount playerAccount = ((Chess_App.PlayerAccount)Session["AccountInfo"]);
+            PlayerAccount playerAccount = ((PlayerAccount)Session["AccountInfo"]);
             Theme newTheme = new Theme(primaryColor.Value, backgroundColor.Value, statusColor.Value);
             DatabaseAccess.SaveThemeSettings(playerAccount.Username, newTheme);
+            playerAccount.Theme = newTheme;
+            Session["AccountInfo"] = playerAccount;
         }
 
         [WebMethod]

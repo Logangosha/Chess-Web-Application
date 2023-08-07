@@ -11,7 +11,7 @@ namespace Chess_App
 {
 
 
-    public partial class GameHistory
+    public partial class MoveHistory
     {
     }
 }

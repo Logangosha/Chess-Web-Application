@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" Title="Game Page" AutoEventWireup="true" CodeBehind="GameSetup.aspx.cs" Inherits="Chess_App.GamePage" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Site.Master" Title="Game Setup" AutoEventWireup="true" CodeBehind="GameSetup.aspx.cs" Inherits="Chess_App.GameSetup" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="row p-0  h-100 MainCard">
@@ -6,35 +6,50 @@
             <% if ("Default" == Request.QueryString["type"])
                 {%>
             <div class="d-flex flex-column gap-4 justify-content-center">
-                 <asp:LinkButton runat="server" ID="goHomeBtn" OnClick="goHomeBtn_Click" class="Btn Btn-secondary Btn-link">
+                 <asp:LinkButton runat="server" ID="GoHomeBtn" OnClick="GoHomeBtn_Click" class="Btn Btn-secondary Btn-link">
                     <i class="Btn-link-icon fa-solid fa-arrow-left"></i>
                     Go Home
                 </asp:LinkButton>
-                <h1 class="h1-landing align-self-center">Play Chess!</h1>
-                <asp:LinkButton runat="server" ID="PlayOnlineBtn" CommandArgument="Online" OnCommand="GameSetup_Command" CssClass="Btn Btn-primary Btn-link"><span class=" fa fa-globe"></span>&nbsp;Play Online</asp:LinkButton>
-                <asp:LinkButton runat="server" ID="PlayComputereBtn" CommandArgument="Computer" OnCommand="GameSetup_Command" CssClass="Btn Btn-primary Btn-link"><span class="fa fa-computer"></span>&nbsp;Play Computer</asp:LinkButton>
-                <asp:LinkButton runat="server" ID="PlayFriendBtn" CommandArgument="Friends" OnCommand="GameSetup_Command" CssClass="Btn Btn-primary Btn-link"><span class="fa fa-user"></span>&nbsp;Play Friends</asp:LinkButton>
+                <h1 class="h1-landing align-self-center">PLAY CHESS</h1>
+                <hr />
+                 <asp:LinkButton runat="server" ID="PlayOnlineBtn" CommandArgument="Online" OnCommand="GameSetup_Command" class="Btn Btn-link">
+                    <i class="Btn-link-icon fa fa-globe"></i>
+                    <p class="Btn-link-text">Play Online</p>
+                        <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
+                </asp:LinkButton>
+                <asp:LinkButton runat="server" ID="PlayComputereBtn" CommandArgument="Computer" OnCommand="GameSetup_Command" class="Btn Btn-link">
+                    <i class="Btn-link-icon fa fa-computer"></i>
+                    <p class="Btn-link-text">Play Computer</p>
+                        <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
+                </asp:LinkButton>
+                 <asp:LinkButton runat="server" ID="PlayFriendBtn" CommandArgument="Friends" OnCommand="GameSetup_Command" class="Btn Btn-link">
+                    <i class="Btn-link-icon fa fa-user"></i>
+                    <p class="Btn-link-text">Play Friends</p>
+                        <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
+                </asp:LinkButton>
+                <%--<asp:LinkButton runat="server" ID="PlayOnlineBtn" CommandArgument="Online" OnCommand="GameSetup_Command" CssClass="Btn Btn-primary Btn-link"><span class=" fa fa-globe"></span>&nbsp;Play Online</asp:LinkButton>--%>
+                <%--<asp:LinkButton runat="server" ID="PlayComputereBtn" CommandArgument="Computer" OnCommand="GameSetup_Command" CssClass="Btn Btn-primary Btn-link"><span class="fa fa-computer"></span>&nbsp;Play Computer</asp:LinkButton>--%>
+                <%--<asp:LinkButton runat="server" ID="PlayFriendBtn" CommandArgument="Friends" OnCommand="GameSetup_Command" CssClass="Btn Btn-primary Btn-link"><span class="fa fa-user"></span>&nbsp;Play Friends</asp:LinkButton>--%>
             </div>
             <%}
                 else
                 {%>
-            <div class="d-grid text-center flex-column">
-                <button type="button" class="Btn Btn-link">
+            <div class="d-grid text-center flex-column gap-3 mb-5 ">
+                <button runat="server" onserverclick="GoBackBtn_Click" type="button" class="Btn Btn-link">
                     <i class="Btn-link-icon fa-solid fa-arrow-left"></i>
                     Go Back
                 </button>
                 <h1 class="h1-landing">SETUP</h1>
-            </div>
-            <div class="d-grid text-center flex-column gap-3 mb-5 ">
                 <h2>Complete to continue</h2>
                 <% if ("Friends" == Request.QueryString["type"])
                     {%>
                 <div class="dropdown w-100">
                     <button type="button" onclick="ShowDropdown('SelectFriendDiv')" id="SelectFriendBtn" class="Btn-dropdown Btn Btn-primary w-100">Select Friend</button>
                     <div id="SelectFriendDiv" class="dropdown-content">
-                        <a>Myke1122</a>
-                        <a>Choblo</a>
-                        <a>!_A_!</a>
+                        <a class="dropdown-content-friend">
+                        <img src="Images/twomenplayingchessdarkroom.jpg" class="dropdown-content-friend-img"/>
+                        <span class="dropdown-content-friend-name">Myke1122</span>
+                        </a>
                     </div>
                 </div>
                 <%} %>
@@ -51,9 +66,9 @@
                 <div class="dropdown w-100">
                     <button type="button" onclick="ShowDropdown('DifficultyDiv')" id="DifficultyBtn" class="Btn-dropdown Btn Btn-primary w-100">Difficulty</button>
                     <div id="DifficultyDiv" class="dropdown-content">
-                        <a><i class="fa fa-chess-knight pe-2"></i>Easy</a>
-                        <a><i class="fa-solid fa-sliders pe-2"></i>Medium</a>
-                        <a><i class="fa-solid fa-shuffle pe-2"></i>Hard</a>
+                        <a><i class="fa fa- pe-2"></i>Easy</a>
+                        <a><i class="fa-solid fa-face-meh pe-2"></i>Medium</a>
+                        <a><i class="fa-solid fa-skull pe-2"></i>Hard</a>
                     </div>
                 </div>
                 <%}
@@ -62,6 +77,7 @@
                 <div class="dropdown w-100">
                     <button type="button" onclick="ShowDropdown('TimeDiv')" id="TimeBtn" class="Btn-dropdown Btn Btn-primary w-100">Timer Settings</button>
                     <div id="TimeDiv" class="dropdown-content">
+                        <a>No Timer</a>
                         <a>1 Minute</a>
                         <a>5 Minute</a>
                         <a>10 Minute</a>
@@ -77,7 +93,7 @@
                     </div>
                 </div>
 
-                <asp:Button runat="server" ID="PlayChessBtn" disabled CssClass="Btn Btn-primary Btn-toggle mb-3 Btn-disabled" Text="Play Chess" />
+                <asp:Button runat="server" ID="PlayChessBtn" OnClick="PlayChessBtn_Click" CssClass="Btn Btn-primary Btn-toggle mb-3 Btn-disabled" Text="Play Chess" />
                 <%} %>
             </div>
         </div>
@@ -133,6 +149,7 @@
 
             <%if ("Friends" == Request.QueryString["type"])
             {%>
+            GetFriends();
             var SelectFriendChildren = document.getElementById("SelectFriendDiv").children;
             var SelectFriendBtn = document.getElementById("SelectFriendBtn");
             for (var i = 0; SelectFriendChildren[i]; i++) {
@@ -169,14 +186,50 @@
                     }
                 }
 
-                //if (GameModeBtn.textContent == "Game Mode" || TimeBtn.innerHTML == "Timer Settings" || ChooseColorBtn.innerHTML == "Select Color") {
-                //    PlayChessBtn.classList.add('Btn-disabled')
-                //    PlayChessBtn.disabled = true;
-                //}
-                //else {
-                //    PlayChessBtn.classList.remove('Btn-disabled')
-                //    PlayChessBtn.disabled = false;
-                //}
+            }
+            // ajax get friends
+            function GetFriends() {
+                $.ajax({
+                    type: "POST",
+                    url: "GameSetup.aspx/GetFriends",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response && response.d && Array.isArray(response.d)) {
+                            console.log("Friends data received:", response.d);
+
+                            // Clear the friendBoardDiv before updating with new data
+                            $("#SelectFriendDiv").empty();
+
+                            // Loop through each friend in the response
+                            response.d.forEach(function (friend) {
+                                // Create the elements for each friend
+                                var friendDiv = $("<div>", { class: "dropdown-content-friend" });
+                                var friendImg = $("<img>", { src: friend.ProfilePictureString, class: "dropdown-content-friend-img" });
+                                var friendName = $("<span>", { class: "dropdown-content-friend-name", text: friend.Username });
+
+                                // Append the elements to the friendDiv
+                                friendDiv.append(friendImg, friendName);
+
+                                // Add an onclick event to each friend to update "SelectFriendBtn" and call "CheckValidation()"
+                                friendDiv.on("click", function () {
+                                    $("#SelectFriendBtn").text(friend.Username);
+                                    CheckValidation();
+                                });
+
+                                // Append the friendDiv to the "SelectFriendDiv"
+                                $("#SelectFriendDiv").append(friendDiv);
+                            });
+
+                        } else {
+                            console.log("No friends data received.");
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.log("AJAX error. Status:", textStatus);
+                        console.log("Error: " + errorThrown);
+                    }
+                });
             }
 
             function DisablePlayChessBtn() {
@@ -213,8 +266,29 @@
                     ClearDropdowns();
                 }
             }
-            <%}%>
+            <%}%>    
+
+            // Function to clear all dropdowns and hide them
+            function ClearDropdowns() {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+
+            // Close the dropdown if the user clicks outside of it
+            window.onclick = function (event) {
+                // If the user does not click on a drop-down button, close any open dropdowns
+                if (!event.target.matches('.Btn-dropdown')) {
+                    ClearDropdowns();
+                }
+            }
         </script>
+
+
     </div>
 </asp:Content>
 

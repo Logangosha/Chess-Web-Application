@@ -112,8 +112,9 @@
     <Content Include="FriendAccount.aspx" />
     <Content Include="Friends.aspx" />
     <Content Include="ActiveGame.aspx" />
-    <Content Include="GameHistory.aspx" />
+    <Content Include="History.aspx" />
     <Content Include="GameOver.aspx" />
+    <Content Include="GamePage.aspx" />
     <Content Include="GameSetup.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Home.aspx" />
@@ -143,10 +144,14 @@
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Classes\Chessboard.cs" />
+    <Compile Include="Classes\Move.cs" />
+    <Compile Include="Classes\Piece.cs" />
+    <Compile Include="Classes\Square.cs" />
     <Compile Include="Classes\Theme.cs" />
     <Compile Include="Classes\AccountValidation.cs" />
     <Compile Include="Classes\Bishop.cs" />
-    <Compile Include="Classes\Chessboard.cs" />
+    <Compile Include="Classes\testboard.cs" />
     <Compile Include="Classes\ChessboardTiles.cs" />
     <Compile Include="Classes\ChessPiece.cs" />
     <Compile Include="Classes\Computer.cs" />
@@ -191,12 +196,16 @@
     <Compile Include="ActiveGame.aspx.designer.cs">
       <DependentUpon>ActiveGame.aspx</DependentUpon>
     </Compile>
-    <Compile Include="GameHistory.aspx.cs">
-      <DependentUpon>GameHistory.aspx</DependentUpon>
+    <Compile Include="Classes\GameData.cs" />
+    <Compile Include="History.aspx.cs">
+      <DependentUpon>History.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="GameHistory.aspx.designer.cs">
-      <DependentUpon>GameHistory.aspx</DependentUpon>
+    <Compile Include="History.aspx.designer.cs">
+      <DependentUpon>History.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\MoveHistory.cs">
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="GameOver.aspx.cs">
       <DependentUpon>GameOver.aspx</DependentUpon>
@@ -204,6 +213,13 @@
     </Compile>
     <Compile Include="GameOver.aspx.designer.cs">
       <DependentUpon>GameOver.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GamePage.aspx.cs">
+      <DependentUpon>GamePage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GamePage.aspx.designer.cs">
+      <DependentUpon>GamePage.aspx</DependentUpon>
     </Compile>
     <Compile Include="GameSetup.aspx.cs">
       <DependentUpon>GameSetup.aspx</DependentUpon>
@@ -229,7 +245,7 @@
     <Compile Include="Logout.aspx.designer.cs">
       <DependentUpon>Logout.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Message.cs" />
+    <Compile Include="Classes\Message.cs" />
     <Compile Include="Messages.aspx.cs">
       <DependentUpon>Messages.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

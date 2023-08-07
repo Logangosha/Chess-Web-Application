@@ -63,16 +63,18 @@ overflow-wrap:break-word;*/
 --login-border-color: var(--background-color);
 }
 
+/*
+        var defaultStatusColor = "#3B3B3B";
+    var defaultPrimaryColor = "#FFFFFF";
+    var defaultBackgroundColor = "#000000";
+*/
+
 :root {
 /*these variables will be set on application start*/
---primary-color: #FF0000;
---background-color: black;
---status-color: --primary-color;
---success-color: rgb(0, 192, 0);
---success-status-color: #008000;
+--primary-color: #FFFFFF;
+--background-color: #000000;
+--status-color: #3B3B3B;
 --transparent: transparent;
---danger-color: rgb(255, 0, 0);
---danger-status-color: #e60000;
 }
 
 /*Typeography*/
@@ -144,8 +146,7 @@ border: none;
 box-sizing: border-box;
 font-size: 1.5rem;
 font-weight: 900;
-transition: background-color 0.1s ease;
-transition: color 0.1s ease;
+transition: background-color 0.1s ease, color 0.1s ease;
 text-decoration: none;
 white-space: nowrap;
 display: inline-block;
@@ -258,14 +259,18 @@ padding: 10px 20px;
 }
 
 .Btn-icon:hover {
-    background-color: var(--primary-color) !important;
-    color: var(--background-color) !important;
+background-color: var(--primary-color) !important;
 }
 
-    .Btn-icon:focus {
-        background-color: var(--primary-color) !important;
-        color: var(--background-color) !important;
-    }
+.Btn-secondary.Btn-icon:hover {
+background-color: var(--status-color);
+color: var(--primary-color);
+}
+
+.Btn-icon:focus {
+background-color: var(--primary-color) !important;
+color: var(--background-color) !important;
+}
 
 /*icon small button*/
 .Btn-icon-small {
@@ -352,7 +357,7 @@ color: var(--primary-color);
 }
 
 a.Btn-icon:hover {
-color: var(--primary-color);
+color: var(--background-color);
 }
 
 .GetStartedBtn {
@@ -376,57 +381,65 @@ background-color: var(--status-color);
 
 .Btn-link > i.Btn-link-icon {
 margin-right: 1em !important;
+color: var(--primary-color);
+transition: color 0.1s ease;
+}
+
+.Btn-secondary.Btn-link:hover > i.Btn-link-icon {
+margin-right: 1em !important;
+color: var(--status-color);
 }
 
 
-    .Btn-link > p.Btn-link-text {
-        text-align: start;
-        font-size: 1.5rem !important;
-        word-wrap: break-word; /* Remove max-width and use word-wrap */
-        white-space: pre-wrap !important;
-        margin: 0;
-        margin-right: auto;
-        color: var(--primary-color);
-    }
+.Btn-link > p.Btn-link-text {
+text-align: start;
+font-size: 1.5rem !important;
+word-wrap: break-word; /* Remove max-width and use word-wrap */
+white-space: pre-wrap !important;
+margin: 0;
+margin-right: auto;
+color: var(--primary-color);
+}
 
 .Btn-link > i.Btn-link-arrow {
 margin-left: auto;
 padding-left: .5em;
+color: var(--primary-color);
 }
 
 .Btn-notification {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: fit-content;
-    height: fit-content;
-    background-color: var(--primary-color);
-    color: var(--background-color);
-    align-items: center;
-    padding: 1em;
+display: flex;
+flex-direction: row;
+width: 100%;
+height: fit-content;
+height: fit-content;
+background-color: var(--primary-color);
+color: var(--background-color);
+align-items: center;
+padding: 1em;
 }
 
-    .Btn-notification > i.Btn-notification-icon {
-        min-width:3em;
-        padding-right:.5em;
-    }
+.Btn-notification > i.Btn-notification-icon {
+min-width:3em;
+padding-right:.5em;
+}
 
-    .Btn-notification > p.Btn-notification-text {
-        text-align: start;
-        font-size: 1.5rem !important;
-        word-wrap: break-word; /* Remove max-width and use word-wrap */
-        white-space: break-spaces !important;
-        text-overflow: ellipsis; /* Adds ellipsis (...) for truncated text */
+.Btn-notification > p.Btn-notification-text {
+text-align: start;
+font-size: 1.5rem !important;
+word-wrap: break-word; /* Remove max-width and use word-wrap */
+white-space: break-spaces !important;
+text-overflow: ellipsis; /* Adds ellipsis (...) for truncated text */
 
-        margin: 0;
-        margin-right: auto;
-        color: var(--background-color)
-    }
+margin: 0;
+margin-right: auto;
+color: var(--background-color)
+}
 
-    .Btn-notification > i.Btn-notification-close {
-        min-width: 3em;
-        padding-left: .5em;
-    }
+.Btn-notification > i.Btn-notification-close {
+min-width: 3em;
+padding-left: .5em;
+}
 
 input {
 display: block;
@@ -699,6 +712,40 @@ display: block;
 background-color: #ddd;
 }
 
+.dropdown-content > .dropdown-content-friend {
+display:flex;
+flex-direction: row;
+justify-content:center;
+padding: 10px;
+gap: 10px;
+}
+
+.dropdown-content > .dropdown-content-friend:hover {
+background-color: var(--primary-color) !important;
+font-weight: bolder;
+cursor: pointer;
+}
+
+.dropdown-content > .dropdown-content-friend > .dropdown-content-friend-img {
+height: 36px;
+width: 36px;
+object-fit: cover;
+object-position: center;
+border-radius: 100%;
+}
+.dropdown-content > .dropdown-content-friend > .dropdown-content-friend-name {
+max-width: 10em;
+display: block;
+overflow: hidden; /* Prevents content from overflowing */
+text-overflow: ellipsis; /* Adds ellipsis (...) for truncated text */
+white-space: nowrap; /* Prevents line breaks */
+color:var(--primary-color);
+}
+
+.dropdown-content > .dropdown-content-friend:hover > .dropdown-content-friend-name {
+color: var(--background-color);
+}
+
 .show {
 display: block;
 }
@@ -828,163 +875,48 @@ opacity: 1
 }
 }
 
-/*SPECIFIC SIZE*/
 
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
-.message-dialoge > .message {
-/* Styles for the first occurrence of message.username within message-dialoge */
-padding-left: 10em !important;
-padding-right: 10em !important;
-}
-
-.modal-footer.extra-spacing {
-padding-left: 10em !important;
-padding-right: 10em !important;
-}
-
-.modal-head.extra-spacing {
-padding-left: 10em !important;
-padding-right: 10em !important;
-}
-}
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
-
-
-.MiddleIcon::before {
-content: "\f0c0" !important;
-}
-}
-/* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {
-}
-
-/*SPECIFIC SIZES*/
-/* Small devices (portrait tablets and large phones, 600px and down) */
-@media only screen and (max-width: 600px) {
-}
-/* Medium devices (landscape tablets, 768px and down) */
-@media only screen and (max-width: 768px) {
-
-    .button-content {
-        flex-direction: column !important;
-    }
-
-    .button-content > .Btn-square-icon {
-    width:100% !important;
-    }
-}
-/* Large devices (laptops/desktops, 992px and down) */
-@media only screen and (max-width: 992px) {
-h1.h1-landing {
-font-size: var(--h1-landing-font-size-mobile) !important;
-}
-
-h1.h1-landing-sm {
-font-size: var(--h1-landing-sm-font-size-mobile) !important;
-}
-
-h2 {
-font-size: var(--h2-font-size-mobile) !important;
-}
-
-.LogInImg {
-box-shadow: 0px -48px 62px 3px rgba(0,0,0,1) inset !important;
--webkit-box-shadow: 0px -48px 62px 3px rgba(0,0,0,1) inset !important;
--moz-box-shadow: 0px -48px 62px 3px rgba(0,0,0,1) inset !important;
-}
-
-.MiddleIcon::before {
-content: "\f43c" !important;
-}
-
-.modal-title {
-font-size: 1.75em !important;
-}
-
-.modal-icon {
-font-size: 1.75em !important;
-}
-
-.modal-close {
-font-size: 1.75em !important;
-}
-
-.modal-body {
-/*justify-content: start;*/
-}
-
-.message-profile > .message-profile-body > .message-profile-heading > .status-indicator.online {
-/* Styles for the status indicator */
-min-width: 6px !important; /* Set a fixed width */
-min-height: 6px !important; /* Set a fixed height */
-}
-
-.message-profile > .message-profile-body > .message-profile-heading > .status-indicator {
-/* Styles for the status indicator */
-font-size: 1em !important;
-}
-
-.message-profile > .message-profile-body > .message-profile-heading > .username > h4 {
-/* Styles for the username container */
-font-size: 1em !important;
-}
-
-.message-profile > .message-profile-body > .message-profile-heading > .timestamp > p {
-/* Styles for the timestamp container */
-font-size: .7em !important;
-}
-
-.message-profile > .message-profile-body > .message-profile-message > p {
-/* Styles for the message text */
-font-size: .8em !important;
-}
-}
-/* Extra large devices (large laptops and desktops, 1200px and down) */
-@media only screen and (max-width: 1200px) {
-}
 
 .user-content {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding-top: 88px; /* Height of .user-control-pannel */
-    height: 100vh; /* Set the height of the container to fill the viewport */
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+justify-content: center;
+padding-top: 88px; /* Height of .user-control-pannel */
+height: 100vh; /* Set the height of the container to fill the viewport */
 }
 
 .user-content-pannel {
-    margin: auto 0em;
-    /* ... Your existing styles ... */
-    min-width: 30%;
-    max-width: 100%;
-    align-items: center;
-    padding: 2em;
-    display: flex;
-    flex-direction: column;
-    gap: 2em;
-    position: relative;
-    z-index: 1; /* Add z-index to the content panel */
+margin: auto 0em;
+/* ... Your existing styles ... */
+min-width: 30%;
+max-width: 100%;
+align-items: center;
+padding: 2em;
+display: flex;
+flex-direction: column;
+gap: 2em;
+position: relative;
+z-index: 1; /* Add z-index to the content panel */
 }
 
 .user-control-pannel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100% !important;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    text-align: center;
-    width: auto;
-    height: 88px;
-    padding: 1em;
-    background-color: var(--primary-color);
-    gap: 1em;
-    border-radius: 0px 0px 0px 0px;
-    border-top: none;
-    z-index: 2; /* Add higher z-index to the control panel */
+position: fixed;
+top: 0;
+left: 0;
+width: 100% !important;
+display: flex;
+flex-direction: row;
+justify-content: center;
+text-align: center;
+width: auto;
+height: 88px;
+padding: 1em;
+background-color: var(--primary-color);
+gap: 1em;
+border-radius: 0px 0px 0px 0px;
+border-top: none;
+z-index: 2; /* Add higher z-index to the control panel */
 }
 
 img, svg {
@@ -992,193 +924,193 @@ vertical-align: baseline !important;
 }
 
 .section {
-    position: relative;
-    height: fit-content;
-    width: 100%;
-    /*border: 1px solid var(--primary-color);*/
-    /*border-bottom: 1px solid var(--primary-color);*/
+position: relative;
+height: fit-content;
+width: 100%;
+/*border: 1px solid var(--primary-color);*/
+/*border-bottom: 1px solid var(--primary-color);*/
 }
 
 .section-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--background-color);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: var(--background-color);
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
 }
 
 .section-content {
-    position: relative;
-    display: flex;
-    /*z-index: 1;*/ /* Ensure the content is on top of the background */
-    flex-direction: column;
-    justify-content: space-between;
-    text-align: center;
-    margin: 0em;
+position: relative;
+display: flex;
+/*z-index: 1;*/ /* Ensure the content is on top of the background */
+flex-direction: column;
+justify-content: space-between;
+text-align: center;
+margin: 0em;
 }
 
 .button-content {
-    flex-wrap: nowrap;
-    gap:1.75em;
-    margin: 0em 0em;
-    flex-direction:row;
+flex-wrap: nowrap;
+gap:1.75em;
+margin: 0em 0em;
+flex-direction:row;
 }
 
 .Btn-square-icon {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: fit-content;
-    height: 10em !important;
-    padding: 0px !important;
-    margin: 0em .3em 0em 0em !important;
-    font-size: inherit !important;
-    background-color: var(--primary-color);
-    text-decoration: none;
-    border-radius: 10px;
-    transition: color .5s;
-    transition: box-shadow .15s, background-color .15s;
-    box-shadow: 5px 5px var(--status-color);
-    flex-wrap: nowrap;
+display: flex;
+flex-direction: column;
+justify-content: center;
+width: fit-content;
+height: 10em !important;
+padding: 0px !important;
+margin: 0em .3em 0em 0em !important;
+font-size: inherit !important;
+background-color: var(--primary-color);
+text-decoration: none;
+border-radius: 10px;
+transition: color .5s;
+transition: box-shadow .15s, background-color .15s;
+box-shadow: 5px 5px var(--status-color);
+flex-wrap: nowrap;
 }
 
-    .Btn-square-icon:hover {
-        /* Styles for the button and the <p> element when hovering over .Btn-square-icon */
-        background-color: var(--status-color);
-        box-shadow: none;
-    }
-        .Btn-square-icon:hover > p {
-            color: var(--primary-color);
-        }
+.Btn-square-icon:hover {
+/* Styles for the button and the <p> element when hovering over .Btn-square-icon */
+background-color: var(--status-color);
+box-shadow: none;
+}
+.Btn-square-icon:hover > p {
+color: var(--primary-color);
+}
 
-        .Btn-square-icon:hover > i {
-            color: var(--primary-color);
-        }
+.Btn-square-icon:hover > i {
+color: var(--primary-color);
+}
 
-    .Btn-square-icon > img {
-        width: fit-content;
-        height: 75%;
-        margin: auto;
-    }
+.Btn-square-icon > img {
+width: fit-content;
+height: 75%;
+margin: auto;
+}
 
-    .Btn-square-icon > i {
-        height: auto;
-        margin: auto;
-        font-size: 5rem; /* Reset the font size for the icon */
-        color: var(--background-color);
-    }
+.Btn-square-icon > i {
+height: auto;
+margin: auto;
+font-size: 5rem; /* Reset the font size for the icon */
+color: var(--background-color);
+}
 
-    .Btn-square-icon > p {
-        height: 25%;
-        display: block;
-        overflow: hidden; /* Prevents content from overflowing */
-        text-overflow: ellipsis; /* Adds ellipsis (...) for truncated text */
-        white-space: nowrap; /* Prevents line breaks */
-        /*align-self: center;*/
-        margin: 0;
-        padding: 0px 20px;
-        color: var(--background-color);
-    }
+.Btn-square-icon > p {
+height: 25%;
+display: block;
+overflow: hidden; /* Prevents content from overflowing */
+text-overflow: ellipsis; /* Adds ellipsis (...) for truncated text */
+white-space: nowrap; /* Prevents line breaks */
+/*align-self: center;*/
+margin: 0;
+padding: 0px 20px;
+color: var(--background-color);
+}
 
 .friends-table {
-    display: flex;
-    min-width: 100%;
-    flex-direction: column;
-    /* Optional: Add styling for the container */
-    border: 1px solid var(--primary-color);
-    border-collapse: collapse;
-    border-radius: 4px;
+display: flex;
+min-width: 100%;
+flex-direction: column;
+/* Optional: Add styling for the container */
+border: 1px solid var(--primary-color);
+border-collapse: collapse;
+border-radius: 4px;
 }
 
 .messages-table {
-    display: flex;
-    min-width: 100%;
-    flex-direction: column;
-    /* Optional: Add styling for the container */
-    border: 1px solid var(--primary-color);
-    border-collapse: collapse;
-    border-radius: 4px;
+display: flex;
+min-width: 100%;
+flex-direction: column;
+/* Optional: Add styling for the container */
+border: 1px solid var(--primary-color);
+border-collapse: collapse;
+border-radius: 4px;
 }
 
 .table-row {
-    display: flex;
-    text-align: left;
-    /* Optional: Add styling for the rows */
-    border: 1px solid var(--primary-color);
+display: flex;
+text-align: left;
+/* Optional: Add styling for the rows */
+border: 1px solid var(--primary-color);
 }
 
 .header-row {
-    font-weight: bold;
-    /* Optional: Add styling for the header row */
-    background-color: var(--primary-color);
-    color: var(--background-color);
+font-weight: bold;
+/* Optional: Add styling for the header row */
+background-color: var(--primary-color);
+color: var(--background-color);
 }
 
-    .header-row > .table-cell {
-        color: var(--background-color);
-    }
+.header-row > .table-cell {
+color: var(--background-color);
+}
 
 .table-cell {
-    flex: 1;
-    padding: 8px 16px;
-    /* Optional: Add styling for the cells */
-    color: var(--primary-color);
-    border: 1px solid var(--primary-color);
+flex: 1;
+padding: 8px 16px;
+/* Optional: Add styling for the cells */
+color: var(--primary-color);
+border: 1px solid var(--primary-color);
 }
 
 .overlay-button {
-    background-color:red;
-    color: white;
-    margin-bottom:2em;
-    padding:1em;
-    border-radius: 4px; 
-    z-index:2;
+background-color:red;
+color: white;
+margin-bottom:2em;
+padding:1em;
+border-radius: 4px; 
+z-index:2;
 }
 
 
 .blurred-image {
-    position: relative;
-    /* Update the position and size of the image to cover the whole container */
-    width: 100%;
-    border-radius: 8px;
-    height: 100%;
-    box-shadow:none;
-    /* Apply the blur filter */
-    filter: blur(7px); /* Adjust the blur strength as needed */
-    /* Add any other styles you need for the image */
+position: relative;
+/* Update the position and size of the image to cover the whole container */
+width: 100%;
+border-radius: 8px;
+height: 100%;
+box-shadow:none;
+/* Apply the blur filter */
+filter: blur(7px); /* Adjust the blur strength as needed */
+/* Add any other styles you need for the image */
 }
 /*#CreateAccountSectionBackground {
-    background-image: url("../Images/twomenplayingchessdarkroom.jpg");
+background-image: url("../Images/twomenplayingchessdarkroom.jpg");
 }
 #LoginSectionBackground {
-    background-image: url("../Images/treechessboard.jfif");
+background-image: url("../Images/treechessboard.jfif");
 }
 #PlayChessSectionBackground {
-    background-image: url("../Images/whitehandmovingchesspiece.jpg");
+background-image: url("../Images/whitehandmovingchesspiece.jpg");
 }
 #FriendsSectionBackground {
-    background-image: url("../Images/peoplearoundchessboard.jpg");
+background-image: url("../Images/peoplearoundchessboard.jpg");
 }
 #MessagesSectionBackground {
-    background-image: url("../Images/kidswritingmessage.jpg");
+background-image: url("../Images/kidswritingmessage.jpg");
 }
 #UserAccountSectionBackground {
-    background-image: url("../Images/twomenplayingchessdarkroom.jpg");
+background-image: url("../Images/twomenplayingchessdarkroom.jpg");
 }
 #ChangeThemeSectionBackground {
-    background-image: url("../Images/ColorPicker.jfif");
+background-image: url("../Images/ColorPicker.jfif");
 }*/
 .default-img {
-    background-image: url("../Images/Chessboard.gif");
-    background-position: center;
-    background-repeat: repeat-x;
-    background-size: auto;
-    filter: grayscale(100%);
-    /*box-shadow: -25px -79px 118px 36px rgba(0,0,0,1) inset;
+background-image: url("../Images/Chessboard.gif");
+background-position: center;
+background-repeat: repeat-x;
+background-size: auto;
+filter: grayscale(100%);
+/*box-shadow: -25px -79px 118px 36px rgba(0,0,0,1) inset;
 -webkit-box-shadow: -25px -79px 118px 36px rgba(0,0,0,1) inset;
 -moz-box-shadow: -25px -79px 118px 36px rgba(0,0,0,1) inset;*/
 }
@@ -1220,6 +1152,7 @@ height: 100%;
 object-fit: cover;
 object-position: center;
 border-radius: 50%;
+aspect-ratio:1/1;
 }
 
 
@@ -1260,17 +1193,17 @@ width:100%;
 
 /*friend tile*/
 .friend {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: fit-content;
-    background-color: var(--primary-color);
-    color: var(--background-color);
-    align-items: center;
-    padding: 0em;
-    transition: background-color 0.1s ease;
-    position: relative;
-    margin-bottom: 0.5rem;
+display: flex;
+flex-direction: row;
+width: 100%;
+height: fit-content;
+background-color: var(--primary-color);
+color: var(--background-color);
+align-items: center;
+padding: 0em;
+transition: background-color 0.1s ease;
+position: relative;
+margin-bottom: 0.5rem;
 }
 
 .friend:hover {
@@ -1524,11 +1457,11 @@ font-weight: 600;
 }
 
 .message-dialoge > .message > .message-text {
-    width: 65%;
-    font-weight: 600;
-    font-size: 1.5rem !important;
-    margin: 0px;
-    overflow-wrap: break-word;
+width: 65%;
+font-weight: 600;
+font-size: 1.5rem !important;
+margin: 0px;
+overflow-wrap: break-word;
 }
 
 .message-prompt {
@@ -1561,17 +1494,17 @@ transition: background-color .1s ease;
 }
 /*friend request*/
 .message-dialoge > .message > .friend-request {
-    display: flex;
-    flex-direction: column;
-    width: fit-content;
-    margin: 1em;
-    max-width: 100%;
-    min-width:30%;
-    margin-left: 0em;
-    margin-right: 0em;
-    padding: 2em;
-    border: 1px solid var(--primary-color);
-    border-radius: 4px;
+display: flex;
+flex-direction: column;
+width: fit-content;
+margin: 1em;
+max-width: 100%;
+min-width:30%;
+margin-left: 0em;
+margin-right: 0em;
+padding: 2em;
+border: 1px solid var(--primary-color);
+border-radius: 4px;
 }
 
 .message-dialoge > .message > .friend-request > .friend-request-header {
@@ -1636,79 +1569,491 @@ color: var(--background-color);
 
 /* game-invite */
 .message-dialoge > .message > .game-invite {
-    display: flex;
-    flex-direction: column;
-    width: fit-content;
-    margin: 1em;
-    max-width: 100%;
-    min-width: 30%;
-    margin-left: 0em;
-    margin-right: 0em;
-    padding: 2em;
-    border: 1px solid var(--primary-color);
-    border-radius: 4px;
+display: flex;
+flex-direction: column;
+width: fit-content;
+margin: 1em;
+max-width: 100%;
+min-width: 30%;
+margin-left: 0em;
+margin-right: 0em;
+padding: 2em;
+border: 1px solid var(--primary-color);
+border-radius: 4px;
 }
 
-    .message-dialoge > .message > .game-invite > .game-invite-header {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-    }
+.message-dialoge > .message > .game-invite > .game-invite-header {
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+width: 100%;
+}
 
-    .message-dialoge > .message > .game-invite > .game-invite-header > * {
-        margin: 0;
-    }
+.message-dialoge > .message > .game-invite > .game-invite-header > * {
+margin: 0;
+}
 
-        .message-dialoge > .message > .game-invite > .game-invite-header > .message-text {
-            font-size: 1.2rem !important;
-            display: flex;
-            margin: 0;
-        }
+.message-dialoge > .message > .game-invite > .game-invite-header > .message-text {
+font-size: 1.2rem !important;
+display: flex;
+margin: 0;
+}
 
-            .message-dialoge > .message > .game-invite > .game-invite-header > .message-text > .icon {
-                line-height: 1.5 !important;
-                margin-right: 0.5em;
-            }
+.message-dialoge > .message > .game-invite > .game-invite-header > .message-text > .icon {
+line-height: 1.5 !important;
+margin-right: 0.5em;
+}
 
-        .message-dialoge > .message > .game-invite > .game-invite-header > .username {
-            display: block;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            text-align: center;
-            width: 100%;
-            font-size: 3rem !important;
-        }
+.message-dialoge > .message > .game-invite > .game-invite-header > .username {
+display: block;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+text-align: center;
+width: 100%;
+font-size: 3rem !important;
+}
 
-    .message-dialoge > .message > .game-invite > .game-invite-btn-div {
-        display: flex;
-        justify-content: space-around;
-    }
+.message-dialoge > .message > .game-invite > .game-invite-btn-div {
+display: flex;
+justify-content: space-around;
+}
 
 /* Recieved game-invite */
 .message-dialoge > .message.recieved > .game-invite {
-    border: 1px solid var(--primary-color);
+border: 1px solid var(--primary-color);
 }
 
-    .message-dialoge > .message.recieved > .game-invite .game-invite-header > * {
-        color: var(--primary-color);
-    }
+.message-dialoge > .message.recieved > .game-invite .game-invite-header > * {
+color: var(--primary-color);
+}
 
 /* Sent game-invite */
 .message-dialoge > .message.sent > .game-invite {
-    border: 1px solid var(--background-color);
+border: 1px solid var(--background-color);
 }
 
-    .message-dialoge > .message.sent > .game-invite > .game-invite-header > * {
-        color: var(--background-color);
-        margin: 0px;
+.message-dialoge > .message.sent > .game-invite > .game-invite-header > * {
+color: var(--background-color);
+margin: 0px;
+}
+
+.message-dialoge > .message.sent > .game-invite > .game-invite-header > .status > .status-icon {
+margin-right: 0.25em;
+margin-left: 0.25em;
+}
+
+/*GAME PAGE CONTAINER*/
+.GamePage {
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+justify-content: center;
+align-items: center;
+width: 100%;
+height: 100%;
+}
+
+/*CHESSBOARD CONTAINER*/
+.GamePage > .chessboard {
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+width: 100%;
+height: 100%;
+background-color: var(--background-color);
+}
+
+/*STYLE FOR THE NAVBAR*/
+.GamePage > .chessboard > .board-navbar {
+width: 100%;
+height: 88px;
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 20px;
+gap: 1em;
+}
+
+.GamePage > .chessboard > .board-navbar > .status-container {
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: baseline;
+gap: 1em;
+
+}
+
+.GamePage > .chessboard > .board-navbar > .status-container > * {
+font-size: 1.5em !important;
+/*margin-top: auto !important;
+margin-bottom: auto !important;*/
+}
+
+.GamePage > .chessboard > .board-navbar > .status-container > .status {
+font-size: 2em !important;
+font-weight: bold;
+}
+.GamePage > .chessboard > .board-navbar > .status-container > .status-gif {
+object-fit: contain;
+object-position: center;
+width: 30px;
+}
+
+
+/*STYLE FOR THE BOARD*/
+.GamePage > .chessboard > .board-container {
+display: flex;
+justify-content: center;
+align-items: start;
+width: 100%;
+/*    height: calc(100% - 176px);*/
+overflow-y: scroll;
+}
+
+    .GamePage > .chessboard > .board-container > .board {
+        display: flex;
+        flex-direction: column;
+        aspect-ratio: 1/1;
+        width: 500px;
+        max-width: 100%;
+        cursor: pointer;
     }
 
-    .message-dialoge > .message.sent > .game-invite > .game-invite-header > .status > .status-icon {
-        margin-right: 0.25em;
-        margin-left: 0.25em;
+
+
+.GamePage > .chessboard > .board-container .board > .board-row {
+display: flex;
+width: 100%;
+height: 12.5%;
+}
+
+.GamePage > .chessboard > .board-container > .board > .board-row > .board-square {
+width: 100%;
+height: 100%;
+display: flex;
+justify-content:center;
+align-items: center;
+}
+
+.GamePage > .chessboard > .board-container > .board > .board-row > .board-square.white-square {
+/*background-color: var(--primary-color);*/
+background-color: #edd6b0;
+}
+
+    .GamePage > .chessboard > .board-container > .board > .board-row > .board-square.black-square {
+        /*background-color: var(--background-color);*/
+        background-color: #b88762;
     }
 
+.board-square.highlighted-square {
+    background-color: var(--status-color)!important;
+}
 
+.GamePage > .chessboard > .board-container > .board > .board-row > .board-square > .piece {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+}
+
+/* STYLE FOR PIECES */
+/* WHITE PIECES */
+.piece.wp {
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo/150/wp.png');
+}
+
+.piece.wr {
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo/150/wr.png');
+}
+
+.piece.wb {
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo/150/wb.png');
+}
+
+.piece.wn {
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo/150/wn.png');
+}
+
+.piece.wk {
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo/150/wk.png');
+}
+
+.piece.wq {
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo/150/wq.png');
+}
+
+/* BLACK PIECES */
+.piece.bp {
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo/150/bp.png');
+}
+
+.piece.br {
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo/150/br.png');
+}
+
+.piece.bb {
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo/150/bb.png');
+}
+
+.piece.bn {
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo/150/bn.png');
+}
+
+.piece.bk {
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo/150/bk.png');
+}
+
+.piece.bq {
+    background-image: url('https://www.chess.com/chess-themes/pieces/neo/150/bq.png');
+}
+
+
+/*STYLE FOR THE BOARD CONTROLS*/
+.GamePage > .chessboard > .board-controls {
+    width: 100%;
+    height: 88px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}
+
+.GamePage > .chessboard > .board-controls > *:hover {
+background-color: var(--status-color) !important;
+}
+
+/*GAME DETAILS CONTAINER*/
+.GamePage > .game-details {
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+background-color: var(--primary-color);
+width: 100%;
+height: 100%;
+border-left: none;
+}
+
+/*STYLE FOR THE PLAYERS*/
+.GamePage > .game-details > .players {
+width: 100%;
+height: 25%;
+min-height: 15em;
+border-bottom: 1px solid var(--background-color);
+}
+.GamePage > .game-details > .players > .player {
+display: flex;
+width: 100%;
+height: 50%;
+padding: 1.5em;
+border-top: 1px solid var(--background-color);
+}
+
+
+
+/*STYLE FOR THE MOVE HISTORY*/
+.GamePage > .game-details > .move-history {
+display: flex;
+flex-direction: column;
+width: 100%;
+height: 75%;
+overflow: scroll;
+padding: 2em;
+/*background-color: blue;*/
+}
+
+.GamePage > .game-details > .move-history > .turn-moves {
+display: flex;
+}
+
+/* Styles for the individual moves */
+.GamePage > .game-details > .move-history > .turn-moves > p {
+margin: 0;
+padding: 1em;
+font-size: 1.5em !important;
+border-radius: 4px;
+color: inherit !important;
+}
+
+/* Styles for white moves */
+.GamePage > .game-details > .move-history > .turn-moves:nth-child(even) {
+background-color: var(--primary-color);
+color: var(--background-color);
+}
+
+/* Styles for black moves */
+.GamePage > .game-details > .move-history > .turn-moves:nth-child(odd) {
+background-color: var(--background-color);
+color: var(--primary-color);
+}
+
+/*HEIGHT*/
+/* Styles for small height devices (up to 700px) */
+@media (max-height: 600px) {
+/* Your styles for small height devices here */
+.GamePage > .chessboard > .board-container .board {
+width: 300px;
+}
+}
+
+/* Styles for medium height devices (between 700px and 800px) */
+@media (min-height: 600px) and (max-height: 800px) {
+/* Your styles for medium height devices here */
+.GamePage > .chessboard > .board-container .board {
+width: 400px;
+}
+}
+
+/* Styles for medium-large height devices (between 800px and 1000px) */
+@media (min-height: 800px) and (max-height: 901) {
+/* Your styles for medium height devices here */
+.GamePage > .chessboard > .board-container .board {
+width: 550px;
+}
+}
+
+/* Styles for large height devices (between 901px and 1200px) */
+@media (min-height: 901px) and (max-height: 1200px) {
+/* Your styles for large height devices here */
+.GamePage > .chessboard > .board-container .board {
+width: 650px;
+}
+}
+
+/* Styles for extra large height devices (above 1200px) */
+@media (min-height: 1201px) {
+/* Your styles for extra large height devices here */
+}
+/*WIDTH*/
+/*SPECIFIC SIZE and up*/
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+.message-dialoge > .message {
+/* Styles for the first occurrence of message.username within message-dialoge */
+padding-left: 10em !important;
+padding-right: 10em !important;
+}
+
+.modal-footer.extra-spacing {
+padding-left: 10em !important;
+padding-right: 10em !important;
+}
+
+.modal-head.extra-spacing {
+padding-left: 10em !important;
+padding-right: 10em !important;
+}
+}
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+.MiddleIcon::before {
+content: "\f0c0" !important;
+}
+
+.GamePage > .chessboard {
+width: 60%;
+}
+
+.GamePage > .game-details {
+width: 40%;
+}
+
+.GamePage > .game-details {
+/*border-left: 1px solid var(--primary-color);*/
+}
+
+}
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+}
+
+/*SPECIFIC SIZES and down*/
+/* Small devices (portrait tablets and large phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+}
+/* Medium devices (landscape tablets, 768px and down) */
+@media only screen and (max-width: 768px) {
+
+.button-content {
+flex-direction: column !important;
+}
+
+.button-content > .Btn-square-icon {
+width: 100% !important;
+}
+}
+/* Large devices (laptops/desktops, 992px and down) */
+@media only screen and (max-width: 992px) {
+h1.h1-landing {
+font-size: var(--h1-landing-font-size-mobile) !important;
+}
+
+h1.h1-landing-sm {
+font-size: var(--h1-landing-sm-font-size-mobile) !important;
+}
+
+h2 {
+font-size: var(--h2-font-size-mobile) !important;
+}
+
+.LogInImg {
+box-shadow: 0px -48px 62px 3px rgba(0,0,0,1) inset !important;
+-webkit-box-shadow: 0px -48px 62px 3px rgba(0,0,0,1) inset !important;
+-moz-box-shadow: 0px -48px 62px 3px rgba(0,0,0,1) inset !important;
+}
+
+.MiddleIcon::before {
+content: "\f43c" !important;
+}
+
+.modal-title {
+font-size: 1.75em !important;
+}
+
+.modal-icon {
+font-size: 1.75em !important;
+}
+
+.modal-close {
+font-size: 1.75em !important;
+}
+
+.modal-body {
+/*justify-content: start;*/
+}
+
+.message-profile > .message-profile-body > .message-profile-heading > .status-indicator.online {
+/* Styles for the status indicator */
+min-width: 6px !important; /* Set a fixed width */
+min-height: 6px !important; /* Set a fixed height */
+}
+
+.message-profile > .message-profile-body > .message-profile-heading > .status-indicator {
+/* Styles for the status indicator */
+font-size: 1em !important;
+}
+
+.message-profile > .message-profile-body > .message-profile-heading > .username > h4 {
+/* Styles for the username container */
+font-size: 1em !important;
+}
+
+.message-profile > .message-profile-body > .message-profile-heading > .timestamp > p {
+/* Styles for the timestamp container */
+font-size: .7em !important;
+}
+
+.message-profile > .message-profile-body > .message-profile-message > p {
+/* Styles for the message text */
+font-size: .8em !important;
+}
+}
+/* Extra large devices (large laptops and desktops, 1200px and down) */
+@media only screen and (max-width: 1200px) {
+}

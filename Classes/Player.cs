@@ -7,29 +7,24 @@ namespace Chess_App.Classes
 {
     public class Player
     {
-        public PlayerAccount AccountPlayer { get; set; }
-        public Guest GuestPlayer { get; set; }
-        public Computer ComputerPlayer { get; set; }
-        public bool Color { get; set; }
-        public Player(PlayerAccount accountPlayer, bool color )
+        public string Username { get; set; }
+        public byte[] ProfilePicture { get; set; }
+        public GameData.Color Color { get; set; }
+        public Player(PlayerAccount accountPlayer, GameData.Color color )
         {
-            AccountPlayer = accountPlayer;
-            GuestPlayer = null;
-            ComputerPlayer = null;
+            Username = accountPlayer.Username;
+            ProfilePicture = accountPlayer.ProfilePicture;
             Color = color;
         }
-        public Player(Guest guestPlayer, bool color)
+        public Player(Guest guestPlayer, GameData.Color color)
         {
-            AccountPlayer = null;
-            GuestPlayer = guestPlayer;
-            ComputerPlayer = null;
+            Username= guestPlayer.Username;
+            ProfilePicture = guestPlayer.ProfilePicture;
             Color = color;
         }
-        public Player(Computer computerPlayer, bool color)
+        public Player(Computer computerPlayer, GameData.Color color)
         {
-            AccountPlayer = null;
-            GuestPlayer = null;
-            ComputerPlayer = computerPlayer;
+            
             Color = color;
         }
     }

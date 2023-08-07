@@ -42,9 +42,31 @@
                 event.preventDefault(); // Prevent the default behavior of the Enter key (i.e., prevent form submission)
             }
         });
-            root.style.setProperty('--status-color', '<%=Session["statusColor"]%>');
-            root.style.setProperty('--primary-color', '<%=Session["primaryColor"]%>');
-            root.style.setProperty('--background-color', '<%=Session["backgroundColor"]%>');
+
+        <%
+    // Get the AccountInfo from the Session
+    var accountInfo = Session["AccountInfo"] as Chess_App.PlayerAccount;
+
+    // Set the default colors in case the theme values are null or empty
+    var statusColor = accountInfo?.Theme?.StatusColor;
+    var primaryColor = accountInfo?.Theme?.PrimaryColor;
+    var backgroundColor = accountInfo?.Theme?.BackgroundColor;
+
+    // Fallback colors in case the values are null or empty
+    var defaultStatusColor = "#3B3B3B";
+    var defaultPrimaryColor = "#FFFFFF";
+    var defaultBackgroundColor = "#000000";
+
+    // Use the theme colors if available, otherwise use the fallback colors
+    statusColor = !String.IsNullOrEmpty(statusColor) ? statusColor : defaultStatusColor;
+    primaryColor = !String.IsNullOrEmpty(primaryColor) ? primaryColor : defaultPrimaryColor;
+    backgroundColor = !String.IsNullOrEmpty(backgroundColor) ? backgroundColor : defaultBackgroundColor;
+    %>
+
+        root.style.setProperty('--status-color', '<%= statusColor %>');
+        root.style.setProperty('--primary-color', '<%= primaryColor %>');
+        root.style.setProperty('--background-color', '<%= backgroundColor %>');
+
     </script>
 </body>
 </html>

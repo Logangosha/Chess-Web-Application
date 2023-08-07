@@ -38,10 +38,20 @@
         </div>
 
         <div class="user-content-pannel">
+             <div id="GoToGamePageSection" class="section">
+                <div id="GoToGamePageBackground" class="section-background"></div>
+                <div class="section-content">
+                    <asp:Linkbutton runat="server" type="button" ID="GoToGamePageBtn" class="Btn Btn-link" OnClick="GoToGamePageBtn_Click">
+                    <i class="Btn-link-icon fa-solid fa-chess-board"></i>
+                    <p class="Btn-link-text">Go To Game Page</p>
+                        <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
+                </asp:Linkbutton>
+                </div>
+            </div>
             <div id="WelcomeSection" class="section">
                 <div id="WelcomeSectionBackground" class="section-background"></div>
                 <div class="section-content">
-                    <button type="button" class="Btn Btn-notification">
+                    <button type="button" onclick="CloseWelcomeSection()" class="Btn Btn-notification">
                         <i class="Btn-notification-icon fa-regular fa-face-smile-beam"></i>
                         <%if (UsingAccount)
                             {%>
@@ -58,18 +68,30 @@
             <div id="PlayChessSection" class="section">
                 <div id="PlayChessSectionBackground" class="section-background"></div>
                 <div class="section-content button-content">
-                    <asp:LinkButton runat="server" CssClass="Btn Btn-square-icon">
+                    <asp:LinkButton runat="server" CssClass="Btn Btn-square-icon" OnCommand="GameSetup_Command" CommandArgument="Online">
                         <i class="fa-solid fa-globe"></i>                        
                         <p>Play Online</p>
                     </asp:LinkButton>
-                    <asp:LinkButton runat="server" CssClass="Btn Btn-square-icon">
+                    <asp:LinkButton runat="server" CssClass="Btn Btn-square-icon" OnCommand="GameSetup_Command" CommandArgument="Computer">
                         <i class="fa-solid fa-desktop"></i>                        
                         <p>Play Computer</p>
                     </asp:LinkButton>
-                    <asp:LinkButton runat="server" CssClass="Btn Btn-square-icon">
+                    <%if (UsingAccount)
+                        {%>
+                    <asp:LinkButton runat="server" CssClass="Btn Btn-square-icon" OnCommand="GameSetup_Command" CommandArgument="Friends">
                         <i class="fa-solid fa-user-group"></i>                        
                         <p>Play Friend</p>
                     </asp:LinkButton>
+                    <%}
+                        else
+                        { %>
+                            <a text="Modal" Class="Btn Btn-square-icon" data-bs-toggle="modal" data-bs-target="#AccountsOnlyModal">
+                            <i class="fa-solid fa-user-group"></i>                        
+                            <p>Play Friend</p>
+                            </a>
+
+                    <%} %>
+                    
                 </div>
             </div>
             <%if (UsingAccount)
@@ -77,15 +99,15 @@
             <div id="AccountButtonsSections" class="section">
                 <div class="section-background"></div>
                 <div class="section-content button-content">
-                    <asp:LinkButton runat="server" CssClass="Btn Btn-square-icon">
+                    <asp:LinkButton runat="server" CssClass="Btn Btn-square-icon" OnClick="AccountBtn_Click">
                         <i class="fa-regular fa-id-card"></i>                        
                         <p>Edit Account</p>
                     </asp:LinkButton>
-                    <asp:LinkButton runat="server" CssClass="Btn Btn-square-icon">
+                    <asp:LinkButton runat="server" CssClass="Btn Btn-square-icon" OnClick="MessageBtn_Click">
                         <i class="fa-solid fa-envelope"></i>                        
                         <p>Send Message</p>
                     </asp:LinkButton>
-                    <asp:LinkButton runat="server" CssClass="Btn Btn-square-icon">
+                    <asp:LinkButton runat="server" CssClass="Btn Btn-square-icon" OnClick="FriendsBtn_Click">
                         <i class="fa-solid fa-users"></i>                        
                         <p>View Friends</p>
                     </asp:LinkButton>
@@ -174,21 +196,21 @@
             <div id="CreateAccountSection" class="section">
                 <div id="CreateAccountSectionBackground" class="section-background"></div>
                 <div class="section-content">
-                    <button type="button" class="Btn Btn-link">
+                    <asp:Linkbutton runat="server" type="button" ID="CreateAccountBtn" class="Btn Btn-link" OnClick="CreateAccountBtn_Click">
                     <i class="Btn-link-icon fa-solid fa-circle-exclamation"></i>
                     <p class="Btn-link-text">Create an Account!</p>
                         <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
-                </button>
+                </asp:Linkbutton>
                 </div>
             </div>
             <div id="LoginSection" class="section">
                 <div id="LoginSectionBackground" class="section-background"></div>
                 <div class="section-content">
-                     <button type="button" class="Btn Btn-link">
+                     <asp:Linkbutton runat="server" ID="SignInBtn" type="button" class="Btn Btn-link" OnClick="SignInBtn_Click">
                     <i class="Btn-link-icon fa-regular fa-circle-question"></i>
                     <p class="Btn-link-text">Have an account?</p>
                         <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
-                </button>
+                </asp:Linkbutton>
                 </div>
             </div>
            <%-- <div id="AccountsOnlySection" class="section">
@@ -229,6 +251,11 @@
             </div>
         </div>
     </div>
+    <script>
+        function CloseWelcomeSection() {
+            $("#WelcomeSection").hide();
+        }
+    </script>
 </asp:Content>
 
 
