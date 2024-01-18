@@ -6,15 +6,12 @@
         <div class="user-control-pannel">
             <%
                 if (UsingAccount)
-                {%>
+                {
+                    
+                    %>
+
             <asp:LinkButton runat="server" ID="AccountBtn" OnClick="AccountBtn_Click" type="button" class="Btn Btn-icon Btn-primary">
                 <img src="<%=(HttpContext.Current.Session["AccountInfo"] as Chess_App.PlayerAccount).ProfilePictureString %>" class="profile-img" /></asp:LinkButton>
-            <%}
-                else
-                {%>
-            <button text="Modal" type="button" class="Btn Btn-icon Btn-primary d-lg-inline-block" data-bs-toggle="modal" data-bs-target="#AccountsOnlyModal">
-                <img src="<%=(HttpContext.Current.Session["AccountInfo"] as Chess_App.Guest).ProfilePictureString %>" class="profile-img" /></button>
-
             <%}%>
             <%
                 if (UsingAccount)
@@ -38,7 +35,7 @@
         </div>
 
         <div class="user-content-pannel">
-             <div id="GoToGamePageSection" class="section">
+             <%--<div id="GoToGamePageSection" class="section">
                 <div id="GoToGamePageBackground" class="section-background"></div>
                 <div class="section-content">
                     <asp:Linkbutton runat="server" type="button" ID="GoToGamePageBtn" class="Btn Btn-link" OnClick="GoToGamePageBtn_Click">
@@ -47,7 +44,7 @@
                         <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
                 </asp:Linkbutton>
                 </div>
-            </div>
+            </div>--%>
             <div id="WelcomeSection" class="section">
                 <div id="WelcomeSectionBackground" class="section-background"></div>
                 <div class="section-content">
@@ -68,29 +65,18 @@
             <div id="PlayChessSection" class="section">
                 <div id="PlayChessSectionBackground" class="section-background"></div>
                 <div class="section-content button-content">
-                    <asp:LinkButton runat="server" CssClass="Btn Btn-square-icon" OnCommand="GameSetup_Command" CommandArgument="Online">
+                    <asp:LinkButton runat="server" CssClass="Btn Btn-square-icon disabled" Enabled="false" OnCommand="GameSetup_Command" CommandArgument="Online">
                         <i class="fa-solid fa-globe"></i>                        
                         <p>Play Online</p>
                     </asp:LinkButton>
-                    <asp:LinkButton runat="server" CssClass="Btn Btn-square-icon" OnCommand="GameSetup_Command" CommandArgument="Computer">
+                    <asp:LinkButton runat="server" CssClass="Btn Btn-square-icon disabled" Enabled="false" OnCommand="GameSetup_Command" CommandArgument="Computer">
                         <i class="fa-solid fa-desktop"></i>                        
                         <p>Play Computer</p>
                     </asp:LinkButton>
-                    <%if (UsingAccount)
-                        {%>
-                    <asp:LinkButton runat="server" CssClass="Btn Btn-square-icon" OnCommand="GameSetup_Command" CommandArgument="Friends">
+                    <asp:LinkButton runat="server" CssClass="Btn Btn-square-icon" OnCommand="GameSetup_Command" CommandArgument="Default">
                         <i class="fa-solid fa-user-group"></i>                        
-                        <p>Play Friend</p>
+                        <p>Play Local</p>
                     </asp:LinkButton>
-                    <%}
-                        else
-                        { %>
-                            <a text="Modal" Class="Btn Btn-square-icon" data-bs-toggle="modal" data-bs-target="#AccountsOnlyModal">
-                            <i class="fa-solid fa-user-group"></i>                        
-                            <p>Play Friend</p>
-                            </a>
-
-                    <%} %>
                     
                 </div>
             </div>
@@ -124,23 +110,6 @@
                             <!-- Add more headers as needed -->
                         </div>
                         <!-- Add initial table rows and data as needed -->
-                        <div class="table-row">
-                            <div class="table-cell">John Doe</div>
-                            <div class="table-cell">Online</div>
-                        </div>
-                        <div class="table-row">
-                            <div class="table-cell">Jane Smith</div>
-                            <div class="table-cell">Offline</div>
-                        </div>
-                        <div class="table-row">
-                            <div class="table-cell">John Doe</div>
-                            <div class="table-cell">Online</div>
-                        </div>
-                        <div class="table-row">
-                            <div class="table-cell">Jane Smith</div>
-                            <div class="table-cell">Offline</div>
-                        </div>
-
                         <!-- Add more rows as needed -->
                     </div>
                 </div>
@@ -157,22 +126,6 @@
                             <!-- Add more headers as needed -->
                         </div>
                         <!-- Add initial table rows and data as needed -->
-                        <div class="table-row">
-                            <div class="table-cell">John Doe</div>
-                            <div class="table-cell">Hello, how are you?</div>
-                        </div>
-                        <div class="table-row">
-                            <div class="table-cell">Jane Smith</div>
-                            <div class="table-cell">I'm doing well, thank you!</div>
-                        </div>
-                        <div class="table-row">
-                            <div class="table-cell">John Doe</div>
-                            <div class="table-cell">Hello, how are you?</div>
-                        </div>
-                        <div class="table-row">
-                            <div class="table-cell">Jane Smith</div>
-                            <div class="table-cell">I'm doing well, thank you!</div>
-                        </div>
                         <!-- Add more rows as needed -->
                     </div>
                 </div>
@@ -254,6 +207,107 @@
     <script>
         function CloseWelcomeSection() {
             $("#WelcomeSection").hide();
+        }
+        let friendsSection = $("#FriendsSection");
+        let messagesSection = $("#MessagesSection");
+        var messagesTable = $(".messages-table");
+        var friendsTable = $(".friends-table");
+
+        // load messages
+        FillMessagesTable();
+        // load friends
+        FillFriendsTable();
+        function FillFriendsTable() {
+            $.ajax({
+                type: "POST",
+                url: "Home.aspx/GetFriends", // The name of the web method in the page
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (response) {
+                    if (response && response.d && Array.isArray(response.d) && response.d.length > 0) {
+                        //console.log("Friends data received:", response.d);
+
+
+                        // Loop through the received data and add rows
+                        response.d.forEach(function (friend) {
+                            var row = $("<div class='table-row'></div>");
+
+                            // Create cells for friend name and status
+                            var nameCell = $("<div class='table-cell'></div>").text(friend.Username);
+                            var statusCell = $("<div class='table-cell'></div>").text(friend.OnlineStatus ? "Online" : "Offline");
+
+                            // Append cells to the row
+                            row.append(nameCell);
+                            row.append(statusCell);
+
+                            // Append row to the table
+                            friendsTable.append(row);
+                        });
+                        friendsSection.removeClass("d-none");
+                        friendsTable.show();
+
+
+                    } else {
+                        console.log("No friends data received.");
+                        friendsSection.addClass("d-none");
+                        friendsTable.hide();
+
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log("AJAX error. Status:", textStatus);
+                    console.log("Error: " + errorThrown);
+                }
+            });
+        }
+
+        
+        function FillMessagesTable() {
+            $.ajax({
+                type: "POST",
+                url: "Home.aspx/RetrieveLastAccountMessagesWithUserInfo",
+                contentType: "application/json; charset=utf-8", // Set the correct content type
+                dataType: "json", // Expect JSON as the response from the server
+                async: false,
+                success: function (response) {
+                    messagesTable.hide();
+                    //add message-profiles to message-board
+                    if (response && response.d && Array.isArray(response.d) && response.d.length > 0) {
+                        //console.log("Messages data received:", response.d);
+
+                       
+
+                        // Loop through the received data and add rows
+                        response.d.forEach(function (message) {
+                            var row = $("<div class='table-row'></div>");
+
+                            // Create cells for sender and message
+                            var senderCell = $("<div class='table-cell'></div>").text(message.Username);
+                            var messageText = message.MessageData[2];
+                            var displayedText = messageText.length > 20 ? messageText.substring(0, 20) + "..." : messageText;
+                            var messageCell = $("<div class='table-cell'></div>").text(displayedText);
+
+
+                            // Append cells to the row
+                            row.append(senderCell);
+                            row.append(messageCell);
+
+                            // Append row to the table
+                            messagesTable.append(row);
+                        });
+                        messagesTable.show();
+                        
+                    } else {
+                        console.log("No search results found.");
+                        
+                    }
+                },
+                error: function (error) {
+                    console.log("RetrieveAccountMessages Response:", error);
+                    messagesTable.hide();
+                }
+            });
         }
     </script>
 </asp:Content>

@@ -38,10 +38,15 @@ namespace Chess_App.Classes
         }
         public Square[,] Board { get; private set; }
         public GameMode CurrentGameMode { get; set; }
+        public bool IsKingCaptured { get; set; }
+        public EnPassent EnPassant { get; set; }
         // Constructor
         public Chessboard(GameMode gameMode)
         {
             Board = new Square[8, 8];
+            EnPassant = null;
+            IsKingCaptured = false;
+            CurrentGameMode = gameMode;
 
             // Initialize each Square
             for (int row = 0; row < 8; row++)
@@ -51,8 +56,6 @@ namespace Chess_App.Classes
                     Board[row, col] = new Square((Row)row, (Column)col);
                 }
             }
-
-            CurrentGameMode = gameMode;
             Setup();
         }
         // This method is used to place a piece on a square
@@ -147,8 +150,18 @@ namespace Chess_App.Classes
             SetupPieces(CreatePieces());
         }
         // Update Chessboard 
-        public void UpdateChessboard(Square initialSquare, Piece pieceOnInitialSquare, Square targetSquare)
-        { 
+        public void UpdateChessboard(Square initialSquare, Piece pieceOnInitialSquare, Square targetSquare, int currentTurnNumber)
+        {
+            // check if king is on target square
+            if (targetSquare.Piece != null && targetSquare.Piece.Type == Piece.PieceType.King)
+                IsKingCaptured = true;
+
+            SpecialMoveProcessing(initialSquare, pieceOnInitialSquare, targetSquare, currentTurnNumber);
+            // this should toggle enpassant to null if the turn number is not the same as the current turn number
+            if (EnPassant != null && EnPassant.TurnNumber != currentTurnNumber)
+            {
+                EnPassant = null;
+            }
             // Remove piece from initial square
             initialSquare.Piece = null;
             // Place piece on target square
@@ -156,9 +169,94 @@ namespace Chess_App.Classes
             // Update Squares on Board
             Board[(int)initialSquare.Row, (int)initialSquare.Column] = initialSquare;
             Board[(int)targetSquare.Row, (int)targetSquare.Column] = targetSquare;
+        }
+        public void SpecialMoveProcessing(Square initialSquare, Piece pieceOnInitialSquare, Square targetSquare, int currentTurnNumber)
+        {
+            // pawn special moves
+            if (pieceOnInitialSquare.Type == Piece.PieceType.Pawn)
+            {
+                if (targetSquare.Row == Row.Eight || targetSquare.Row == Row.One)
+                {
+                    //// promote pawn
+                    //PromotePawn(targetSquare, pieceOnInitialSquare);
+                }
 
-
-
+                if (initialSquare.Row + 2 == targetSquare.Row)
+                {
+                    Coordinates moveOnTopOfSquare = new Coordinates((Row)(initialSquare.Row + 1), (Column)Convert.ToInt32(initialSquare.Column));
+                    EnPassent enPassent = new EnPassent(moveOnTopOfSquare, currentTurnNumber, pieceOnInitialSquare.Color);
+                    EnPassant = enPassent;
+                }
+                else if (initialSquare.Row - 2 == targetSquare.Row)
+                {
+                    Coordinates moveOnBottomOfSquare = new Coordinates((Row)(initialSquare.Row - 1), (Column)Convert.ToInt32(initialSquare.Column));
+                    EnPassent enPassent = new EnPassent(moveOnBottomOfSquare, currentTurnNumber, pieceOnInitialSquare.Color);
+                    EnPassant = enPassent;
+                }
+                else if (EnPassant != null && targetSquare.Coordinates.CoordinateString == EnPassant.EnPassentCoordinates.CoordinateString) 
+                {
+                    // check to see what color the piece is
+                    if (pieceOnInitialSquare.Color == Color.White)
+                    {
+                        // remove black pawn from board
+                        Board[(int)EnPassant.EnPassentCoordinates.Row -1, (int)EnPassant.EnPassentCoordinates.Column].Piece = null;
+                    }
+                    else
+                    {
+                        // remove white pawn from board
+                        Board[(int)EnPassant.EnPassentCoordinates.Row +1, (int)EnPassant.EnPassentCoordinates.Column].Piece = null;
+                    }
+                }
+            }
+            // king special moves
+            if (pieceOnInitialSquare.Type == Piece.PieceType.King) 
+            {
+                int ColumnDifference = (int)targetSquare.Column - (int)initialSquare.Column;
+                if (ColumnDifference == 2)
+                {
+                    if (pieceOnInitialSquare.Color == Color.White)
+                    {
+                        // white king castled on the king side
+                        // get h1 rook
+                        Piece h1 = Board[(int)Row.One, (int)Column.H].Piece;
+                        Board[(int)Row.One, (int)Column.H].Piece = null;
+                        // move h1 rook to f1
+                        Board[(int)Row.One, (int)Column.F].Piece = h1;
+                    }
+                    else 
+                    {
+                        // black king castled on the king side
+                        // get h8 rook
+                        Piece h8 = Board[(int)Row.Eight, (int)Column.H].Piece;
+                        Board[(int)Row.Eight, (int)Column.H].Piece = null;
+                        // move h8 rook to f8
+                        Board[(int)Row.Eight, (int)Column.F].Piece = h8;
+                    }
+                }
+                else if(ColumnDifference == -2) 
+                {
+                    // king castled on the queen side
+                    if (pieceOnInitialSquare.Color == Color.White)
+                    {
+                        // white king castled on the queen side
+                        // get a1 rook
+                        Piece a1 = Board[(int)Row.One, (int)Column.A].Piece;
+                        Board[(int)Row.One, (int)Column.A].Piece = null;
+                        // move a1 rook to c1
+                        Board[(int)Row.One, (int)Column.D].Piece = a1;
+                    }
+                    else
+                    {
+                        // black king castled on the queen side
+                        // get a8 rook
+                        Piece a8 = Board[(int)Row.Eight, (int)Column.A].Piece;
+                        Board[(int)Row.Eight, (int)Column.A].Piece = null;
+                        // move a8 rook to c8
+                        Board[(int)Row.Eight, (int)Column.D].Piece = a8;
+                    }
+                }
+                // if the king did castle then we want to move the rook
+            }
         }
     }
 }

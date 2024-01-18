@@ -41,16 +41,16 @@ namespace Chess_App
             // Get session account
             dynamic user = Session["AccountInfo"];
             // Create player
-            Player player = new Player(user, GameData.Color.White);
+            Player currentPlayer = new Player(user, GameData.Color.White);
 
             // create testing account and player
             PlayerAccount testPlayerAccount = new PlayerAccount("TestAccount", "TestEmail", new byte[1][]);
             Player testPlayer = new Player(testPlayerAccount, GameData.Color.Black);
 
-            // create list of players and add teh two plyaers
+            // create list of players and add the two plyaers
             List<Player> players = new List<Player>
             {
-                player,
+                currentPlayer,
                 testPlayer
             };
             // get type of game
@@ -59,6 +59,7 @@ namespace Chess_App
             Chessboard chessboard = new Chessboard(GameData.GameMode.Standard);
             // create history 
             MoveHistory gameHistory = new MoveHistory();
+            //gameHistory.AddMove(new Move(0, GameData.Color.White, "placeholder"));
             // create new game data
             GameData gameData = new GameData(id, GameData.GameType.Online, GameData.GameState.Ongoing, players, chessboard, gameHistory);
 
@@ -71,7 +72,9 @@ namespace Chess_App
             {
                 case "Online": Response.Redirect("GameSetup.aspx?type=" + e.CommandArgument + ""); break;
                 case "Computer": Response.Redirect("GameSetup.aspx?type=" + e.CommandArgument + ""); break;
-                case "Friends": Response.Redirect("GameSetup.aspx?type=" + e.CommandArgument + ""); break;
+                case "Local":
+                    PlayChessBtn_Click(sender, e); 
+                    break;
                 case "Default": Response.Redirect("GameSetup.aspx?type=" + e.CommandArgument + ""); break;
             }
         }

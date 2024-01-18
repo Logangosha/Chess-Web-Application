@@ -4,7 +4,7 @@
     <div class="container-fluid h-100">
         <div class="row p-0 justify-content-center h-100 MainCard overflow-scroll hidden-scroll-bar">
             <div class="d-flex flex-column gap-2 col-auto py-4 p-0 text-center justify-content-center my-auto align-items-center">
-                <asp:LinkButton runat="server" ID="goHomeBtn" OnClick="goHomeBtn_Click" class="Btn Btn-secondary Btn-link">
+                <asp:LinkButton runat="server" ID="goHomeBtn" OnClick="goHomeBtn_Click" class="Btn Btn-link">
                     <i class="Btn-link-icon fa-solid fa-arrow-left"></i>
                     Go Home
                 </asp:LinkButton>

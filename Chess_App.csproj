@@ -112,12 +112,14 @@
     <Content Include="FriendAccount.aspx" />
     <Content Include="Friends.aspx" />
     <Content Include="ActiveGame.aspx" />
-    <Content Include="History.aspx" />
     <Content Include="GameOver.aspx" />
     <Content Include="GamePage.aspx" />
     <Content Include="GameSetup.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Home.aspx" />
+    <Content Include="Images\2by2icon.png" />
+    <Content Include="Images\chess-board-solid.svg" />
+    <Content Include="Images\chessboard-icon.jpg" />
     <Content Include="Images\twomenplayingchessdarkroom.jpg" />
     <Content Include="Images\whitehandmovingchesspiece.jpg" />
     <Content Include="Logout.aspx" />
@@ -145,7 +147,6 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Classes\Chessboard.cs" />
-    <Compile Include="Classes\Move.cs" />
     <Compile Include="Classes\Piece.cs" />
     <Compile Include="Classes\Square.cs" />
     <Compile Include="Classes\Theme.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Classes\PlayerAccount.cs" />
     <Compile Include="Classes\Queen.cs" />
     <Compile Include="Classes\Rook.cs" />
+    <Compile Include="Coordinates.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -175,6 +177,7 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="EnPassent.cs" />
     <Compile Include="FriendAccount.aspx.cs">
       <DependentUpon>FriendAccount.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -197,16 +200,8 @@
       <DependentUpon>ActiveGame.aspx</DependentUpon>
     </Compile>
     <Compile Include="Classes\GameData.cs" />
-    <Compile Include="History.aspx.cs">
-      <DependentUpon>History.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="History.aspx.designer.cs">
-      <DependentUpon>History.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Classes\MoveHistory.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Classes\GameUpdateResponse.cs" />
+    <Compile Include="Classes\MoveHistory.cs" />
     <Compile Include="GameOver.aspx.cs">
       <DependentUpon>GameOver.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -253,6 +248,8 @@
     <Compile Include="Messages.aspx.designer.cs">
       <DependentUpon>Messages.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Classes\Move.cs" />
+    <Compile Include="Classes\PieceMoves.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
@@ -289,6 +286,7 @@
     <Compile Include="test.aspx.designer.cs">
       <DependentUpon>test.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Classes\TurnHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

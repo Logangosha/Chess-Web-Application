@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using static Chess_App.Classes.Chessboard;
 
 namespace Chess_App.Classes
 {
     public class Square
     {
+        public Coordinates Coordinates { get; set; }
         public Chessboard.Row Row { get; set; }
         public Chessboard.Column Column { get; set; }
         public Piece Piece { get; set; }
@@ -14,6 +16,7 @@ namespace Chess_App.Classes
         {
             Row = row;
             Column = column;
+            Coordinates = new Coordinates(row, column);
             Piece = null; // No piece initially placed on the square
         }
         // Constructor overload for pawn from css class
@@ -21,10 +24,11 @@ namespace Chess_App.Classes
         {
             Column = ConvertCharacterToColumn(cssClass[0]);
             Row = ConvertCharacterToRow(cssClass[1]);
+            Coordinates = new Coordinates(Row, Column);
             Piece = null;
         }
 
-        public Chessboard.Column ConvertCharacterToColumn(char character)
+        public static Chessboard.Column ConvertCharacterToColumn(char character)
         {
             switch (character)
             {
@@ -40,7 +44,7 @@ namespace Chess_App.Classes
             }
         }
 
-        public Chessboard.Row ConvertCharacterToRow(char character)
+        public static Chessboard.Row ConvertCharacterToRow(char character)
         {
             switch (character)
             {

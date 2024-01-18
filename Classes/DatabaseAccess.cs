@@ -51,6 +51,70 @@ namespace Chess_App.Classes
             return isTaken;
         }
 
+        // Store recovery code in database
+        public static void StoreRecoveryCode(string email, string code)
+        {
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ChessAppDbConnectionString"].ConnectionString))
+            {
+                using (SqlCommand command = new SqlCommand("InsertOrUpdateRecoveryCode", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Email", email);
+                    command.Parameters.AddWithValue("@Code", code);
+                    try
+                    {
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine("An exception occurred: " + ex.ToString());
+                    }
+                    finally
+                    {
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                        }
+                    }
+                }
+            }
+        }
+
+        // ValidateCode 
+        public static bool VerifyRecoveryCode(string email, string code)
+        {
+            bool isValid = false;
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ChessAppDbConnectionString"].ConnectionString))
+            {
+                using (SqlCommand command = new SqlCommand("VerifyRecoveryCode", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Email", email);
+                    command.Parameters.AddWithValue("@Code", code);
+                    command.Parameters.Add("@IsValid", SqlDbType.Bit).Direction = ParameterDirection.Output;
+                    try
+                    {
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                        isValid = (bool)command.Parameters["@IsValid"].Value;
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine("An exception occurred: " + ex.ToString());
+                    }
+                    finally
+                    {
+                        if (connection.State == ConnectionState.Open)
+                        {
+                            connection.Close();
+                        }
+                    }
+                }
+            }
+            return isValid;
+        }
+
         // check if email exists
         public static bool IsEmailTaken(string email)
         {
@@ -102,21 +166,16 @@ namespace Chess_App.Classes
                     try
                     {
                         connection.Open();
-                        System.Diagnostics.Debug.WriteLine("Connection Opened");
 
                         // Set the parameter values
-                        System.Diagnostics.Debug.WriteLine(newUserAccount.Username);
                         command.Parameters.AddWithValue("@Username", newUserAccount.Username);
 
-                        System.Diagnostics.Debug.WriteLine(newUserAccount.Email);
                         command.Parameters.AddWithValue("@Email", newUserAccount.Email);
 
-                        //System.Diagnostics.Debug.WriteLine(newUserAccount.PasswordData[0]);
                         command.Parameters.AddWithValue("@PasswordHash", newUserAccount.PasswordData[0]);
                         command.Parameters.AddWithValue("@Salt", newUserAccount.PasswordData[1]);
 
                         command.ExecuteNonQuery();
-                        System.Diagnostics.Debug.WriteLine("InsertNewUser Executed");
                     }
                     catch (Exception ex)
                     {
@@ -129,7 +188,6 @@ namespace Chess_App.Classes
                         if (connection.State == ConnectionState.Open)
                         {
                             connection.Close();
-                            System.Diagnostics.Debug.WriteLine("Connection Closed");
                         }
                     }
                 }
@@ -148,13 +206,11 @@ namespace Chess_App.Classes
                     try
                     {
                         connection.Open();
-                        System.Diagnostics.Debug.WriteLine("Connection Opened");
                         command.Parameters.AddWithValue("@Username", username);
 
                         SqlDataReader reader = command.ExecuteReader();
                         if (reader.HasRows)
                         {
-                            System.Diagnostics.Debug.WriteLine("username match");
                             // If a record is found, read the data and create a PlayerAccount object
                             while (reader.Read())
                             {
@@ -173,7 +229,6 @@ namespace Chess_App.Classes
                                 }
                                 else
                                 {
-                                    System.Diagnostics.Debug.WriteLine("password does not match");
                                     return null;
                                 }
                             }
@@ -188,7 +243,6 @@ namespace Chess_App.Classes
                         if (connection.State == ConnectionState.Open)
                         {
                             connection.Close();
-                            System.Diagnostics.Debug.WriteLine("Connection Closed");
                         }
                     }
                 }
@@ -208,17 +262,11 @@ namespace Chess_App.Classes
                     try
                     {
                         connection.Open();
-                        System.Diagnostics.Debug.WriteLine("Connection Opened");
-                        System.Diagnostics.Debug.WriteLine(username);
-                        System.Diagnostics.Debug.WriteLine(theme.PrimaryColor);
-                        System.Diagnostics.Debug.WriteLine(theme.BackgroundColor);
-                        System.Diagnostics.Debug.WriteLine(theme.StatusColor);
                         command.Parameters.AddWithValue("@Username", username);
                         command.Parameters.AddWithValue("@PrimaryColor", theme.PrimaryColor);
                         command.Parameters.AddWithValue("@BackgroundColor", theme.BackgroundColor);
                         command.Parameters.AddWithValue("@StatusColor", theme.StatusColor);
                         command.ExecuteNonQuery();
-                        System.Diagnostics.Debug.WriteLine("SaveThemeSettings Executed");
                     }
                     catch (Exception ex)
                     {
@@ -229,7 +277,6 @@ namespace Chess_App.Classes
                         if (connection.State == ConnectionState.Open)
                         {
                             connection.Close();
-                            System.Diagnostics.Debug.WriteLine("Connection Closed");
                         }
                     }
                 }
@@ -247,16 +294,11 @@ namespace Chess_App.Classes
                     try
                     {
                         connection.Open();
-                        System.Diagnostics.Debug.WriteLine("Connection Opened");
-                        System.Diagnostics.Debug.WriteLine(username);
-                        System.Diagnostics.Debug.WriteLine(newUsername);
-                        System.Diagnostics.Debug.WriteLine(newEmail);
                         command.Parameters.AddWithValue("@username", username);
                         command.Parameters.AddWithValue("@newUsername", newUsername);
                         command.Parameters.AddWithValue("@newEmail", newEmail);
                         command.Parameters.AddWithValue("@newProfilePicture", imageBytes);
                         command.ExecuteNonQuery();
-                        System.Diagnostics.Debug.WriteLine("SaveAccountSettings Executed");
                     }
                     catch (Exception ex)
                     {
@@ -267,7 +309,6 @@ namespace Chess_App.Classes
                         if (connection.State == ConnectionState.Open)
                         {
                             connection.Close();
-                            System.Diagnostics.Debug.WriteLine("Connection Closed");
                         }
                     }
                 }
@@ -285,13 +326,11 @@ namespace Chess_App.Classes
                     try
                     {
                         connection.Open();
-                        System.Diagnostics.Debug.WriteLine("Connection Opened");
                         command.Parameters.Add("@Username", SqlDbType.VarChar, 50).Value = username;
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.HasRows)
                             {
-                                System.Diagnostics.Debug.WriteLine("username match");
                                 while (reader.Read())
                                 {
                                     byte[] hashedPassword = (byte[])reader["PasswordHash"];
@@ -302,7 +341,6 @@ namespace Chess_App.Classes
                                     }
                                     else
                                     {
-                                        System.Diagnostics.Debug.WriteLine("password does not match");
                                         return false;
                                     }
                                 }
@@ -332,13 +370,11 @@ namespace Chess_App.Classes
                     try
                     {
                         connection.Open();
-                        System.Diagnostics.Debug.WriteLine("Connection Opened");
                         command.Parameters.AddWithValue("@Username", username);
                         command.Parameters.AddWithValue("@PasswordHash", hashedPassword);
                         command.Parameters.AddWithValue("@Salt", salt);
 
                         command.ExecuteNonQuery();
-                        System.Diagnostics.Debug.WriteLine("SaveNewPassword Executed");
                     }
                     catch (Exception ex)
                     {
@@ -349,11 +385,41 @@ namespace Chess_App.Classes
                         if (connection.State == ConnectionState.Open)
                         {
                             connection.Close();
-                            System.Diagnostics.Debug.WriteLine("Connection Closed");
                         }
                     }
                 }
             }
+        }
+
+        // GetUsernameFromEmail
+        public static string GetUsernameFromEmail(string email)
+        {
+            string username = null;
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["ChessAppDbConnectionString"].ConnectionString))
+            {
+                using (SqlCommand command = new SqlCommand("GetUsernameFromEmail", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    try
+                    {
+                        connection.Open();
+                        command.Parameters.Add("@Email", SqlDbType.VarChar, 50).Value = email;
+                        SqlParameter usernameParameter = new SqlParameter("@Username", SqlDbType.NVarChar, 50);
+                        usernameParameter.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(usernameParameter);
+
+                        command.ExecuteNonQuery();
+
+                        // Retrieve the result from the output parameter
+                        username = usernameParameter.Value != DBNull.Value ? (string)usernameParameter.Value : null;
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex.Message);
+                    }
+                }
+            }
+            return username;
         }
 
         // Delete User
@@ -367,7 +433,6 @@ namespace Chess_App.Classes
                     try
                     {
                         connection.Open();
-                        System.Diagnostics.Debug.WriteLine("Connection Opened");
                         command.Parameters.Add("@Username", SqlDbType.VarChar, 50).Value = username;
                         command.ExecuteNonQuery();
                     }
@@ -389,9 +454,6 @@ namespace Chess_App.Classes
             }
             return imageBytes;
         }
-        //byte[] bytes = DatabaseAccess.defaultImageBytes("C:\\Users\\Logan\\OneDrive\\Documents\\GitHub\\Chess_App\\Chess_App\\Images\\DefaultProfilePicture.png");
-        //string hexString = BitConverter.ToString(bytes).Replace("-", string.Empty);
-        //System.Diagnostics.Debug.WriteLine(hexString);
 
 
         // Set users online status to status parameter
@@ -405,11 +467,11 @@ namespace Chess_App.Classes
                     try
                     {
                         connection.Open();
-                        System.Diagnostics.Debug.WriteLine("Connection Opened");
                         command.Parameters.AddWithValue("@Username", username);
                         command.Parameters.AddWithValue("@Status", status);
                         command.ExecuteNonQuery();
-                        System.Diagnostics.Debug.WriteLine("SetOnlineStatus Executed");
+
+                        Debug.WriteLine("SetOnlineStatus: " + username + " " + status);
                     }
                     catch (Exception ex)
                     {
@@ -420,7 +482,6 @@ namespace Chess_App.Classes
                         if (connection.State == ConnectionState.Open)
                         {
                             connection.Close();
-                            System.Diagnostics.Debug.WriteLine("Connection Closed");
                         }
                     }
                 }
@@ -439,20 +500,17 @@ namespace Chess_App.Classes
                     try
                     {
                         connection.Open();
-                        System.Diagnostics.Debug.WriteLine("Connection Opened");
                         command.Parameters.AddWithValue("@SearchString", searchString);
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.HasRows)
                             {
-                                System.Diagnostics.Debug.WriteLine("reader has rows");
                                 while (reader.Read())
                                 {
                                     // Retrieve the data from the reader and populate the PlayerAccount objects
 
                                     int id = (int)reader["ID"];
                                     string userName = reader["UserName"].ToString();
-                                    Debug.WriteLine(userName);
                                     Theme theme = new Theme(
                                         reader["PrimaryColor"].ToString(),
                                         reader["BackgroundColor"].ToString(),
@@ -476,7 +534,6 @@ namespace Chess_App.Classes
                         if (connection.State == ConnectionState.Open)
                         {
                             connection.Close();
-                            System.Diagnostics.Debug.WriteLine("Connection Closed");
                         }
                     }
                 }
@@ -496,13 +553,11 @@ namespace Chess_App.Classes
                     try
                     {
                         connection.Open();
-                        System.Diagnostics.Debug.WriteLine("Connection Opened");
                         command.Parameters.AddWithValue("@Username", username);
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.HasRows)
                             {
-                                System.Diagnostics.Debug.WriteLine("reader has rows");
                                 while (reader.Read())
                                 {
                                     id = (int)reader["Id"];
@@ -519,7 +574,6 @@ namespace Chess_App.Classes
                         if (connection.State == ConnectionState.Open)
                         {
                             connection.Close();
-                            System.Diagnostics.Debug.WriteLine("Connection Closed");
                         }
                     }
                 }
@@ -540,7 +594,6 @@ namespace Chess_App.Classes
                     try
                     {
                         connection.Open();
-                        System.Diagnostics.Debug.WriteLine("Connection Opened");
                         command.Parameters.AddWithValue("@CurrentUserId", currentUserId);
                         command.Parameters.AddWithValue("@PotentialFriendId", potentialFriendId);
 
@@ -550,7 +603,6 @@ namespace Chess_App.Classes
                         if (result != null && result != DBNull.Value)
                         {
                             friendshipStatus = Convert.ToInt32(result);
-                            System.Diagnostics.Debug.WriteLine("Friendship Status: " + friendshipStatus);
                         }
                     }
                     catch (Exception ex)
@@ -562,7 +614,6 @@ namespace Chess_App.Classes
                         if (connection.State == ConnectionState.Open)
                         {
                             connection.Close();
-                            System.Diagnostics.Debug.WriteLine("Connection Closed");
                         }
                     }
                 }
@@ -582,11 +633,9 @@ namespace Chess_App.Classes
                     try
                     {
                         connection.Open();
-                        System.Diagnostics.Debug.WriteLine("Connection Opened");
                         command.Parameters.AddWithValue("@SenderUserId", currentUserId);
                         command.Parameters.AddWithValue("@ReceiverFriendId", potentialFriendId);
                         command.ExecuteNonQuery();
-                        System.Diagnostics.Debug.WriteLine("SendFriendRequest Executed");
                     }
                     catch (Exception ex)
                     {
@@ -597,7 +646,6 @@ namespace Chess_App.Classes
                         if (connection.State == ConnectionState.Open)
                         {
                             connection.Close();
-                            System.Diagnostics.Debug.WriteLine("Connection Closed");
                         }
                     }
                 }
@@ -615,13 +663,11 @@ namespace Chess_App.Classes
                     try
                     {
                         connection.Open();
-                        System.Diagnostics.Debug.WriteLine("Connection Opened");
                         command.Parameters.AddWithValue("@CurrentUserId", currentUserId);
                         command.Parameters.AddWithValue("@PotentialFriendId", potentialFriendId);
                         command.Parameters.AddWithValue("@Accept", isAccepted);
                         command.Parameters.AddWithValue("@MessageId", messageId);
                         command.ExecuteNonQuery();
-                        System.Diagnostics.Debug.WriteLine("HandleFriendRequest Executed");
                     }
                     catch (Exception ex)
                     {
@@ -632,7 +678,6 @@ namespace Chess_App.Classes
                         if (connection.State == ConnectionState.Open)
                         {
                             connection.Close();
-                            System.Diagnostics.Debug.WriteLine("Connection Closed");
                         }
                     }
                 }
@@ -650,11 +695,9 @@ namespace Chess_App.Classes
                     try
                     {
                         connection.Open();
-                        System.Diagnostics.Debug.WriteLine("Connection Opened");
                         command.Parameters.AddWithValue("@CurrentUserId", currentUserId);
                         command.Parameters.AddWithValue("@PotentialFriendId", potentialFriendId);
                         command.ExecuteNonQuery();
-                        System.Diagnostics.Debug.WriteLine("RemoveFriend Executed");
                     }
                     catch (Exception ex)
                     {
@@ -665,7 +708,6 @@ namespace Chess_App.Classes
                         if (connection.State == ConnectionState.Open)
                         {
                             connection.Close();
-                            System.Diagnostics.Debug.WriteLine("Connection Closed");
                         }
                     }
                 }
@@ -685,7 +727,6 @@ namespace Chess_App.Classes
                     try
                     {
                         connection.Open();
-                        System.Diagnostics.Debug.WriteLine("Connection Opened");
 
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
@@ -710,7 +751,6 @@ namespace Chess_App.Classes
                         if (connection.State == ConnectionState.Open)
                         {
                             connection.Close();
-                            System.Diagnostics.Debug.WriteLine("Connection Closed");
                         }
                     }
                 }
@@ -729,7 +769,6 @@ namespace Chess_App.Classes
                     try
                     {
                         connection.Open();
-                        System.Diagnostics.Debug.WriteLine("Connection Opened");
                         command.Parameters.AddWithValue("@SenderId", senderId);
                         command.Parameters.AddWithValue("@ReceiverId", receiverId);
                         command.Parameters.AddWithValue("@Message", message);
@@ -755,7 +794,6 @@ namespace Chess_App.Classes
                         }
 
                         command.ExecuteNonQuery();
-                        System.Diagnostics.Debug.WriteLine("SendMessage Executed");
                     }
                     catch (Exception ex)
                     {
@@ -766,7 +804,6 @@ namespace Chess_App.Classes
                         if (connection.State == ConnectionState.Open)
                         {
                             connection.Close();
-                            System.Diagnostics.Debug.WriteLine("Connection Closed");
                         }
                     }
                 }
@@ -792,14 +829,21 @@ namespace Chess_App.Classes
                             {
                                 int ConversationPartnerId = (int)reader["ConversationPartnerId"];
                                 string Username = (string)reader["Username"];
-                                Debug.WriteLine("OnlineStatus: " + reader["OnlineStatus"]);
                                 bool OnlineStatus = (bool)reader["OnlineStatus"];
                                 byte[] ProfilePicture = (byte[])reader["ProfilePicture"];
-                                Debug.WriteLine("IsNewMessage: " + reader["IsNewMessage"]);
                                 bool IsNewMessage = (bool)reader["IsNewMessage"];
                                 int MessageType = int.Parse((string)reader["MessageType"]);
                                 string Content = (string)reader["Content"];
                                 DateTime Timestamp = (DateTime)reader["Timestamp"];
+                                //Debug.WriteLine("PlayerAccount( ConversationPartnerId: " + ConversationPartnerId
+                                //    + ", Username: " + Username
+                                //    + ", OnlineStatus: " + OnlineStatus
+                                //    + ", ProfilePicture: " + ProfilePicture
+                                //    + ", IsNewMessage: " + IsNewMessage
+                                //    + ", MessageType: " + MessageType
+                                //    + ", Content: " + Content
+                                //    + ", Timestamp: " + Timestamp
+                                //    + " )"); 
                                 PlayerAccount message = new PlayerAccount(ConversationPartnerId, Username, OnlineStatus, ProfilePicture, IsNewMessage, MessageType, Content, Timestamp);
                                 accountMessages.Add(message);
                             }
@@ -838,21 +882,21 @@ namespace Chess_App.Classes
                             while (reader.Read())
                             {
                                 int messageId = (int)reader["MessageId"];
-                                Debug.WriteLine("MessageId: " + messageId);
+                                //Debug.WriteLine("MessageId: " + messageId);
                                 int senderId = (int)reader["SenderId"];
-                                Debug.WriteLine("SenderId: " + senderId);
+                                //Debug.WriteLine("SenderId: " + senderId);
                                 int recipientId = (int)reader["RecipientId"];
-                                Debug.WriteLine("RecipientId: " + recipientId);
+                                //Debug.WriteLine("RecipientId: " + recipientId);
                                 string content = (string)reader["Content"];
-                                Debug.WriteLine("Content: " + content);
+                                //Debug.WriteLine("Content: " + content);
                                 DateTime timestamp = (DateTime)reader["Timestamp"];
-                                Debug.WriteLine("Timestamp: " + timestamp);
+                                //Debug.WriteLine("Timestamp: " + timestamp);
                                 int messageType = int.Parse((string)reader["MessageType"]);
-                                Debug.WriteLine("MessageType: " + messageType);
+                                //Debug.WriteLine("MessageType: " + messageType);
                                 bool? isAccepted = Convert.IsDBNull(reader["IsAccepted"]) ? null : (bool?)reader["IsAccepted"];
-                                Debug.WriteLine("IsAccepted: " + isAccepted);
+                                //Debug.WriteLine("IsAccepted: " + isAccepted);
                                 bool isNewMessage = (bool)reader["IsNewMessage"];
-                                Debug.WriteLine("IsNewMessage: " + isNewMessage);
+                                //Debug.WriteLine("IsNewMessage: " + isNewMessage);
 
                                 Message message = new Message(messageId, senderId, recipientId, content, timestamp, messageType, isAccepted, isNewMessage);
                                 messages.Add(message);

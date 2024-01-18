@@ -2,8 +2,10 @@
 using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Windows;
@@ -20,6 +22,10 @@ namespace Chess_App
             }
 
             UsingAccount = IsUsingAccount();
+            if (UsingAccount)
+            {
+                
+            }
         }
 
         public bool IsUsingAccount()
@@ -78,11 +84,11 @@ namespace Chess_App
         {
             switch (e.CommandArgument.ToString())
             {
-                case "Online":   Response.Redirect("GameSetup.aspx?type="+e.CommandArgument+""); break;
+                case "Online": Response.Redirect("GameSetup.aspx?type=" + e.CommandArgument + ""); break;
                 case "Computer": Response.Redirect("GameSetup.aspx?type=" + e.CommandArgument + ""); break;
-                case "Friends":  Response.Redirect("GameSetup.aspx?type=" + e.CommandArgument + ""); break;
-                case "Default":  Response.Redirect("GameSetup.aspx?type=" + e.CommandArgument + ""); break;
-            } 
+                case "Local": Response.Redirect("GameSetup.aspx?type=" + e.CommandArgument + ""); break;
+                case "Default": Response.Redirect("GameSetup.aspx?type=" + e.CommandArgument + ""); break;
+            }
         }
 
         protected void SignInBtn_Click(object sender, EventArgs e)
@@ -98,6 +104,73 @@ namespace Chess_App
         protected void GoToGamePageBtn_Click(object sender, EventArgs e)
         {
             Response.Redirect("GamePage.aspx");
+        }
+
+        [WebMethod]
+        public static List<PlayerAccount> GetFriends()
+        {
+            try
+            {
+                if (HttpContext.Current.Session["AccountInfo"] == null)
+                {
+                    return null;
+                }
+                else if (HttpContext.Current.Session["AccountInfo"] is Guest)
+                {
+                    return null;
+                }
+                else
+                {
+                    return DatabaseAccess.GetFriends((HttpContext.Current.Session["AccountInfo"] as PlayerAccount).ID);
+                }
+            }
+            catch (NullReferenceException nullEx)
+            {
+                Debug.WriteLine("NullReferenceException: " + nullEx.Message);
+                return null;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                return null;
+            }
+        }
+
+        [WebMethod]
+        public static List<PlayerAccount> RetrieveLastAccountMessagesWithUserInfo()
+        {
+            try
+            {
+                // check if player is a guest of using an account
+                if (HttpContext.Current.Session["AccountInfo"] == null)
+                {
+                    return null;
+                }
+                else if (HttpContext.Current.Session["AccountInfo"] is Guest)
+                {
+                    return null;
+                }
+                else { 
+                List<PlayerAccount> accountMessages = DatabaseAccess.RetrieveLastAccountMessagesWithUserInfo((HttpContext.Current.Session["AccountInfo"] as PlayerAccount).ID);
+                HttpContext.Current.Session["AccountMessages"] = accountMessages;
+                return accountMessages;
+                }
+
+                //Debug.WriteLine("Account Messages Recieved!");
+            }
+            catch (NullReferenceException nullEx)
+            {
+                // Handle the NullReferenceException here
+                // You might want to log or throw a specific exception
+                // based on your error handling strategy.
+                Debug.WriteLine("NullReferenceException: " + nullEx.Message);
+                return null;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error in web method RetrieveLastAccountMessagesWithUserInfo:" + e.Message);
+                return null;
+            }
         }
     }
 }

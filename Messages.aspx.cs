@@ -39,6 +39,18 @@ namespace Chess_App
                 HttpContext.Current.Session["AccountMessages"] = accountMessages;
 
                 Debug.WriteLine("Account Messages Recieved!");
+                for (int i = 0; i < accountMessages.Count; i++)
+                {
+                    Debug.WriteLine("PlayerAccount( ConversationPartnerId: " + accountMessages[i].ID
+                                        + ", Username: " + accountMessages[i].Username
+                                        + ", OnlineStatus: " + accountMessages[i].OnlineStatus
+                                        + ", ProfilePicture: " + accountMessages[i].ProfilePicture
+                                        + ", IsNewMessage: " + accountMessages[i].MessageData[0]
+                                        + ", MessageType: " + accountMessages[i].MessageData[1]
+                                        + ", Content: " + accountMessages[i].MessageData[2]
+                                        + ", Timestamp: " + accountMessages[i].MessageData[3]
+                                        + " )");
+                }
                 return accountMessages;
             }
             catch (Exception e)
@@ -108,6 +120,18 @@ namespace Chess_App
 
                 // Retrieve the account messages for the current user
                 List<PlayerAccount> accountMessages = DatabaseAccess.RetrieveLastAccountMessagesWithUserInfo(currentUserId);
+                for (int i = 0; i < accountMessages.Count; i++)
+                {
+                    //Debug.WriteLine("PlayerAccount( ConversationPartnerId: " + accountMessages[i].ID
+                    //                    + ", Username: " + accountMessages[i].Username
+                    //                    + ", OnlineStatus: " + accountMessages[i].OnlineStatus
+                    //                    + ", ProfilePicture: " + accountMessages[i].ProfilePicture
+                    //                    + ", IsNewMessage: " + accountMessages[i].MessageData[0]
+                    //                    + ", MessageType: " + accountMessages[i].MessageData[1]
+                    //                    + ", Content: " + accountMessages[i].MessageData[2]
+                    //                    + ", Timestamp: " + accountMessages[i].MessageData[3]
+                    //                    + " )");
+                }
 
                 // Check if the account is the current user or if there are messages with the current user
                 foreach (PlayerAccount account in results.ToList()) // Using ToList() to create a copy of the list to avoid modification issues

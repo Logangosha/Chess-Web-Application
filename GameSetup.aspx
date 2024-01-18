@@ -2,17 +2,17 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="row p-0  h-100 MainCard">
-        <div class="col d-flex flex-column align-items-center justify-content-center overflow-auto pt-5">
+        <div class="col d-flex flex-column align-items-center justify-content-center overflow-auto p-5">
             <% if ("Default" == Request.QueryString["type"])
                 {%>
             <div class="d-flex flex-column gap-4 justify-content-center">
-                 <asp:LinkButton runat="server" ID="GoHomeBtn" OnClick="GoHomeBtn_Click" class="Btn Btn-secondary Btn-link">
+                 <asp:LinkButton runat="server" ID="GoHomeBtn" OnClick="GoHomeBtn_Click" class="Btn Btn-link">
                     <i class="Btn-link-icon fa-solid fa-arrow-left"></i>
                     Go Home
                 </asp:LinkButton>
-                <h1 class="h1-landing align-self-center">PLAY CHESS</h1>
+                <h1 class="h1-landing-sm align-self-center">PLAY CHESS</h1>
                 <hr />
-                 <asp:LinkButton runat="server" ID="PlayOnlineBtn" CommandArgument="Online" OnCommand="GameSetup_Command" class="Btn Btn-link">
+<%--                 <asp:LinkButton runat="server" ID="PlayOnlineBtn" CommandArgument="Online" OnCommand="GameSetup_Command" class="Btn Btn-link">
                     <i class="Btn-link-icon fa fa-globe"></i>
                     <p class="Btn-link-text">Play Online</p>
                         <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
@@ -21,10 +21,10 @@
                     <i class="Btn-link-icon fa fa-computer"></i>
                     <p class="Btn-link-text">Play Computer</p>
                         <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
-                </asp:LinkButton>
-                 <asp:LinkButton runat="server" ID="PlayFriendBtn" CommandArgument="Friends" OnCommand="GameSetup_Command" class="Btn Btn-link">
+                </asp:LinkButton>--%>
+                 <asp:LinkButton runat="server" ID="PlayFriendBtn" CommandArgument="Local" OnCommand="GameSetup_Command" class="Btn Btn-link">
                     <i class="Btn-link-icon fa fa-user"></i>
-                    <p class="Btn-link-text">Play Friends</p>
+                    <p class="Btn-link-text">Play Local</p>
                         <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
                 </asp:LinkButton>
                 <%--<asp:LinkButton runat="server" ID="PlayOnlineBtn" CommandArgument="Online" OnCommand="GameSetup_Command" CssClass="Btn Btn-primary Btn-link"><span class=" fa fa-globe"></span>&nbsp;Play Online</asp:LinkButton>--%>
@@ -34,14 +34,14 @@
             <%}
                 else
                 {%>
-            <div class="d-grid text-center flex-column gap-3 mb-5 ">
+            <div class="d-grid text-center flex-column gap-1 mb-5 ">
                 <button runat="server" onserverclick="GoBackBtn_Click" type="button" class="Btn Btn-link">
                     <i class="Btn-link-icon fa-solid fa-arrow-left"></i>
                     Go Back
                 </button>
                 <h1 class="h1-landing">SETUP</h1>
-                <h2>Complete to continue</h2>
-                <% if ("Friends" == Request.QueryString["type"])
+                <h2 class="mb-3">Complete to continue</h2>
+                <% if ("Local" == Request.QueryString["type"])
                     {%>
                 <div class="dropdown w-100">
                     <button type="button" onclick="ShowDropdown('SelectFriendDiv')" id="SelectFriendBtn" class="Btn-dropdown Btn Btn-primary w-100">Select Friend</button>
@@ -57,8 +57,8 @@
                     <button type="button" onclick="ShowDropdown('GameModeDiv')" id="GameModeBtn" class="Btn-dropdown Btn Btn-primary w-100">Game Mode</button>
                     <div id="GameModeDiv" class="dropdown-content">
                         <a><i class="fa fa-chess-knight pe-2"></i>Standard</a>
-                        <a><i class="fa-solid fa-sliders pe-2"></i>Custom</a>
-                        <a><i class="fa-solid fa-shuffle pe-2"></i>Random</a>
+                        <%--<a><i class="fa-solid fa-sliders pe-2"></i>Custom</a>--%>
+<%--                        <a><i class="fa-solid fa-shuffle pe-2"></i>Random</a>--%>
                     </div>
                 </div>
                 <% if ("Computer" == Request.QueryString["type"])
@@ -74,7 +74,7 @@
                 <%}
                     else
                     { %>
-                <div class="dropdown w-100">
+<%--                <div class="dropdown w-100">
                     <button type="button" onclick="ShowDropdown('TimeDiv')" id="TimeBtn" class="Btn-dropdown Btn Btn-primary w-100">Timer Settings</button>
                     <div id="TimeDiv" class="dropdown-content">
                         <a>No Timer</a>
@@ -82,7 +82,7 @@
                         <a>5 Minute</a>
                         <a>10 Minute</a>
                     </div>
-                </div>
+                </div>--%>
                 <%} %>
                 <div class="dropdown w-100">
                     <button type="button" onclick="ShowDropdown('ChooseColorDiv')" id="ChooseColorBtn" class="Btn-dropdown Btn Btn-primary w-100">Select Color</button>
@@ -92,8 +92,8 @@
                         <a>Random</a>
                     </div>
                 </div>
-
-                <asp:Button runat="server" ID="PlayChessBtn" OnClick="PlayChessBtn_Click" CssClass="Btn Btn-primary Btn-toggle mb-3 Btn-disabled" Text="Play Chess" />
+                <hr/>
+                <asp:Button runat="server" ID="PlayChessBtn" Enabled="false" OnClick="PlayChessBtn_Click" CssClass="Btn Btn-primary Btn-toggle mb-3 Btn-disabled" Text="Play Chess" />
                 <%} %>
             </div>
         </div>
@@ -126,14 +126,6 @@
 
             <%if ("Computer" != Request.QueryString["type"])
             {%>
-            var TimeChildren = document.getElementById("TimeDiv").children;
-            var TimeBtn = document.getElementById("TimeBtn");
-            for (var i = 0; TimeChildren[i]; i++) {
-                TimeChildren[i].onclick = function () {
-                    TimeBtn.innerHTML = this.text;
-                    CheckValidation();
-                }
-            }
             <%}
             else
             {%> 
@@ -147,17 +139,10 @@
             }
             <%}%>
 
-            <%if ("Friends" == Request.QueryString["type"])
+            <%if ("Local" == Request.QueryString["type"])
             {%>
-            GetFriends();
-            var SelectFriendChildren = document.getElementById("SelectFriendDiv").children;
-            var SelectFriendBtn = document.getElementById("SelectFriendBtn");
-            for (var i = 0; SelectFriendChildren[i]; i++) {
-                SelectFriendChildren[i].onclick = function () {
-                    SelectFriendBtn.innerHTML = this.text;
-                    CheckValidation();
-                }
-            }
+            document.getElementById('SelectFriendBtn').style.display = 'none';
+            document.getElementById('ChooseColorBtn').style.display = 'none';
             <%}%>
 
             const PlayChessBtn = document.getElementById('<%=PlayChessBtn.ClientID%>');
@@ -166,8 +151,7 @@
                 DisablePlayChessBtn();
                 var setupType = "<%=Request.QueryString["type"]%>";
                 if (GameModeBtn.textContent != "Game Mode" && ChooseColorBtn.textContent != "Select Color") {
-                    if (setupType == "Online" || setupType == "Friends") {
-                        if (TimeBtn.textContent != "Timer Settings") {
+                    if (setupType == "Online" || setupType == "Local") {
                             if (setupType == "Friends") {
                                 if (SelectFriendBtn.textContent != "Select Friend") {
                                     EnablePlayChessBtn();
@@ -176,7 +160,6 @@
                             else {
                                 EnablePlayChessBtn();
                             }
-                        }
 
                     }
                     else if (setupType == "Computer") {
@@ -201,6 +184,8 @@
                             // Clear the friendBoardDiv before updating with new data
                             $("#SelectFriendDiv").empty();
 
+                            
+
                             // Loop through each friend in the response
                             response.d.forEach(function (friend) {
                                 // Create the elements for each friend
@@ -219,6 +204,7 @@
 
                                 // Append the friendDiv to the "SelectFriendDiv"
                                 $("#SelectFriendDiv").append(friendDiv);
+                                
                             });
 
                         } else {
@@ -235,11 +221,15 @@
             function DisablePlayChessBtn() {
                 PlayChessBtn.classList.add('Btn-disabled')
                 PlayChessBtn.disabled = true;
+                document.getElementById('<%= PlayChessBtn.ClientID %>').disabled = true;
+
             }
 
             function EnablePlayChessBtn() {
                 PlayChessBtn.classList.remove('Btn-disabled')
                 PlayChessBtn.disabled = false;
+                document.getElementById('<%= PlayChessBtn.ClientID %>').disabled = false;
+
             }
 
             /* When the user clicks on the button, 

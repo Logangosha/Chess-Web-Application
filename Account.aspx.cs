@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Windows.Data;
 
 namespace Chess_App
 {
@@ -99,16 +100,17 @@ namespace Chess_App
                 );
 
                 // Update the PlayerAccount object with the new profile picture
-                ((PlayerAccount)Session["AccountInfo"]).ProfilePicture = imageBytes;
+                string imgSrcStr = PlayerAccount.GetImgSrc(imageBytes);
+                PlayerAccount playerAccount = (PlayerAccount)Session["AccountInfo"];
 
-                // Convert the byte array to a Base64-encoded string
-                string base64String = Convert.ToBase64String(imageBytes);
+                playerAccount.ProfilePicture = imageBytes;
+                playerAccount.ProfilePictureString = imgSrcStr;
 
-                // Construct the image source with the Base64-encoded string
-                string imageSource = "data:image/jpeg;base64," + base64String;
+                HttpContext.Current.Session["AccountInfo"] = null;
+                HttpContext.Current.Session["AccountInfo"] = playerAccount;
 
                 // Set the src attribute of the <img> tag
-                profileImg.Src = imageSource;
+                profileImg.Src = imgSrcStr;
             }
             else
             {

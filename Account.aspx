@@ -65,7 +65,7 @@
                                 <p class="p-bg my-2 d-block">Primary Color</p>
                                 <div class="d-flex justify-content-center align-items-center">
                                     <i class="primary-color-picker-icon color-picker-icon fa-solid fa-paintbrush"></i>
-                                    <input runat="server" id="primaryColor" type="color" class="color-picker" />
+                                    <input runat="server" id="primaryColor" type="color" class="color-picker">
                                 </div>
                             </div>
                             <div>
@@ -98,6 +98,7 @@
                     </button>
                     <asp:Button runat="server" OnClick="ChangeThemeSaveBtn_Click" ID="ChangeThemeSaveBtn" type="button" class="Btn Btn-primary ms-auto" Text="Save"></asp:Button>
                     <script defer>
+                        console.log("<%=((Chess_App.PlayerAccount)HttpContext.Current.Session["AccountInfo"]).ProfilePictureString%>");
                         const accountPrimaryColor = "<%=((Chess_App.PlayerAccount)Session["AccountInfo"]).Theme.PrimaryColor%>";
                         const accountBackgroundColor = "<%=((Chess_App.PlayerAccount)Session["AccountInfo"]).Theme.BackgroundColor%>";
                         const accountStatusColor = "<%=((Chess_App.PlayerAccount)Session["AccountInfo"]).Theme.StatusColor%>";
@@ -156,37 +157,45 @@
                         const _emailIcon = document.getElementById("emailIcon");
                         const _usernameTbx = document.getElementById("<%=usernameTbx.ClientID%>");
                         const emailTbx = document.getElementById("<%=emailTbx.ClientID%>");
+                        const fileInput = document.getElementById("<%=fileInput.ClientID%>");
+                        saveBtn.disabled = true;
                         var usernameStatus = false;
                         var emailStatus = false;
                         var profilePictureStatus = false;
 
+
                         _usernameTbx.addEventListener("keyup", function () { isUsernameValid(_usernameTbx.value) });
                         emailTbx.addEventListener("keyup", function () { isEmailValid(emailTbx.value) });
+                        fileInput.addEventListener("change", isProfilePictureValid);
 
                         // Check the overall validation status and enable/disable the save button
                         function checkEditAccountValidation() {
                             console.log("checking validation");
-                            console.log("saveBtn.classList " + saveBtn.classList.contains("Btn-disabled"))
                             saveBtn.classList.remove("Btn-disabled");
-                            console.log("if statement " + (!usernameStatus && !emailStatus))
                             if (!usernameStatus && !emailStatus && !profilePictureStatus) {
+                                saveBtn.disabled = true; // Disable the button
                                 saveBtn.classList.add("Btn-disabled");
+                            } else {
+                                saveBtn.disabled = false; // Enable the button
                             }
-
                         }
 
                         // Check if the Profile Picture is valid
                         function isProfilePictureValid() {
-                            const fileInput = document.getElementById("fileInput");
                             const file = fileInput.files[0];
                             const fileType = file['type'];
                             const validImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/jpg'];
-                            if (validImageTypes.includes(fileType)) {
+                            const maxSize = 200 * 1024; // 200KB in bytes
+
+                            if (validImageTypes.includes(fileType) && file.size <= maxSize) {
                                 profilePictureStatus = true;
                             }
                             else {
                                 profilePictureStatus = false;
+                                fileInput.value = '';
+                                alert('Please upload a valid image file (jpeg, jpg, png, or gif) under 200KB.');
                             }
+
                             checkEditAccountValidation();
                         }
 

@@ -29,7 +29,7 @@
                     Error
                     <%}%>
                 </button>
-                <button type="button" class="Btn Btn-link">
+                <%--<button type="button" class="Btn Btn-link">
                     <i class="Btn-link-icon fa-solid fa-envelope"></i>
                     <p class="Btn-link-text">Send Message</p>
                         <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
@@ -38,7 +38,7 @@
                     <i class="Btn-link-icon fa-solid fa-chess-board"></i>
                     <p class="Btn-link-text">Invite to Game</p>
                         <i class="fa-solid fa-arrow-right Btn-link-arrow"></i>
-                </button>
+                </button>--%>
                 <asp:LinkButton runat="server" ID="goHomeBtn" OnClick="goHomeBtn_Click" CssClass="Btn Btn-primary Btn-large mt-2"><span class="pe-2 fa-solid fa-house"></span>&nbsp;Go Home</asp:LinkButton>
             </div>
         </div>

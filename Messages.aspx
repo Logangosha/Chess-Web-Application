@@ -4,7 +4,7 @@
     <div class="container-fluid h-100">
         <div class="row p-0 justify-content-center h-100 MainCard overflow-scroll hidden-scroll-bar">
             <div class="d-flex flex-column gap-2 col-auto py-4 p-0 text-center justify-content-center my-auto align-items-center">
-                <asp:LinkButton runat="server" ID="goHomeBtn" OnClick="goHomeBtn_Click" class="Btn Btn-secondary Btn-link">
+                <asp:LinkButton runat="server" ID="goHomeBtn" OnClick="goHomeBtn_Click" class="Btn Btn-link">
                     <i class="Btn-link-icon fa-solid fa-arrow-left"></i>
                     Go Home
                 </asp:LinkButton>
@@ -130,7 +130,7 @@
                 contentType: "application/json; charset=utf-8", // Set the correct content type
                 dataType: "json", // Expect JSON as the response from the server
                 success: function (response) {
-                    // add message-profiles to message-board
+                    //add message-profiles to message-board
                     if (response && response.d && Array.isArray(response.d) && response.d.length > 0) {
                         var messageBoardDiv = $("#messageBoardDiv");
                         messageBoardDiv.empty(); // Clear the container
@@ -196,6 +196,7 @@
                     }
                 },
                 error: function (error) {
+                    console.log("RetrieveAccountMessages Response:", error);
 
                 }
             });

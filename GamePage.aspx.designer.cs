@@ -15,21 +15,21 @@ namespace Chess_App
     {
 
         /// <summary>
-        /// PlayerOneImg control.
+        /// GoHomeBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlImage PlayerOneImg;
+        protected global::System.Web.UI.WebControls.LinkButton GoHomeBtn;
 
         /// <summary>
-        /// PlayerTwoImg control.
+        /// PlayAgainBtn control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlImage PlayerTwoImg;
+        protected global::System.Web.UI.WebControls.LinkButton PlayAgainBtn;
     }
 }

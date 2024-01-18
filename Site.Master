@@ -6,6 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Respect</title>
+    <link rel="icon" type="image/x-icon" href="/Images/2by2icon.png" />
     <link rel="stylesheet" href="StyleSheets/Style.css" />
     <%-- FONTS --%>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,24 +44,81 @@
             }
         });
 
+        function onPageLoad() {
+            // Set initial time to 15 minutes (900,000 milliseconds)
+            var initialTime = 14 * 60 * 1000;  // 15 minutes in milliseconds
+
+            // Function to be triggered when time is up
+            function handleTimeUp() {
+                console.log("14 minutes have passed!");
+                // Add your action after 15 minutes here
+                __doPostBack('customPostBackControl', null);
+            }
+
+            // Set a timer for 15 minutes
+            var timer = setTimeout(function () {
+                handleTimeUp();
+            }, initialTime);
+
+            // Reset the timer when mouse is moved
+            window.addEventListener('mousemove', resetTimer);
+
+            // Reset the timer when a key is pressed
+            window.addEventListener('keydown', resetTimer);
+
+            // Reset the timer when a mouse click occurs
+            window.addEventListener('click', resetTimer);
+
+            function resetTimer() {
+                clearTimeout(timer);
+                <% SetRemainingSessionTime(); %>
+                //console.log("timer reset");
+                timer = setTimeout(function () {
+                    handleTimeUp();
+                }, initialTime);
+            }
+        }
+
+        // Trigger the function when the page has finished loading
+        //window.onload = onPageLoad;
+        $(document).ready(function () {
+            window.addEventListener('load', function (event) {
+                onPageLoad();
+            });
+        });
+        <%--$(document).ready(function () {
+            window.addEventListener('unload', function (event) {
+                event.preventDefault();
+                let isSignedIn = <%= ((Session["AccountInfo"] != null) && (Session["AccountInfo"] is Chess_App.PlayerAccount)).ToString().ToLower() %>;
+                if (isSignedIn) {
+                       <% UserLeavesPage(); %>
+                }
+            });
+       });--%>
+
+
+
         <%
-    // Get the AccountInfo from the Session
-    var accountInfo = Session["AccountInfo"] as Chess_App.PlayerAccount;
+        // Get the AccountInfo from the Session
+        var accountInfo = Session["AccountInfo"] as Chess_App.PlayerAccount;
 
-    // Set the default colors in case the theme values are null or empty
-    var statusColor = accountInfo?.Theme?.StatusColor;
-    var primaryColor = accountInfo?.Theme?.PrimaryColor;
-    var backgroundColor = accountInfo?.Theme?.BackgroundColor;
+        // Set the default colors in case the theme values are null or empty
+        //var statusColor = "#3B3B3B";
+        //var primaryColor = "#FFFFFF";
+        //var backgroundColor = "#000000";
+        var statusColor = accountInfo?.Theme?.StatusColor;
+        var primaryColor = accountInfo?.Theme?.PrimaryColor;
+        var backgroundColor = accountInfo?.Theme?.BackgroundColor;
 
-    // Fallback colors in case the values are null or empty
-    var defaultStatusColor = "#3B3B3B";
-    var defaultPrimaryColor = "#FFFFFF";
-    var defaultBackgroundColor = "#000000";
+        // Fallback colors in case the values are null or empty
+        var defaultStatusColor = "#3B3B3B";
+        var defaultPrimaryColor = "#FFFFFF";
+        var defaultBackgroundColor = "#000000";
 
-    // Use the theme colors if available, otherwise use the fallback colors
-    statusColor = !String.IsNullOrEmpty(statusColor) ? statusColor : defaultStatusColor;
-    primaryColor = !String.IsNullOrEmpty(primaryColor) ? primaryColor : defaultPrimaryColor;
-    backgroundColor = !String.IsNullOrEmpty(backgroundColor) ? backgroundColor : defaultBackgroundColor;
+        // Use the theme colors if available, otherwise use the fallback colors
+        statusColor = !String.IsNullOrEmpty(statusColor) ? statusColor : defaultStatusColor;
+        primaryColor = !String.IsNullOrEmpty(primaryColor) ? primaryColor : defaultPrimaryColor;
+        backgroundColor = !String.IsNullOrEmpty(backgroundColor) ? backgroundColor : defaultBackgroundColor;
     %>
 
         root.style.setProperty('--status-color', '<%= statusColor %>');
